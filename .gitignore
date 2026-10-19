@@ -1,0 +1,31 @@
+# Arquivos originais e de terceiros — não versionar
+*.swf
+*.swc
+*.exe
+*.dll
+*.app
+*.jar
+*.zip
+*.rar
+*.7z
+*.pfx
+*.key
+*.pem
+
+# Dados locais e salvamentos
+saves/
+backups/
+runtime/
+original/
+game-original/
+dist/
+build/
+*.log
+__pycache__/
+.pytest_cache/
+.DS_Store
+Thumbs.db
+
+# SDK e dependências externos
+flex-sdk/
+playerglobal.swc

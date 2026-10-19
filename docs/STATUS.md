@@ -1,0 +1,54 @@
+# Estado consolidado — 19/10/2026
+
+## Produto funcional
+
+- O usuário confirmou que a distribuição **Social Wars 0.02a** iniciou e funcionou no navegador com Ruffle.
+- O servidor local da distribuição original utiliza `127.0.0.1:5055`.
+- Essa execução é **do jogo original**, não da versão em fontes recompilados.
+- Scripts externos de inicialização/Ruffle foram **propostos como protótipos**, mas não possuem validação no Windows aqui; não os trate como distribuição comprovadamente funcional.
+
+## Extração / análise
+
+Cliente: `assets/flash/Basesec_1.5.4.swf`.
+
+| Métrica extraída no lote 3C | Valor |
+|---|---:|
+| Declarações de classe | 1.395 |
+| Declarações de método | 11.842 |
+| Corpos com bytecode | 11.709 |
+| Instruções AVM2 decodificadas | 650.549 |
+| Strings na constant pool | 20.068 |
+| Tamanho SWF descomprimido | 6.089.497 bytes |
+| DoABC | `frame1` (2.048.847 bytes) |
+
+SHA-256 do SWF de referência: `e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77`.
+
+## Recuperação funcional até agora
+
+| Área | Estado | Referência |
+|---|---|---|
+| `IsoFightingElement.calculateDamage` | Fórmula reconstruída a partir do P-code; não compilada no jogo | 3C–3D |
+| `IsoFightingElement.recibirAtaque` | Fluxo por etapas e P-code preservados; NÃO AS3 integral | 3E |
+| `battle.IAAttack` | Métodos de seleção de alvo estudados parcialmente | 3C–3D |
+| `AStar.findPath/look/searchNode` | Fragmentos e porta AS3 experimental; sem build validado | 3E–3G |
+| Semântica `searchNode.g` | Anomalia original identificada e testada em microinterpretador AVM2 | 3G |
+| `NodesPath` | Contrato `flash.utils.Proxy`, índices, métodos e `isAI` identificado | 3H–3I |
+| `IsoUnit.setMove/updateMove` | Consumo de pontos `aNodes[0]`, `TileToPixel`, `splice` identificado | 3H |
+| `IsoUnit.aNodes` | Setter tipado para NodesPath e evento `onMoveStart(isAI)` identificados | 3I |
+| Probe de compilação `AS3Probe` | Código preparado; compilação real PENDENTE | 3H–3I |
+| Projeto AS3 completo recompilável | NÃO EXISTE ainda | 5A pendente |
+| Port HTML5 sem Flash | NÃO EXISTE ainda | futuro |
+
+## Testes registrados nos lotes prévios
+
+- 3F: 7/7 cenários aprovados em **modelo Python normalizado**, não no Flash.
+- 3G: 12/12 verificações de blocos de `g` com um microinterpretador AVM2 parcial.
+- 3H: 27 verificações **estáticas**.
+- 3I: 38 verificações de contrato em P-code/modelo, **não** no runtime AS3.
+- Não foi gerado/validado SWF novo: faltava `mxmlc`/Flex SDK no ambiente.
+
+Os códigos neste repositório são **protótipos**. A nova compilação e execução não podem ser consideradas concluídas sem um SWF construído e testado.
+
+## Importante: origem dos pacotes históricos
+
+Os arquivos `Social_Wars_0.02a_AVM2_Lote3C.zip` até os lotes 3I foram entregues na conversa original, mas **não foram importados integralmente aqui**. Este repositório armazena a documentação e a nova árvore de continuidade. Para importação verificável dos artefatos históricos, recuperar os ZIPs locais, comparar com o inventário e incluir somente fontes legalmente redistribuíveis.
