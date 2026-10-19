@@ -26,6 +26,8 @@ No Windows, executar `tools/build_probe_windows.bat`. Em Linux, `tools/build_pro
 
 **Atualização 5A (19/10/2026):** compilação aprovada no GitHub Actions, [execução 39255285110](https://github.com/Acccelll/Social_wars_test/actions/runs/39255285110). O artefato `social-wars-as3-probe` contém `AS3Probe.swf` (3.619 bytes), ainda **não executado no Ruffle**. Abra a execução e obtenha o ZIP na seção *Artifacts* (retenção de 14 dias).
 
+**Atualização 5B (19/10/2026):** o [workflow 39260961090](https://github.com/Acccelll/Social_wars_test/actions/runs/39260961090) gerou um SWF experimental e o executou com sucesso em Chromium/Ruffle: 8/8 testes ActionScript via `ExternalInterface` (o `traceObserver` não capturou mensagens). O artefato de evidências inclui `report.json` e captura de tela. **Isso não substitui o jogo original.**
+
 ## Diagnóstico
 
 Se o jogo original funciona e o `AS3Probe` não, o bloqueio está na compilação/porta experimental; **não** representa falha do jogo original.

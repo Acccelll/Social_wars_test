@@ -15,7 +15,7 @@ Consolidar em um único repositório o conhecimento e os protótipos obtidos a p
 - Reconstrução parcial dos métodos de dano, inteligência artificial e movimentação.
 - Port experimental do algoritmo A* em ActionScript 3, com verificação específica da regra de custo `g`.
 - Adaptação experimental do contrato `NodesPath` / `IsoUnit`.
-- Scripts de teste, compilação automatizada no GitHub Actions e **primeiro SWF experimental compilado** (AS3Probe, 3.619 bytes).
+- Pipeline reproduzível de compilação e **execução de um SWF experimental em Ruffle/Chromium, com 8/8 testes AS3 aprovados** (Lote 5B).
 
 Leia [STATUS.md](docs/STATUS.md), [ARQUITETURA.md](docs/ARQUITETURA.md) e [ROADMAP.md](docs/ROADMAP.md).
 
@@ -25,6 +25,7 @@ Leia [STATUS.md](docs/STATUS.md), [ARQUITETURA.md](docs/ARQUITETURA.md) e [ROADM
 |---|---|
 | `as3/src/com/socialpoint/astar/recovered/` | Reconstituições experimentais em ActionScript 3 |
 | `tools/` | Scripts de verificação e compilação |
+| `tests/ruffle/` | Teste de execução do SWF real em Chromium/Ruffle, com relatório e captura de tela |
 | `docs/` | Resultados dos lotes, limitações, roteiro de continuidade |
 
 ## Executar o jogo original
@@ -50,4 +51,4 @@ Este repositório **não inclui** o jogo, o servidor original, recursos gráfico
 
 ## Próximo passo
 
-**Lote 5A concluído:** o AS3Probe compilou no [GitHub Actions](https://github.com/Acccelll/Social_wars_test/actions/runs/39255285110). Veja [BUILD_5A_RESULTADO.md](docs/BUILD_5A_RESULTADO.md). **Próximo lote 5B:** execução do SWF de prova no Ruffle e integração gradual. Nenhum jogo completo foi recompilado.
+**Lotes 5A e 5B concluídos:** o SWF experimental foi compilado com Flex e executado em Chromium/Ruffle: **8/8 testes AS3 aprovados** na [execução CI 39260961090](https://github.com/Acccelll/Social_wars_test/actions/runs/39260961090). Veja [LOTE_5B.md](docs/LOTE_5B.md). **Próximo lote 5C:** confrontar a lógica com o SWF original e preparar o adaptador tipado. Ainda não recompilamos o jogo completo.

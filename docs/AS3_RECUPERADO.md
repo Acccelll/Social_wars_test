@@ -8,7 +8,7 @@ Uma **porta experimental independente** de A* (não um cliente Social Wars compl
 - `NodesPathRecovered.as`: `flash.utils.Proxy`, array interno, índice `route[0]`, `isAI`.
 - `AStarRecovered.as`: busca/terrenos/cantos, g literal, tempo limite e interface de rota.
 - `IsoUnitRouteBridge.as`: imita parte do fluxo de atribuição do caminho.
-- `AS3Probe.as`: demonstração mínima compilável **ainda não validada**.
+- `AS3Probe.as`: prova experimental **compilada e executada** no Ruffle com 8/8 verificações runtime aprovadas, via ExternalInterface.
 
 **Não renomear** os tipos para os originais e injetar no SWF sem teste. `IsoUnit.aNodes` exige o tipo nominal original `com.socialpoint.astar.NodesPath`.
 
@@ -33,8 +33,8 @@ bash tools/build_probe_linux.sh
 
 No Windows, usar `tools\build_probe_windows.bat`.
 
-Os testes Python apenas exercitam a fórmula; `mxmlc` e a execução real do SWF continuam necessários.
+Os testes Python apenas exercitam a fórmula. A compilação `mxmlc` e a execução real do `AS3Probe.swf` no Ruffle foram aprovadas na execução CI [39260961090](https://github.com/Acccelll/Social_wars_test/actions/runs/39260961090); a validação é restrita ao protótipo.
 
 ## Próximo passo técnico
 
-Obter Flex SDK/compilador, compilar `AS3Probe.as`, executar o SWF de prova, corrigir erro por erro e só depois criar um adaptador tipado para `IsoUnit` original.
+Fazer testes de equivalência contra o caminho original e produzir um adaptador de tipo nominal `com.socialpoint.astar.NodesPath` / `core.isoengine.IsoUnit`. A prova de execução isolada já foi concluída.
