@@ -1,0 +1,100 @@
+name: Visual Animation Review 5D.7
+
+on:
+  push:
+    paths:
+      - "tools/visual_review_5d7.py"
+      - "tools/visual_review_5d7_test.py"
+      - ".github/workflows/visual-review-5d7.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: visual-review-5d7
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Test action evidence and duplicate comparisons
+        run: |
+          python3 -m pip install --user Pillow
+          python3 tools/visual_review_5d7_test.py
+
+      - name: Download original SWF distribution
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Download FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Reproduce verified 5D.6 GIF sample
+        run: |
+          python3 tools/visual_gallery_5d6.py --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" --out dist/gallery-5d6 --strict
+
+      - name: Audit actions and visual duplicates
+        run: |
+          python3 tools/visual_review_5d7.py \
+            --gallery dist/gallery-5d6 --archive runtime/original.zip \
+            --out dist/review-5d7
+          python3 - <<'PY'
+          import json,csv
+          from pathlib import Path
+          path=Path("dist/review-5d7")
+          result=json.loads((path/"review.json").read_text())
+          stats=result["stats"]
+          assert stats["previews"]==17 and stats["sources"]==14
+          assert stats["runtime_confirmed"]==0
+          assert len(list(csv.DictReader((path/"review.csv").open())))==17
+          assert (path/"review.html").stat().st_size>1500
+          expected={"0022_tower_1_m.swf#52","0040_workshop_1_m.swf#52"}
+          assert any(expected<=set(group)
+                     for group in result["duplicates"]["exact_sha256"])
+          assert len(list((path/"previews").rglob("*.gif")))==17
+          print("REVIEW_5D7_VERIFIED",json.dumps(stats))
+          PY
+
+      - name: Persist evidence-only CSV and JSON
+        run: |
+          mkdir -p data/visual
+          cp dist/review-5d7/review.json data/visual/animation_review_5d7.json
+          cp dist/review-5d7/review.csv data/visual/animation_review_5d7.csv
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/animation_review_5d7.*
+          if git diff --cached --quiet; then echo "No review metadata changes."; else
+            git commit -m "data(visual): record duplicate previews and animation-state evidence"
+            git push origin HEAD:main
+          fi
+
+      - name: Upload review HTML and source GIFs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-animation-review-5d7
+          path: dist/review-5d7/
+          if-no-files-found: warn
+          retention-days: 14
