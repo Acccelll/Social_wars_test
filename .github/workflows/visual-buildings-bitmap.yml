@@ -1,0 +1,82 @@
+name: Visual Buildings Bitmap Batch 5D.3
+
+on:
+  push:
+    paths:
+      - ".github/workflows/visual-buildings-bitmap.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Download official 0.02a distribution
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Download JPEXS FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -type f -name ffdec.jar -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Export diverse building base bitmaps
+        run: |
+          python3 tools/visual_extract.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/visual-buildings \
+            --names "0022_tower_1_m.swf,0026_command_center_1_m.swf,0028_hospital_1_m.swf,0040_workshop_1_m.swf,0050_bunker_1_m.swf,0080_fortress_1_m.swf,0089_nuclear_plant_m.swf,0118_laboratory_m.swf,0170_giant_walker_factory_m.swf,0195_orc_headquarters.swf,0202_orc_resource_building.swf,10032_silo_1.swf" \
+            --types images --timeout 360 --fail-on-error
+          python3 - <<'PY'
+          import csv, json
+          from pathlib import Path
+          p=Path("dist/visual-buildings")
+          rows=list(csv.DictReader((p/"export_results.csv").open()))
+          result=json.loads((p/"export_summary.json").read_text())
+          assert len(rows)==12, f"Expected 12 source SWFs; got {len(rows)}"
+          assert not result["errors"]
+          print("BUILDINGS_RESULT_COUNT",len(rows))
+          print("BUILDINGS_TOTALS",json.dumps(result["totals"]))
+          for row in rows:
+              print("BUILDING_EXPORT",row["path"],row["status"],row["created_files"])
+          PY
+
+      - name: Upload metadata separately (14 days)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-buildings-bitmap-manifest
+          path: |
+            dist/visual-buildings/export_summary.json
+            dist/visual-buildings/export_results.csv
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload extracted bitmaps separately (1 day)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-buildings-bitmaps
+          path: dist/visual-buildings/swfs
+          if-no-files-found: warn
+          retention-days: 1
