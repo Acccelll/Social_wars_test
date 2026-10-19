@@ -126,6 +126,7 @@ jobs:
           evidence=json.loads((folder/"action_evidence_5d8b.json").read_text())
           assert len(evidence["windows"])==1, evidence
           assert evidence["windows"][0]["operator_label"]=="other"
+          assert evidence["windows"][0]["visual_evidence"]!="insufficient"
           assert evidence["confirmed_actions"]==0
           assert evidence["confirmed_sprites"]==0
           assert (folder/"session.webm").stat().st_size>1000
