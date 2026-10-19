@@ -1,0 +1,41 @@
+name: Visual Assets Inventory 0.02a
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/visual_inventory.py"
+      - ".github/workflows/visual-inventory.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download official Social Warriors 0.02a distribution
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+          sha256sum runtime/original.zip
+
+      - name: Index SWFs and external image files without exporting assets
+        run: |
+          python3 tools/visual_inventory.py \
+            --archive runtime/original.zip \
+            --out dist/visual-inventory
+
+      - name: Publish inventory (metadata only)
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-visual-inventory
+          path: dist/visual-inventory
+          retention-days: 14
+          if-no-files-found: error
