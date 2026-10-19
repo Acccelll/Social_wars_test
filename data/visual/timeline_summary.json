@@ -1,0 +1,31 @@
+{
+  "attempted": 1118,
+  "analyzed": 1118,
+  "selected_details": [
+    "0022_tower_1_m.swf",
+    "0026_command_center_1_m.swf",
+    "1212_tetrapod_mech.swf",
+    "1313_splintermech.swf",
+    "basesec_1.5.4.swf",
+    "good_10_m.swf"
+  ],
+  "found_details": [
+    "0022_tower_1_m.swf",
+    "0026_command_center_1_m.swf",
+    "1212_tetrapod_mech.swf",
+    "1313_splintermech.swf",
+    "basesec_1.5.4.swf",
+    "good_10_m.swf"
+  ],
+  "totals": {
+    "swfs": 1118,
+    "sprites": 43426,
+    "sprite_frames_declared": 400023,
+    "sprite_frames_observed": 400023,
+    "placements": 2782788,
+    "removals": 109884,
+    "parse_warnings": 2
+  },
+  "errors": [],
+  "note": "Static SWF timelines and references, not completed playable animations."
+}
