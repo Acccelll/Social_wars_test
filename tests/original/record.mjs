@@ -3,7 +3,7 @@
  * No original SWF, server module or save file is modified by this tool.
  * Local HTTP paths and explicit user markers only; request bodies excluded.
  */
-import {chromium} from "playwright";
+import {chromium} from "../ruffle/node_modules/playwright/index.mjs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
