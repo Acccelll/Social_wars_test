@@ -1,0 +1,96 @@
+{
+  "original_swf": "Basesec_1.5.4.swf",
+  "original_sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+  "dump_status": {
+    "returncode": 0,
+    "timed_out": false,
+    "output_chars": 48856
+  },
+  "dump_matched_lines": [
+    "core.TutorialMain 126",
+    "PopupTutorialMC 445"
+  ],
+  "dump_class_candidates": [
+    "PopupTutorialMC",
+    "core.TutorialMain"
+  ],
+  "selected_class_names": [
+    "core.TutorialMain",
+    "PopupTutorialMC"
+  ],
+  "export_statuses": {
+    "as3_source": {
+      "returncode": 0,
+      "timed_out": false,
+      "output_chars": 240
+    },
+    "as3_pcode": {
+      "returncode": 0,
+      "timed_out": false,
+      "output_chars": 240
+    }
+  },
+  "exported_scripts": [
+    {
+      "format": "as",
+      "relative_path": "scripts/PopupTutorialMC.as",
+      "bytes": 502,
+      "target_occurrences": {
+        "PopupTutorialMC": 2
+      },
+      "method_names": [
+        "PopupTutorialMC"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/core/TutorialMain.as",
+      "bytes": 42469,
+      "target_occurrences": {
+        "TutorialMain": 2,
+        "tutorialMode": 2,
+        "closeWindow": 2,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "TutorialMain",
+        "addCounterTrees",
+        "addMayor",
+        "checkStepBattle",
+        "checkStepSoldiers",
+        "chopTree",
+        "doPan",
+        "endHandler",
+        "endTutorial",
+        "getAlignedHorizontalPosition",
+        "getAlignedVerticalPosition",
+        "getArrowPosition",
+        "getCirclePosition",
+        "getStep",
+        "getStepPosition",
+        "hideArrow",
+        "init",
+        "ioErrorHandler",
+        "nextStep",
+        "onExpressionEnd",
+        "onWideScreenChange",
+        "prevStep",
+        "removeMayor",
+        "setStep",
+        "showArrow",
+        "showMarcasuelo",
+        "spawnEnemies",
+        "stopMayor",
+        "unlockMap",
+        "unlockTabs",
+        "update"
+      ]
+    }
+  ],
+  "as_source_files": 2,
+  "pcode_files": 0,
+  "root_cause_verified": false,
+  "click_handler_verified": false,
+  "runtime_modal_dismissed": false,
+  "warning": "AS3 method names alone cannot prove a UI event handler was executed."
+}
