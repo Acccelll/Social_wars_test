@@ -52,6 +52,10 @@ def main():
                    help="Optional exact SWF basename, e.g. Basesec_1.5.4.swf")
     p.add_argument("--names", default="",
                    help="Comma-separated exact SWF basenames to export as a group")
+    p.add_argument("--path-prefix", default="",
+                   help="SWFs beneath original assets path, e.g. assets/characters_2/")
+    p.add_argument("--fail-on-error", action="store_true",
+                   help="Fail exit code for FFDec errors in any source file")
     p.add_argument("--types", choices=("images", "visual", "sprites"),
                    default="visual")
     p.add_argument("--timeout", type=int, default=240)
@@ -98,6 +102,12 @@ def main():
                 p.error("SWF basename(s) missing from distribution: " + ", ".join(sorted(missing)))
         if not selection:
             p.error("No SWF matched the selected filters")
+        if args.path_prefix:
+            prefix = args.path_prefix.replace("\\", "/").strip("/")
+            if not prefix.startswith("assets/") or ".." in prefix.split("/"):
+                p.error("--path-prefix must be within assets/")
+            selection = [x for x in selection
+                         if relative_target(x.filename).as_posix().startswith(prefix + "/")]
         print(f"SWF_SELECTION total={len(swfs)} start={args.start} "
               f"selected={len(selection)} type={types}", flush=True)
 
@@ -150,10 +160,14 @@ def main():
                     rec["tail"] = finished.stdout[-1400:]
                     rec["created_files"] = max(files_recursive(sub)-before,0)
                     counts["exported_files"] += rec["created_files"]
-                    if finished.returncode != 0 or rec["created_files"] == 0:
-                        rec["status"] = "CHECK_OUTPUT"
+                    if finished.returncode != 0:
+                        rec["status"] = "FFDEC_ERROR"
                         errors.append({"path":member.filename,"exit_code":finished.returncode,
                                        "reason":rec["tail"]})
+                    elif rec["created_files"] == 0:
+                        # A vector-only SWF may legitimately contain no bitmaps.
+                        # Do not count this as a failed extraction.
+                        rec["status"] = "EMPTY_CATEGORY"
                     else:
                         rec["status"] = "EXPORTED"
                         counts["swf_exported"] += 1
@@ -183,8 +197,10 @@ def main():
     print("VISUAL_EXPORT_SUMMARY",json.dumps(counts),flush=True)
     print("VISUAL_EXPORT_ERRORS",len(errors),flush=True)
     print("VISUAL_EXPORT_SELECTED",json.dumps(details[:5]),flush=True)
+    if args.fail_on_error and errors:
+        raise SystemExit(f"{len(errors)} extraction errors; inspect export_summary.json")
     if counts["swf_attempted"] and not counts["swf_exported"]:
-        raise SystemExit("No SWF was successfully exported")
+        print("NOTE: zero files exported in requested category", flush=True)
 
 if __name__ == "__main__":
     main()
