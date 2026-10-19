@@ -1,0 +1,143 @@
+name: Original Intro Dialog 5D.8D
+
+on:
+  push:
+    paths:
+      - ".github/workflows/original-intro-5d8d.yml"
+      - "tools/seed_original_units_5d8c.py"
+      - "tools/seed_original_units_5d8c_test.py"
+      - "tests/original/record.mjs"
+      - "tests/original/observer.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: original-intro-5d8d
+  cancel-in-progress: false
+
+jobs:
+  scenario:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate fixture and screenshot methods
+        run: |
+          python tools/seed_original_units_5d8c_test.py
+          python -m pip install pillow
+          python tools/analyze_runtime_5d8b_test.py
+
+      - name: Install browser and Ruffle
+        run: |
+          npm install --prefix tests/ruffle --no-audit --no-fund
+          npx --prefix tests/ruffle playwright install chromium
+          node tests/original/test.mjs
+
+      - name: Download original Social Wars distribution and Python server
+        run: |
+          mkdir -p runtime/release
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = "492630085"
+          unzip -q runtime/release.zip -d runtime/release
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          asset_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          git clone --depth 1 --filter=blob:none --sparse \
+            https://github.com/AcidCaos/socialwarriors.git runtime/source
+          git -C runtime/source sparse-checkout set config villages templates stub mods
+          ln -s "$asset_dir" runtime/source/assets
+          test -f runtime/source/server.py
+          mkdir -p runtime/source/saves
+          echo "SW_SERVER_DIR=$(realpath runtime/source)" >> "$GITHUB_ENV"
+
+      - name: Verify unit IDs and seed only disposable initial village
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          patch=json.loads(Path("runtime/source/config/patch/unit_patch.json").read_text())
+          catalog={int(row["value"]["id"]):row["value"] for row in patch
+                   if isinstance(row,dict) and "value" in row and
+                   isinstance(row["value"],dict) and "id" in row["value"]}
+          for key in [1313,1358,1376]:
+              assert catalog[key]["type"]=="u"
+              print("SOURCE_UNIT_VERIFIED",key,catalog[key]["name"],
+                    catalog[key]["img_name"])
+          PY
+          python tools/seed_original_units_5d8c.py \
+            --initial "$SW_SERVER_DIR/villages/initial.json" \
+            --out "$SW_SERVER_DIR/villages/initial_for_test.json" \
+            --manifest runtime/fixture_5d8c.json
+          mv "$SW_SERVER_DIR/villages/initial_for_test.json" "$SW_SERVER_DIR/villages/initial.json"
+          echo "Fixture affects isolated clone ONLY."
+
+      - name: Start real Flask server on loopback
+        run: |
+          python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+          cd "$SW_SERVER_DIR"
+          nohup python -u server.py --host 127.0.0.1 --port 5055 \
+            > "$GITHUB_WORKSPACE/runtime/server.log" 2>&1 &
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5055/health; then exit 0; fi
+            sleep 1
+          done
+          cat "$GITHUB_WORKSPACE/runtime/server.log"
+          exit 1
+
+      - name: Capture intro modal before and after clicking its OK button
+        run: |
+          node tests/original/record.mjs --server http://127.0.0.1:5055 \
+            --headless --create-test-village --intro-probe --duration 2 \
+            --out dist/intro-5d8d
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from PIL import Image,ImageChops
+          out=Path("dist/intro-5d8d")
+          report=json.loads((out/"report.json").read_text())
+          assert report["state"]["rufflePlayerCount"]>=1
+          events=report["events"]
+          assert sum(e["type"]=="intro_dismiss_attempt" for e in events)==1
+          assert sum(e["type"]=="intro_dismiss_capture_complete" for e in events)==1
+          for f in ["intro-before.png","intro-after.png","session.webm"]:
+              assert (out/f).stat().st_size>1000
+          with Image.open(out/"intro-before.png") as before, Image.open(out/"intro-after.png") as after:
+              box=(275,145,995,709)
+              diff=ImageChops.difference(before.convert("RGB").crop(box),after.convert("RGB").crop(box)).convert("L")
+              changed=diff.point(lambda x:255 if x>=22 else 0)
+              ratio=changed.histogram()[255]/((box[2]-box[0])*(box[3]-box[1]))
+          result={"test":"5D8D_intro_dismissal_probe",
+              "click_coordinate_player":[550,568],"screen_region_tested":list(box),
+              "difference_ratio":round(ratio,5),
+              "significant_visual_change":ratio>=0.05,
+              "visual_review_required":True,
+              "confirmed_unit_actions":0,
+              "confirmed_movieclip_ids":0,
+              "notes":"Changing the dialog is not evidence of unit combat or movement."}
+          (out/"intro_probe_summary.json").write_text(json.dumps(result,indent=2)+"\n")
+          assert ratio>=0.05,result
+          print("INTRO_PROBE_5D8D",json.dumps(result))
+          PY
+
+      - name: Upload original-game session video/screenshots and fixture manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-original-intro-5d8d
+          path: |
+            dist/intro-5d8d/
+            runtime/fixture_5d8c.json
+            runtime/server.log
+          if-no-files-found: warn
+          retention-days: 14
