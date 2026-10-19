@@ -1,0 +1,20 @@
+{
+  "status": "scenario_probe_only",
+  "seeded_gameplay_item_ids": [
+    1313,
+    1358,
+    1376
+  ],
+  "seeded_units": 4,
+  "probe_steps": 3,
+  "screenshot_pairs": 3,
+  "image_changes": 3,
+  "requested_unit_swfs": [
+    "/static/socialwars/sprites/1313_splinterMech.swf",
+    "/static/socialwars/sprites/1358_bushwacker.swf",
+    "/static/socialwars/sprites/1376_reaperDrone.swf"
+  ],
+  "runtime_gameplay_actions_confirmed": 0,
+  "sprite_character_ids_confirmed": 0,
+  "limitations": "Known save item IDs are not SWF MovieClip IDs. Scripted clicks are exploratory, not verified move/attack."
+}
