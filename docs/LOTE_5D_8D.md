@@ -60,3 +60,32 @@ e testar um caminho verificável para dispensar as janelas de entrada.
 Em paralelo, é possível comprovar comandos de unidade na cópia
 descartável do servidor, mas essa evidência isolada **não confirma a
 animação gráfica**.
+
+## Diagnóstico final confirmado — 19/10/2026
+
+O workflow [39316722288](https://github.com/Acccelll/Social_wars_test/actions/runs/39316722288)
+finalizou com **success para a instrumentação de diagnóstico**, **não**
+para a conclusão da missão no jogo.
+
+No `ruffle-embed` configurado para a resolução nativa **760 × 600**:
+
+- O navegador registrou clique relativo **(380, 568)** sobre o OK.
+- O alvo DOM era `RUFFLE-EMBED`, e o alvo no Shadow DOM era
+  `CANVAS`; ambos apresentaram `pointer-events: auto`.
+- O player tinha um canvas; o elemento ativo do DOM era `BODY`.
+- O conteúdo da janela não mudou após o clique
+  (`difference_ratio = 0.0`).
+- **Enter** também não alterou a região examinada
+  (`difference_ratio = 0.0`).
+- Nenhuma ação de unidade nem ID de sprite interno foi comprovado.
+
+Portanto, o evento atinge o canvas, mas **não há evidência de que o
+ActionScript tenha processado o botão**. A causa precisa ainda não
+está demonstrada; não atribuir automaticamente a foco ou tamanho.
+
+[Capturas, vídeo e logs da execução](https://github.com/Acccelll/Social_wars_test/actions/runs/39316722288/artifacts/12219005558).
+[Diagnóstico JSON versionado](../data/visual/intro_diagnostic_5d8d.json).
+
+**Próximo lote 5D.8E:** investigar a lógica do diálogo inicial e
+validar comandos de unidade no servidor descartável. Mudança de
+posição confirmada no servidor, sozinha, não prova animação no Flash.

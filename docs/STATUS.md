@@ -226,3 +226,22 @@ foi reconstruída por este procedimento.
 - [Resumo permanente](../data/visual/original_unit_probe_5d8c.json);
   [vídeo/capturas/manifesto](https://github.com/Acccelll/Social_wars_test/actions/runs/39313160511/artifacts/12217206551).
 - [Procedimento e limites técnicos](LOTE_5D_8C.md).
+
+## 5D.8D — Bloqueio da missão inicial no jogo original
+
+- A inspeção das imagens reais do 5D.8C encontrou
+  `RESCUE YOUR COMRADE!` cobrindo todo o centro do mapa.
+- O primeiro clique de teste a 1090px
+  ([39315571893](https://github.com/Acccelll/Social_wars_test/actions/runs/39315571893))
+  não fechou a janela.
+- Na resolução nativa 760×600, a CI
+  [39316722288](https://github.com/Acccelll/Social_wars_test/actions/runs/39316722288)
+  terminou **success para o diagnóstico**. A área do diálogo
+  não mudou após clique ou Enter.
+- Hit-test `RUFFLE-EMBED` → `CANVAS` com pointer-events auto:
+  o navegador entrega eventos ao player, porém a ação do botão
+  não foi comprovada.
+- [Registro permanente](../data/visual/intro_diagnostic_5d8d.json)
+  e [evidências visuais](https://github.com/Acccelll/Social_wars_test/actions/runs/39316722288/artifacts/12219005558).
+- **Nenhuma animação de movimento/ataque e nenhum character_id
+  foram validados.**

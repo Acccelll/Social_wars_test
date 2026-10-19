@@ -1,0 +1,26 @@
+{
+  "test": "5D8D_intro_dismissal_probe",
+  "run_id": 39316722288,
+  "run_conclusion": "success_diagnostic_only",
+  "swf_viewport_native": [
+    760,
+    600
+  ],
+  "click_coordinate_relative": [
+    380,
+    568
+  ],
+  "browser_pointer_received": true,
+  "outer_target": "RUFFLE-EMBED",
+  "shadow_target": "CANVAS",
+  "pointer_events": "auto",
+  "shadow_canvas_count": 1,
+  "active_dom_tag": "BODY",
+  "dialog_diff_after_click": 0,
+  "dialog_diff_after_enter": 0,
+  "dialog_dismissed": false,
+  "gameplay_actions_confirmed": 0,
+  "sprite_ids_confirmed": 0,
+  "limitation": "Browser hit testing is not proof that Flash ActionScript handled the click",
+  "artifact_url": "https://github.com/Acccelll/Social_wars_test/actions/runs/39316722288/artifacts/12219005558"
+}

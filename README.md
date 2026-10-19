@@ -178,3 +178,11 @@ aprovou **3 capturas comparativas com mudança visual**.
 
 A correspondência entre movimento/ataque e os IDs internos de
 animação segue em investigação; não foi confirmada.
+
+## Bloqueio de interação no original — 5D.8D
+
+O [diagnóstico 5D.8D](docs/LOTE_5D_8D.md) identificou um modal
+`RESCUE YOUR COMRADE!` sobre o mapa. O clique chegou ao canvas do
+Ruffle em resolução nativa, mas nem o OK nem Enter alteraram o
+diálogo na automação atual. Portanto, não houve comprovação
+de ações de mechas; a causa exata ainda está em investigação.
