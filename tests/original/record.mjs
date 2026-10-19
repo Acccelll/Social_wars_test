@@ -18,6 +18,7 @@ if(!Number.isFinite(duration)||duration<1||duration>600)throw Error("Duration mu
 const out=path.resolve(option("--out",path.join(root,"dist","original-observation")));
 const headless=args.includes("--headless");
 const newVillage=args.includes("--create-test-village");
+const smokeMarkers=args.includes("--smoke-markers");
 const ruffleRoot=path.join(root,"tests/ruffle/node_modules/@ruffle-rs/ruffle");
 const observerPath=path.join(root,"tests/original/observer.js");
 await fs.mkdir(out,{recursive:true});
@@ -76,14 +77,23 @@ try{
  if(newVillage) await page.goto(server+"/play.html",
                                {waitUntil:"domcontentloaded",timeout:30000});
  if(!headless)console.log("Use a janela do Chromium para entrar na vila e marcar as ações no painel lateral.");
+ if(smokeMarkers){
+   // Test only that the overlay works on the original client's page.
+   // Kind 'other' is NOT an actual game action.
+   await page.locator("#sw-action").selectOption("other");
+   await page.locator("#sw-start").click();
+   await page.waitForTimeout(350);
+   await page.locator("#sw-stop").click();
+ }
  await page.waitForTimeout(duration*1000);
  const state=await page.evaluate(()=>({
    pathname:location.pathname,title:document.title,
    observer:Boolean(window.__swObserver),
    ruffle:Boolean(window.RufflePlayer),
-   rufflePlayerCount:document.querySelectorAll("ruffle-player").length,
+   rufflePlayerCount:document.querySelectorAll("ruffle-player,ruffle-embed,ruffle-object").length,
+   ruffleTags:[...document.querySelectorAll("ruffle-player,ruffle-embed,ruffle-object")].map(e=>e.tagName.toLowerCase()),
    embeds:document.querySelectorAll("embed").length,
-   metadata:[...document.querySelectorAll("ruffle-player")].map(e=>{try{return e.ruffle().metadata}catch{return null}})
+   metadata:[...document.querySelectorAll("ruffle-player,ruffle-embed,ruffle-object")].map(e=>{try{return e.ruffle().metadata}catch{return null}})
  }));
  await page.screenshot({path:path.join(out,"final.png"),timeout:7000});
  const report={kind:"original-game-client-observation",serverVersion,
