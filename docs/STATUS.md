@@ -122,3 +122,17 @@ e [seis timelines compactadas](../data/visual/timeline_details).
 As duas operações PlaceObject3 com decodificação parcial foram preservadas
 em hex nos eventos `place_raw`; nenhuma animação AS3 dinâmica
 foi reconstruída por este procedimento.
+
+## Lote 5D.5 — Galeria visual animada
+
+- FFDec exportou **8 GIFs animados** de 5 SWFs, com caracteres
+  362/393 (Tetrapod), 188/189 (Splinter), 85/52 (torre),
+  21 (centro de comando) e 11 (good_10_m).
+- [GitHub Actions 39301011532](https://github.com/Acccelll/Social_wars_test/actions/runs/39301011532)
+  concluiu com **success**, 8/8 imagens de prévia e 8/8 com múltiplos quadros.
+- [Galeria HTML offline](https://github.com/Acccelll/Social_wars_test/actions/runs/39301011532/artifacts/12211297019)
+  gerada e compactada (1.264.939 bytes).
+- GIFs são artefatos temporários; CSV/JSON de metadados são
+  armazenados na branch main, com referências aos SWFs e sprite IDs.
+- As animações controladas por ActionScript ainda precisam ser
+  comparadas com o runtime; não considerar a biblioteca completa.

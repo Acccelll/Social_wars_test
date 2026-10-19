@@ -102,3 +102,14 @@ A extração de timelines já está **registrada permanentemente** em
 [data/visual/timeline_inventory.csv](data/visual/timeline_inventory.csv)
 e nos [seis exemplos detalhados](data/visual/timeline_details), sem
 necessidade de baixar artefatos temporários para consultar os metadados.
+
+## Primeira galeria de prévias animadas — 5D.5
+
+O [Lote 5D.5](docs/LOTE_5D_5.md) compilou uma galeria HTML offline
+com **8 GIFs animados** de cinco SWFs (Tetrapod, Splinter,
+torre, centro de comando e personagem good_10_m), usando os
+identificadores reais de sprites recuperados.
+
+[Baixe o pacote de prévias e abra index.html](https://github.com/Acccelll/Social_wars_test/actions/runs/39301011532/artifacts/12211297019).
+As imagens permanecem fora do repositório; os metadados são preservados
+em data/visual. A cobertura integral dos recursos animados está pendente.

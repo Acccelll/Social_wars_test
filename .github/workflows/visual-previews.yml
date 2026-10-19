@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
@@ -62,6 +62,21 @@ jobs:
             --out dist/visual-previews --per-source 2 --strict
           test -s dist/visual-previews/index.html
           du -sh dist/visual-previews
+
+      - name: Save metadata-only preview catalog in GitHub main
+        run: |
+          mkdir -p data/visual
+          cp dist/visual-previews/preview_catalog.csv data/visual/preview_catalog.csv
+          cp dist/visual-previews/preview_catalog.json data/visual/preview_catalog.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/preview_catalog.csv data/visual/preview_catalog.json
+          if git diff --cached --quiet; then
+            echo "Preview catalog metadata unchanged."
+          else
+            git commit -m "data(visual): index eight verified animated preview sprites"
+            git push origin HEAD:main
+          fi
 
       - name: Upload gallery and metadata independently from repository
         if: always()
