@@ -1,0 +1,96 @@
+name: Visual Characters 2 Bitmaps 5D.3
+
+on:
+  push:
+    paths:
+      - ".github/workflows/visual-characters-2.yml"
+  workflow_dispatch:
+    inputs:
+      export_type:
+        type: choice
+        description: "Default bitmaps only to avoid giant animation exports"
+        required: true
+        default: images
+        options:
+          - images
+          - visual
+
+permissions:
+  contents: read
+
+jobs:
+  extract-characters:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Fetch official 0.02a archive
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Download FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -type f -name ffdec.jar -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Export all characters_2 bitmaps, not animation frames
+        env:
+          EXPORT_TYPE: ${{ inputs.export_type }}
+        run: |
+          python3 tools/visual_extract.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/visual-characters-2 \
+            --path-prefix assets/characters_2/ \
+            --start 0 --limit 0 \
+            --types "${EXPORT_TYPE:-images}" \
+            --timeout 360 --fail-on-error
+          python3 - <<'PY'
+          import csv, json
+          from pathlib import Path
+          root=Path("dist/visual-characters-2")
+          summary=json.loads((root/"export_summary.json").read_text())
+          rows=list(csv.DictReader((root/"export_results.csv").open()))
+          print("CHARACTERS2_RESULT_COUNT",len(rows))
+          print("CHARACTERS2_STATUS_COUNTS",json.dumps({s:sum(x["status"]==s for x in rows) for s in sorted({x["status"] for x in rows})}))
+          print("CHARACTERS2_TOTALS",json.dumps(summary["totals"]))
+          for row in rows:
+              print("CHARACTERS2_FILE",row["path"],row["status"],row["created_files"])
+          assert len(rows)>0, "No characters_2 SWFs found"
+          assert len(summary["errors"]) == 0
+          PY
+
+      - name: Upload compact per-SWF manifest (14-day retention)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-characters2-manifest
+          path: |
+            dist/visual-characters-2/export_summary.json
+            dist/visual-characters-2/export_results.csv
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload bitmap resources separately (1-day retention)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-characters2-bitmaps
+          path: dist/visual-characters-2/swfs
+          if-no-files-found: warn
+          retention-days: 1
