@@ -77,7 +77,7 @@ def place(tag,raw):
         e["move"]=False
         if len(raw)>4:e["matrix"],_=matrix(raw,4)
         return e
-    if len(raw)<(5 if tag in (70,94) else 3):
+    if len(raw)<(4 if tag in (70,94) else 3):
         raise ValueError("short PlaceObject tag")
     flags=raw[0]
     pos=1
@@ -167,6 +167,13 @@ def timeline(raw, cid, nframes, detailed=False):
                 if detailed:events.append({"frame":frame,**e})
             except (ValueError,IndexError) as exc:
                 counter["parse_warnings"]+=1
+                if detailed:
+                    # Lossless fallback: never discard a placement because
+                    # some optional PlaceObject3 fields are unrecognized.
+                    events.append({"frame":frame,"op":"place_raw",
+                                   "tag":code,"payload_bytes":len(payload),
+                                   "raw_hex":payload.hex(),
+                                   "parse_error":str(exc)})
                 if len(warnings)<5:
                     warnings.append(f"tag {code}, frame {frame}: {exc}")
         elif code in REMOVES:

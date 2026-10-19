@@ -2,7 +2,7 @@
 import struct
 import unittest
 import zlib
-from visual_timelines import inspect,place,encode_tag
+from visual_timelines import inspect,place,encode_tag,timeline
 
 def fixture(compressed=False):
     sprite=(struct.pack("<HH",42,2)+
@@ -48,6 +48,13 @@ class TimelineTest(unittest.TestCase):
     def test_place3(self):
         v=place(70,b"\x02\x00"+struct.pack("<HH",5,42))
         self.assertEqual(v["character_id"],42)
+    def test_bad_place_preserves_raw(self):
+        raw=b"\x22\x08\x01\x00"
+        item=timeline(encode_tag(70,raw)+encode_tag(1,b"")+b"\0\0",25,1,True)
+        self.assertEqual(item["parse_warnings"],1)
+        self.assertEqual(item["frame_events"][0]["op"],"place_raw")
+        self.assertEqual(bytes.fromhex(item["frame_events"][0]["raw_hex"]),raw)
+
     def test_bad_trailer(self):
         with self.assertRaises(ValueError):
             inspect(fixture()[:-5])

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   index:
@@ -47,6 +47,22 @@ jobs:
           assert not r["errors"]
           print("TIMELINE_VALIDATION_PASS",json.dumps(r["totals"]))
           PY
+
+      - name: Persist metadata-only timeline inventory in Git
+        run: |
+          mkdir -p data/visual/timeline_details
+          cp dist/timeline-catalog/timeline_inventory.csv data/visual/timeline_inventory.csv
+          cp dist/timeline-catalog/timeline_summary.json data/visual/timeline_summary.json
+          cp dist/timeline-catalog/*.timeline.json.gz data/visual/timeline_details/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/timeline_inventory.csv data/visual/timeline_summary.json data/visual/timeline_details/
+          if git diff --cached --quiet; then
+            echo "No timeline metadata changes."
+          else
+            git commit -m "data(visual): persist SWF timeline metadata and six detailed sources"
+            git push origin HEAD:main
+          fi
 
       - name: Upload metadata and event timelines (not image resources)
         if: always()
