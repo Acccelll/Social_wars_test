@@ -1,0 +1,76 @@
+name: Visual Export Sample 0.02a
+
+on:
+  workflow_dispatch:
+    inputs:
+      swf_name:
+        description: "Single SWF file basename (default main client)"
+        required: false
+        default: "Basesec_1.5.4.swf"
+      type:
+        description: "Asset types"
+        required: false
+        default: "images"
+        type: choice
+        options:
+          - images
+          - visual
+          - sprites
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Download original bundle (never committed to Git)
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Install FFDec (JPEXS) 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          find runtime/ffdec -name "ffdec.jar" -type f -print
+          jar="$(find runtime/ffdec -name 'ffdec.jar' -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Export selected SWF visual resources
+        env:
+          INPUT_SWF: ${{ inputs.swf_name }}
+          INPUT_TYPE: ${{ inputs.type }}
+        run: |
+          python3 tools/visual_extract.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/visual-export \
+            --only-basename "${INPUT_SWF:-Basesec_1.5.4.swf}" \
+            --types "${INPUT_TYPE:-images}" \
+            --timeout 600
+          du -sh dist/visual-export || true
+          find dist/visual-export -type f | wc -l
+
+      - name: Upload output separately (not into public Git tree)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-visual-export-sample
+          path: dist/visual-export
+          if-no-files-found: warn
+          retention-days: 1
