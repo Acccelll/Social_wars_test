@@ -275,3 +275,14 @@ foi reconstruída por este procedimento.
 - Isso resolve **o bloqueio de entrada nos testes**, não confirma
   movimento ou ataque de unidades nem identificação do DefineSprite.
 - O SWF e os salvamentos do usuário permanecem intocados.
+
+
+## Lote 5D.8G — Movimento nativo pelo cliente Flash comprovado
+
+- [GitHub Actions 39329666474](https://github.com/Acccelll/Social_wars_test/actions/runs/39329666474) finalizado com sucesso.
+- Chromium/Ruffle fechou o modal e, após 3 pares de cliques na interface original, o próprio navegador enviou **1 comando `move`** para `command.php`.
+- Objeto índice **42**, item **1358 (Bushwacker)**: save da vila isolada alterado de **(55,45)** para **(52,41)**, sem alterar outros objetos do mapa.
+- Inspeção do vídeo mostra deslocamento visual de unidade, mas o painel exibe **REAPER DRONE**, e a associação com o índice 42/Bushwacker ou com um `DefineSprite` específico **não foi comprovada**.
+- Não foram feitos POSTs de movimento pelo teste; capturados somente campos minimizados da requisição.
+- [Relatório permanente](../data/visual/original_client_move_5d8g.json) · [Doc e limites](LOTE_5D_8G.md) · [Vídeo e capturas](https://github.com/Acccelll/Social_wars_test/actions/runs/39329666474/artifacts/12224430675).
+- **Próximo: 5D.8H**, isolamento e identificação inequívoca da entidade animada por índice de mapa antes do estado de ataque.
