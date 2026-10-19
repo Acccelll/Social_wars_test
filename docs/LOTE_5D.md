@@ -126,3 +126,20 @@ tools\EXTRAIR_IMAGENS_WINDOWS.bat
 Os arquivos extraídos ficam em `dist/visual-export/` e nunca
 alteram a pasta original do jogo. O primeiro lote também extrai os
 1.899 arquivos de imagem diretamente armazenados no ZIP.
+
+## Extração das 1.899 imagens externas — sem FFDec
+
+O script `tools/extract_external_images.py` copia do ZIP oficial
+todos os arquivos PNG, JPEG, WebP, GIF, BMP, SVG e APNG para
+`dist/visual-external/`, preservando pastas e acrescentando SHA-256
+de cada arquivo no `external_manifest.csv`. Isso não extrai bitmaps
+**embutidos** nos SWFs, que são tratados pelo FFDec.
+
+Executar localmente:
+
+```powershell
+py -3 tools/extract_external_images.py --archive "social-warriors_0.02a.zip" --out "dist/visual-external"
+```
+
+O GitHub Actions [Export Direct Image Files 0.02a](../.github/workflows/visual-external.yml)
+também gera um artefato temporário de imagens separado do código.

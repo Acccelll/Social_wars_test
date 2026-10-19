@@ -1,0 +1,40 @@
+name: Export Direct Image Files 0.02a
+
+on:
+  push:
+    paths:
+      - "tools/extract_external_images.py"
+      - ".github/workflows/visual-external.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download official distribution
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Export all external image files (no FFDec required)
+        run: |
+          python3 tools/extract_external_images.py \
+            --archive runtime/original.zip \
+            --out dist/visual-external
+          du -sh dist/visual-external
+
+      - name: Package separately from code repository
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-1899-external-images
+          path: dist/visual-external
+          if-no-files-found: error
+          retention-days: 1
