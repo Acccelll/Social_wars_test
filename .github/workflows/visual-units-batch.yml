@@ -1,0 +1,93 @@
+name: Visual Unit Batch 5D.3
+
+on:
+  push:
+    paths:
+      - "tools/visual_source_catalog.py"
+      - ".github/workflows/visual-units-batch.yml"
+  workflow_dispatch:
+    inputs:
+      names:
+        description: "Comma-separated SWF basenames from original distribution"
+        required: false
+        default: "1212_tetrapod_mech.swf,1313_splinterMech.swf,1358_bushwacker.swf,1376_reaperDrone.swf,1408_urbanBuster.swf"
+      types:
+        type: choice
+        description: "Export scope"
+        required: false
+        default: "visual"
+        options:
+          - images
+          - visual
+          - sprites
+
+permissions:
+  contents: read
+
+jobs:
+  export-unit-batch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Fetch original 0.02a ZIP
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Build SWF source catalog (metadata only)
+        run: |
+          python3 tools/visual_source_catalog.py \
+            --archive runtime/original.zip \
+            --out dist/visual-source-catalog
+
+      - name: Install JPEXS FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -type f -name 'ffdec.jar' -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Export selected SWFs to isolated artifact
+        env:
+          CHOSEN: ${{ inputs.names }}
+          EXPORT_TYPES: ${{ inputs.types }}
+        run: |
+          python3 tools/visual_extract.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/visual-unit-batch \
+            --names "${CHOSEN:-1212_tetrapod_mech.swf,1313_splinterMech.swf,1358_bushwacker.swf,1376_reaperDrone.swf,1408_urbanBuster.swf}" \
+            --types "${EXPORT_TYPES:-visual}" \
+            --timeout 600
+          du -sh dist/visual-unit-batch
+
+      - name: Publish SWF catalog metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-swf-catalog
+          path: dist/visual-source-catalog
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Publish unit graphics outside Git
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-visual-units-batch
+          path: dist/visual-unit-batch
+          if-no-files-found: warn
+          retention-days: 1
