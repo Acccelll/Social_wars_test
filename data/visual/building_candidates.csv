@@ -1,0 +1,91 @@
+path,category,name,id,label,size_bytes,classification
+social-warriors_0.02a/assets/fx/b.electricMine.swf,assets/fx,b.electricMine.swf,,b.electricMine,45537,filename_heuristic_only
+social-warriors_0.02a/assets/fx/p.bluePowerLaser.swf,assets/fx,p.bluePowerLaser.swf,,p.bluePowerLaser,4635,filename_heuristic_only
+social-warriors_0.02a/assets/images/en/popupResearchCenter_buildingProcess.swf,assets/images,popupResearchCenter_buildingProcess.swf,,popupResearchCenter buildingProcess,1724101,filename_heuristic_only
+social-warriors_0.02a/assets/images/en/popupResearchCenter_buildingProcess_2.swf,assets/images,popupResearchCenter_buildingProcess_2.swf,,popupResearchCenter buildingProcess 2,591576,filename_heuristic_only
+social-warriors_0.02a/assets/images/en/popupResearchCenter_buildingProcess_3.swf,assets/images,popupResearchCenter_buildingProcess_3.swf,,popupResearchCenter buildingProcess 3,725721,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0022_tower_1_m.swf,unit_and_entity_sprites,0022_tower_1_m.swf,0022,tower 1 m,84091,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0023_wall_1_m.swf,unit_and_entity_sprites,0023_wall_1_m.swf,0023,wall 1 m,5165,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0024_wall_2_m.swf,unit_and_entity_sprites,0024_wall_2_m.swf,0024,wall 2 m,8468,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0025_wall_3_m.swf,unit_and_entity_sprites,0025_wall_3_m.swf,0025,wall 3 m,8630,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0026_command_center_1_m.swf,unit_and_entity_sprites,0026_command_center_1_m.swf,0026,command center 1 m,92049,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0028_hospital_1_m.swf,unit_and_entity_sprites,0028_hospital_1_m.swf,0028,hospital 1 m,48247,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0039_tower_2_m.swf,unit_and_entity_sprites,0039_tower_2_m.swf,0039,tower 2 m,91161,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0040_workshop_1_m.swf,unit_and_entity_sprites,0040_workshop_1_m.swf,0040,workshop 1 m,85963,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0045_tower_3_m.swf,unit_and_entity_sprites,0045_tower_3_m.swf,0045,tower 3 m,128148,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0046_tower_4_m.swf,unit_and_entity_sprites,0046_tower_4_m.swf,0046,tower 4 m,81925,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0050_bunker_1_m.swf,unit_and_entity_sprites,0050_bunker_1_m.swf,0050,bunker 1 m,96377,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0051_bunker_2_m.swf,unit_and_entity_sprites,0051_bunker_2_m.swf,0051,bunker 2 m,17639,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0052_bunker_3_m.swf,unit_and_entity_sprites,0052_bunker_3_m.swf,0052,bunker 3 m,20327,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0053_bunker_4_m.swf,unit_and_entity_sprites,0053_bunker_4_m.swf,0053,bunker 4 m,24085,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0058_command_center_2_m.swf,unit_and_entity_sprites,0058_command_center_2_m.swf,0058,command center 2 m,102552,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0059_command_center_3_m.swf,unit_and_entity_sprites,0059_command_center_3_m.swf,0059,command center 3 m,125127,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0060_command_center_4_m.swf,unit_and_entity_sprites,0060_command_center_4_m.swf,0060,command center 4 m,113757,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0061_allies_building_m.swf,unit_and_entity_sprites,0061_allies_building_m.swf,0061,allies building m,64945,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0064_workshop_2_m.swf,unit_and_entity_sprites,0064_workshop_2_m.swf,0064,workshop 2 m,72042,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0065_workshop_3_m.swf,unit_and_entity_sprites,0065_workshop_3_m.swf,0065,workshop 3 m,88897,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0078_wall_4_m.swf,unit_and_entity_sprites,0078_wall_4_m.swf,0078,wall 4 m,8926,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0079_wall_5_m.swf,unit_and_entity_sprites,0079_wall_5_m.swf,0079,wall 5 m,6781,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0080_fortress_1_m.swf,unit_and_entity_sprites,0080_fortress_1_m.swf,0080,fortress 1 m,26196,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0081_fortress_2_m.swf,unit_and_entity_sprites,0081_fortress_2_m.swf,0081,fortress 2 m,45952,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0082_fortress_3_m.swf,unit_and_entity_sprites,0082_fortress_3_m.swf,0082,fortress 3 m,58315,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0083_fortress_4_m.swf,unit_and_entity_sprites,0083_fortress_4_m.swf,0083,fortress 4 m,97488,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0084_fortress_5_m.swf,unit_and_entity_sprites,0084_fortress_5_m.swf,0084,fortress 5 m,104936,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0085_fortress_6_m.swf,unit_and_entity_sprites,0085_fortress_6_m.swf,0085,fortress 6 m,119237,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0087_tower_7_m.swf,unit_and_entity_sprites,0087_tower_7_m.swf,0087,tower 7 m,98094,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0088_tower_8_m.swf,unit_and_entity_sprites,0088_tower_8_m.swf,0088,tower 8 m,93202,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0089_nuclear_plant_m.swf,unit_and_entity_sprites,0089_nuclear_plant_m.swf,0089,nuclear plant m,44348,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0118_laboratory_m.swf,unit_and_entity_sprites,0118_laboratory_m.swf,0118,laboratory m,77475,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0123_red_fortress_m.swf,unit_and_entity_sprites,0123_red_fortress_m.swf,0123,red fortress m,45237,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0125_laboratory_m.swf,unit_and_entity_sprites,0125_laboratory_m.swf,0125,laboratory m,339796,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0134_field_hospital_m.swf,unit_and_entity_sprites,0134_field_hospital_m.swf,0134,field hospital m,29419,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0148_artillery_garage_m.swf,unit_and_entity_sprites,0148_artillery_garage_m.swf,0148,artillery garage m,29879,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0149_antiaircraft_garage_m.swf,unit_and_entity_sprites,0149_antiaircraft_garage_m.swf,0149,antiaircraft garage m,49949,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0164_robo_turret_1_m.swf,unit_and_entity_sprites,0164_robo_turret_1_m.swf,0164,robo turret 1 m,35808,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0165_robo_turret_2_m.swf,unit_and_entity_sprites,0165_robo_turret_2_m.swf,0165,robo turret 2 m,15023,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0166_robo_wall_m.swf,unit_and_entity_sprites,0166_robo_wall_m.swf,0166,robo wall m,6605,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0170_giant_walker_factory_m.swf,unit_and_entity_sprites,0170_giant_walker_factory_m.swf,0170,giant walker factory m,48541,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0181_orc_robot_factory_m.swf,unit_and_entity_sprites,0181_orc_robot_factory_m.swf,0181,orc robot factory m,68641,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0185_orc_turret_m.swf,unit_and_entity_sprites,0185_orc_turret_m.swf,0185,orc turret m,76942,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0186_orc_wall_m.swf,unit_and_entity_sprites,0186_orc_wall_m.swf,0186,orc wall m,7996,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0189_orc_turret_2_m.swf,unit_and_entity_sprites,0189_orc_turret_2_m.swf,0189,orc turret 2 m,64310,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0194_orc_robot_2_factory_m.swf,unit_and_entity_sprites,0194_orc_robot_2_factory_m.swf,0194,orc robot 2 factory m,71313,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0195_orc_headquarters.swf,unit_and_entity_sprites,0195_orc_headquarters.swf,0195,orc headquarters,70897,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0200_orc_silo.swf,unit_and_entity_sprites,0200_orc_silo.swf,0200,orc silo,42999,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0201_orc_bunker.swf,unit_and_entity_sprites,0201_orc_bunker.swf,0201,orc bunker,24742,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0202_orc_resource_building.swf,unit_and_entity_sprites,0202_orc_resource_building.swf,0202,orc resource building,35679,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/0205_orc_fortress.swf,unit_and_entity_sprites,0205_orc_fortress.swf,0205,orc fortress,55011,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10018_chained_drill.swf,unit_and_entity_sprites,10018_chained_drill.swf,10018,chained drill,229453,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10032_silo_1.swf,unit_and_entity_sprites,10032_silo_1.swf,10032,silo 1,211755,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10041_silo_2.swf,unit_and_entity_sprites,10041_silo_2.swf,10041,silo 2,217505,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10042_silo_3.swf,unit_and_entity_sprites,10042_silo_3.swf,10042,silo 3,217593,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10043_destroyed_building_1.swf,unit_and_entity_sprites,10043_destroyed_building_1.swf,10043,destroyed building 1,46828,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10044_destroyed_building_2.swf,unit_and_entity_sprites,10044_destroyed_building_2.swf,10044,destroyed building 2,29950,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10045_destroyed_building_3.swf,unit_and_entity_sprites,10045_destroyed_building_3.swf,10045,destroyed building 3,29772,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10046_destroyed_building_4.swf,unit_and_entity_sprites,10046_destroyed_building_4.swf,10046,destroyed building 4,43309,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10047_destroyed_building_5_b.swf,unit_and_entity_sprites,10047_destroyed_building_5_b.swf,10047,destroyed building 5 b,35946,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/10079_chained_powerBotChest.swf,unit_and_entity_sprites,10079_chained_powerBotChest.swf,10079,chained powerBotChest,32224,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/1223_drill.swf,unit_and_entity_sprites,1223_drill.swf,1223,drill,786434,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/1382_agamemnonFortress.swf,unit_and_entity_sprites,1382_agamemnonFortress.swf,1382,agamemnonFortress,1817448,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/1410_skorpionFortress.swf,unit_and_entity_sprites,1410_skorpionFortress.swf,1410,skorpionFortress,1429203,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/210_crusader_bot_factory.swf,unit_and_entity_sprites,210_crusader_bot_factory.swf,210,crusader bot factory,59137,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/216_megahammer_dwarf_factory.swf,unit_and_entity_sprites,216_megahammer_dwarf_factory.swf,216,megahammer dwarf factory,74290,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/217_dwarf_armored_core_factory.swf,unit_and_entity_sprites,217_dwarf_armored_core_factory.swf,217,dwarf armored core factory,70140,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/220_dwarf_turret_1.swf,unit_and_entity_sprites,220_dwarf_turret_1.swf,220,dwarf turret 1,64073,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/221_dwarf_turret_2.swf,unit_and_entity_sprites,221_dwarf_turret_2.swf,221,dwarf turret 2,65663,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/222_dwarf_wall.swf,unit_and_entity_sprites,222_dwarf_wall.swf,222,dwarf wall,9257,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/225_alien_wall.swf,unit_and_entity_sprites,225_alien_wall.swf,225,alien wall,6905,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/226_alien_turret_1.swf,unit_and_entity_sprites,226_alien_turret_1.swf,226,alien turret 1,68087,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/227_alien_turret_2.swf,unit_and_entity_sprites,227_alien_turret_2.swf,227,alien turret 2,59200,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/228_spider_wall.swf,unit_and_entity_sprites,228_spider_wall.swf,228,spider wall,7315,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/229_spider_turret_1.swf,unit_and_entity_sprites,229_spider_turret_1.swf,229,spider turret 1,62145,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/230_spider_turret_2.swf,unit_and_entity_sprites,230_spider_turret_2.swf,230,spider turret 2,64136,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/244_avatar_wall.swf,unit_and_entity_sprites,244_avatar_wall.swf,244,avatar wall,8922,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/245_avatar_turret.swf,unit_and_entity_sprites,245_avatar_turret.swf,245,avatar turret,16748,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/256_laboratory_tech.swf,unit_and_entity_sprites,256_laboratory_tech.swf,256,laboratory tech,154347,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/271_spatial_wall.swf,unit_and_entity_sprites,271_spatial_wall.swf,271,spatial wall,9724,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/272_spatial_turret.swf,unit_and_entity_sprites,272_spatial_turret.swf,272,spatial turret,81413,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/293_andromedaWall.swf,unit_and_entity_sprites,293_andromedaWall.swf,293,andromedaWall,7410,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/294_andromedaTurret.swf,unit_and_entity_sprites,294_andromedaTurret.swf,294,andromedaTurret,7562,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/299_andromedaDroidFactory.swf,unit_and_entity_sprites,299_andromedaDroidFactory.swf,299,andromedaDroidFactory,49888,filename_heuristic_only
+social-warriors_0.02a/assets/sprites/301_punisherBot_Factory.swf,unit_and_entity_sprites,301_punisherBot_Factory.swf,301,punisherBot Factory,55048,filename_heuristic_only

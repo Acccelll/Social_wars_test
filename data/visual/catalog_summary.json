@@ -1,0 +1,45 @@
+{
+  "swf_count": 1118,
+  "swf_by_category": {
+    "unit_and_entity_sprites": 862,
+    "assets/fx": 205,
+    "assets/characters_2": 26,
+    "assets/magic": 10,
+    "assets/images": 9,
+    "assets/flash": 2,
+    "assets/fonts": 2,
+    "assets/externalized": 1,
+    "assets/swf": 1
+  },
+  "building_candidate_count": 90,
+  "asset_directories": {
+    "assets/thumbs": 1314,
+    "unit_and_entity_sprites": 862,
+    "assets/images": 578,
+    "assets/fx": 205,
+    "assets/sounds": 140,
+    "other": 131,
+    "assets/characters_2": 26,
+    "assets/magic": 10,
+    "assets/flash": 2,
+    "assets/fonts": 2,
+    "assets/externalized": 1,
+    "assets/swf": 1
+  },
+  "file_extensions": {
+    ".jpg": 1756,
+    ".swf": 1118,
+    ".png": 143,
+    ".mp3": 140,
+    ".dll": 46,
+    ".json": 40,
+    ".pyd": 18,
+    ".txt": 5,
+    ".html": 2,
+    ".zip": 1,
+    ".exe": 1,
+    ".xml": 1,
+    ".css": 1
+  },
+  "note": "Category is derived from ZIP directories, not visually verified class identity."
+}
