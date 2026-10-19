@@ -170,3 +170,26 @@ foi reconstruída por este procedimento.
   preservados na branch `main`.
 - [Galeria HTML de revisão](https://github.com/Acccelll/Social_wars_test/actions/runs/39304404150/artifacts/12212991791)
   inclui os 17 GIFs e filtros; o arquivo é temporário.
+
+## 5D.8A — Servidor e cliente ORIGINAL observados no Chromium/Ruffle
+
+- Workflow [39306732074](https://github.com/Acccelll/Social_wars_test/actions/runs/39306732074)
+  **success** (19/10/2026); testes sintéticos do observador e cruzamento
+  de nomes de SWF aprovados.
+- Servidor Flask do projeto original em **cópia descartável**, vila temporária,
+  sem alterar o executável ou saves do usuário.
+- `play.html` carregou com `ruffle-embed` real, metadata `760×600`,
+  `30 fps`, SWF 10, AS3, 1 quadro do SWLoader.
+- Rede comprovou carregamento do `SWLoader.swf`, `Basesec_1.5.4.swf`,
+  e requisições para config, jogador e recursos adicionais.
+- Marcador de UI na página do jogo: `observer_ready`, `begin_action`
+  e `end_action` (tipo **other**, meramente sintético, sem ação do jogo);
+  capturas PNG do começo/fim e final armazenadas em
+  [artefato 12213468689](https://github.com/Acccelll/Social_wars_test/actions/runs/39306732074/artifacts/12213468689).
+- Dos **14 SWFs** com 17 GIFs do catálogo, foram requisitados no
+  boot **2 SWFs** (torre `0022_tower_1_m`, centro de comando
+  `0026_command_center_1_m`) vinculados a **3 linhas de sprites**.
+  **Nenhum dos 3 sprites teve sua execução individual comprovada**.
+- [Matriz permanente](../data/visual/runtime_boot_presence_5d8.json)
+  documenta as 17 linhas e diferencia requisição de ação efetiva.
+- Estados de ataque/deslocamento/dano/destruição ainda **0 confirmados**.

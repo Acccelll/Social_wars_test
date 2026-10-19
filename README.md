@@ -140,3 +140,18 @@ Por isso, todas continuam marcadas para verificação no jogo.
 [Relatório técnico por sprite](data/visual/animation_review_5d7.json) ·
 [Fila de 17 estados a validar](data/visual/animation_review_5d7_queue.csv) ·
 [Galeria de revisão GIF](https://github.com/Acccelll/Social_wars_test/actions/runs/39304404150/artifacts/12212991791).
+
+## Cliente original no Ruffle — Lote 5D.8A
+
+O [workflow 39306732074](https://github.com/Acccelll/Social_wars_test/actions/runs/39306732074)
+executou o **servidor Flask oficial** com uma vila descartável e carregou
+`SWLoader.swf` no `ruffle-embed` de Chromium (SWF 10, AVM2/AS3, 760×600,
+30 fps). As requisições confirmaram o carregamento do `Basesec_1.5.4.swf`,
+fontes, efeitos, terreno e construções, além dos endpoints de config e jogador.
+
+O painel separado `tests/original/observer.js` registra rótulos manuais,
+cliques e capturas ao iniciar/finalizar uma ação, mas **não identifica
+MovieClips/IDs internos automaticamente**. A [matriz de
+presença na inicialização](data/visual/runtime_boot_presence_5d8.csv)
+confirma apenas quais recursos SWF foram requisitados, não se as ações
+das animações foram executadas. Veja [LOTE_5D_8.md](docs/LOTE_5D_8.md).

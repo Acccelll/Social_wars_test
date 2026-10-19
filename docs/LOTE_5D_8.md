@@ -25,3 +25,41 @@ Os arquivos report.json e PNGs ficam em dist/original-observation, ignorados pel
 Verificar primeiro a execução do workflow Original Social Wars Ruffle Boot 5D.8. Uma prova de bootstrap demonstra que o servidor, SWF loader e browser foram usados, não que animações de ataque sejam identificáveis.
 
 Próxima etapa: revisar vídeos/screenshots com a fila de IDs da pasta data/visual e preencher apenas relações sustentadas por evidências diretas.
+
+## Execução validada
+
+GitHub Actions: [39306732074](https://github.com/Acccelll/Social_wars_test/actions/runs/39306732074)
+— sucesso. O navegador iniciou `play.html`, injetou Ruffle sem
+alterar o arquivo original, mostrou o elemento `ruffle-embed`
+e carregou a referência principal `Basesec_1.5.4.swf` via SWLoader.
+
+Metadados do SWLoader observados: AVM2/AS3, SWF 10, 760×600,
+30 quadros/s, 1 quadro declarado. Esse cabeçalho é do SWLoader;
+**não** é a contagem de quadros do jogo inteiro.
+
+Foram observadas requisições de SWF para 2 dos 14 arquivos da galeria:
+`assets/sprites/0022_tower_1_m.swf` e
+`assets/sprites/0026_command_center_1_m.swf`.
+Há três linhas correspondentes (torre IDs 85 e 52; comando ID 21)
+na [matriz CSV](../data/visual/runtime_boot_presence_5d8.csv),
+mas uma requisição à origem do SWF **não confirma** que esses sprites
+específicos foram desenhados, animados ou associados a ações.
+
+O teste capturou marcas **sintéticas** `other` de início/fim
+e capturas PNG para demonstrar o observador em cima da página real.
+A associação movimento/ataque/dano só será realizada após sequência
+dirigida no jogo e comparação visual com as prévias catalogadas.
+
+Arquivos da execução: [pacote de evidências do GitHub
+Actions](https://github.com/Acccelll/Social_wars_test/actions/runs/39306732074/artifacts/12213468689).
+Contém `report.json`, capturas e um log do servidor descartável.
+
+### Próximo lote 5D.8B
+
+1. Capturar uma sessão com unidade existente (por exemplo, seleção,
+   deslocamento, parada, ataque, dano), preferencialmente na vila de teste.
+2. Marcar início/fim no observador em cada ação e salvar as imagens.
+3. Verificar se a unidade e o SWF correspondente são visíveis na
+   sessão antes de atribuir um `character_id` a um evento.
+4. Anexar evidência de quadro/instante; manter estados não demonstrados
+   como `pending_in_game_validation`. Nenhuma substituição SWF no jogo original.
