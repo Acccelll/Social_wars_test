@@ -104,6 +104,25 @@ try{
    await page.waitForTimeout(1300);
    await page.screenshot({path:path.join(out,"intro-resized.png"),
                            timeout:25000,animations:"disabled"});
+   const hitTest=await page.evaluate(()=>{
+     const el=document.querySelector("ruffle-embed");
+     const r=el.getBoundingClientRect(),x=r.x+380,y=r.y+568;
+     const outer=document.elementFromPoint(x,y);
+     const inner=el.shadowRoot?.elementFromPoint(x,y);
+     return {
+       player_bounds:{x:r.x,y:r.y,width:r.width,height:r.height},
+       outer_target:outer?.tagName||null,
+       shadow_target:inner?.tagName||null,
+       outer_pointer_events:outer?getComputedStyle(outer).pointerEvents:null,
+       shadow_pointer_events:inner?getComputedStyle(inner).pointerEvents:null,
+       shadow_canvas_count:el.shadowRoot?.querySelectorAll("canvas").length||0,
+       active_tag:document.activeElement?.tagName||null
+     };
+   });
+   await page.evaluate(details=>window.__swHostRecord?.({
+     type:"intro_hit_test",details,wall_clock_ms:Date.now(),
+     confirmed_game_action:false
+   }),hitTest);
    await page.evaluate(()=>window.__swHostRecord?.({
      type:"intro_dismiss_attempt",source:"5D.8C screenshot review",
      target:"Rescue Your Comrade dialog OK at 760px native width",
@@ -114,6 +133,12 @@ try{
    await target.click({position:{x:380,y:568},timeout:10000});
    await page.waitForTimeout(4000);
    await page.screenshot({path:path.join(out,"intro-after.png"),
+                           timeout:25000,animations:"disabled"});
+   // Keyboard fallback to check whether input is consumed by the Flash
+   // virtual machine. Captured separately to avoid ambiguous attribution.
+   await page.keyboard.press("Enter");
+   await page.waitForTimeout(1500);
+   await page.screenshot({path:path.join(out,"intro-after-enter.png"),
                            timeout:25000,animations:"disabled"});
    await page.evaluate(()=>window.__swHostRecord?.({
      type:"intro_dismiss_capture_complete",
