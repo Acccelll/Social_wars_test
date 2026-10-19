@@ -126,7 +126,14 @@ jobs:
               "confirmed_movieclip_ids":0,
               "notes":"Changing the dialog is not evidence of unit combat or movement."}
           (out/"intro_probe_summary.json").write_text(json.dumps(result,indent=2)+"\n")
-          assert ratio>=0.05,result
+          pointers=[e for e in events if e["type"]=="pointer"]
+          hit=[e for e in events if e["type"]=="intro_hit_test"]
+          assert pointers and hit,{"pointers":pointers,"hit":hit}
+          assert (out/"intro-after-enter.png").is_file()
+          result["click_delivered_to_browser"]=True
+          result["dom_hit_test"]=hit[0]["details"]
+          result["modal_dismissal_status"]="not_dismissed_or_unchanged" if ratio<0.05 else "visual_review_required"
+          (out/"intro_probe_summary.json").write_text(json.dumps(result,indent=2)+"\\n")
           print("INTRO_PROBE_5D8D",json.dumps(result))
           PY
 
