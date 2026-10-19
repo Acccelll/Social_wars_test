@@ -136,3 +136,20 @@ foi reconstruída por este procedimento.
   armazenados na branch main, com referências aos SWFs e sprite IDs.
 - As animações controladas por ActionScript ainda precisam ser
   comparadas com o runtime; não considerar a biblioteca completa.
+
+## Lote 5D.6 — Galeria categorizada
+
+- Workflow [39303077044](https://github.com/Acccelll/Social_wars_test/actions/runs/39303077044):
+  **success**, 17/17 GIFs exportados de 14 SWFs, 0 erros.
+- Categorias técnicas: **8 unidades**, **6 construções**, **3 interface/telas**.
+- Novas unidades: Bushwacker #327, Reaper Drone #1654, Megatank #132.
+- Novas construções: tower_2 #74, workshop_1 #52, laboratory #11.
+- Interface/telas: popupResearchCenter_buildingProcess #74,
+  variante _2 #73 e crossDCi #123.
+- [Pacote da galeria](https://github.com/Acccelll/Social_wars_test/actions/runs/39303077044/artifacts/12212183676)
+  com HTML, filtros, busca, GIFs, CSV/JSON; 1.994.256 bytes comprimidos,
+  expiração prevista em **02/11/2026**.
+- [CSV permanente](../data/visual/gallery_5d6.csv) e
+  [JSON permanente](../data/visual/gallery_5d6.json) preservam metadados.
+- A categoria é classificação preliminar baseada no arquivo; exportar
+  uma prévia não garante todas as animações, efeitos nem movimentos em runtime.

@@ -113,3 +113,17 @@ identificadores reais de sprites recuperados.
 [Baixe o pacote de prévias e abra index.html](https://github.com/Acccelll/Social_wars_test/actions/runs/39301011532/artifacts/12211297019).
 As imagens permanecem fora do repositório; os metadados são preservados
 em data/visual. A cobertura integral dos recursos animados está pendente.
+
+## Biblioteca visual categorizada — Lote 5D.6
+
+O [workflow 39303077044](https://github.com/Acccelll/Social_wars_test/actions/runs/39303077044)
+gerou uma galeria **HTML offline com filtros e busca** contendo **17 GIFs
+animados de 14 SWFs**: 8 prévias de unidades, 6 de construções e 3 de
+interface/telas. A execução terminou com **0 erros**.
+
+[Baixar a galeria HTML + GIFs](https://github.com/Acccelll/Social_wars_test/actions/runs/39303077044/artifacts/12212183676)
+(artefato temporário) ou consultar o
+[catálogo de metadados versionado](data/visual/gallery_5d6.csv).
+
+Ainda não existe biblioteca completa de sprites editáveis nem paridade
+com estados dinâmicos da animação original.
