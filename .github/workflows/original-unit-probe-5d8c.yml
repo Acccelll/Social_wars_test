@@ -6,6 +6,8 @@ on:
       - ".github/workflows/original-unit-probe-5d8c.yml"
       - "tools/seed_original_units_5d8c.py"
       - "tools/seed_original_units_5d8c_test.py"
+      - "tests/original/record.mjs"
+      - "tests/original/observer.js"
   workflow_dispatch:
 
 permissions:
