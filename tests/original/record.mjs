@@ -71,6 +71,10 @@ try{
  if(!health.ok)throw Error("No original server /health: "+health.status);
  const healthJson=await health.json();serverVersion=healthJson.version;
  await page.goto(server+(newVillage?"/new.html":"/"),{waitUntil:"domcontentloaded",timeout:30000});
+ // Flask redirects from /new.html to play.html. A second explicit
+ // navigation guarantees the intercepted HTML is loaded in Playwright.
+ if(newVillage) await page.goto(server+"/play.html",
+                               {waitUntil:"domcontentloaded",timeout:30000});
  if(!headless)console.log("Use a janela do Chromium para entrar na vila e marcar as ações no painel lateral.");
  await page.waitForTimeout(duration*1000);
  const state=await page.evaluate(()=>({
