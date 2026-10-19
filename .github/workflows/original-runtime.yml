@@ -37,13 +37,24 @@ jobs:
             -o runtime/release.zip
           test "$(stat -c %s runtime/release.zip)" = "492630085"
           unzip -q runtime/release.zip -d runtime/release
-          server_file="$(find runtime/release -name server.py -type f -print -quit)"
-          test -n "$server_file"
-          server_dir="$(dirname "$server_file")"
-          echo "SW_SERVER_DIR=$(realpath "$server_dir")" >> "$GITHUB_ENV"
+          echo "Release root entries:"
+          find runtime/release -maxdepth 2 -type f | head -30 || true
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          assets_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          # Release contains a Windows executable, not necessarily Python
+          # sources. Fetch the official public Python sources via sparse clone.
+          git clone --depth 1 --filter=blob:none --sparse \
+            https://github.com/AcidCaos/socialwarriors.git runtime/source
+          git -C runtime/source sparse-checkout set \
+            config villages templates stub mods
+          server_dir="$(realpath runtime/source)"
+          test -f "$server_dir/server.py"
+          ln -s "$assets_dir" "$server_dir/assets"
           test -f "$server_dir/assets/flash/Basesec_1.5.4.swf"
+          echo "SW_SERVER_DIR=$server_dir" >> "$GITHUB_ENV"
           mkdir -p "$server_dir/saves"
-          echo "Disposable copy installed; no user saves are used."
+          echo "Release assets and matching official Python server prepared in isolated copy."
 
       - name: Install Flask server dependencies
         run: |
