@@ -1,0 +1,42 @@
+{
+  "lot": "5D.8G",
+  "date": "2026-10-19",
+  "original_swf": "assets/flash/Basesec_1.5.4.swf",
+  "original_swf_modified": false,
+  "run_url": "https://github.com/Acccelll/Social_wars_test/actions/runs/39329666474",
+  "artifact_url": "https://github.com/Acccelll/Social_wars_test/actions/runs/39329666474/artifacts/12224430675",
+  "client": "Chromium Playwright + Ruffle",
+  "server": "Original AcidCaos Flask on isolated local loopback, disposable village",
+  "test": "tests/original/client_move_5d8g.mjs",
+  "network_request_emitted_by_original_browser_client": true,
+  "synthetic_move_post_sent_by_test": false,
+  "command_endpoint": "/dynamic/menvswomen/srvsexwars/command.php",
+  "probes": 3,
+  "observed_command_posts": 3,
+  "observed_move_commands": 1,
+  "move": {
+    "map_index": 42,
+    "item_id": 1358,
+    "item_name": "Bushwacker",
+    "previous_tile": [
+      55,
+      45
+    ],
+    "saved_tile": [
+      52,
+      41
+    ]
+  },
+  "changed_map_object_count": 1,
+  "request_and_save_match": true,
+  "browser_errors": 0,
+  "modal_second_click_dismissal_supported_by_screenshots": true,
+  "visual_entity_displacement_seen_in_recording": true,
+  "visual_panel_name": "Reaper Drone",
+  "visual_entity_to_moved_index_link_confirmed": false,
+  "define_sprite_character_id": null,
+  "animation_state_id_confirmed": false,
+  "user_data_saved_in_report": false,
+  "limitations": "UI panel Reaper Drone appears while move command and saved object refer to Bushwacker. Visual identity correlation pending. Video and screenshots are in the workflow artifact.",
+  "next_lot": "5D.8H - isolate per unit, map click location to actual unit index, correlate movement sprite frames; then consider attack"
+}
