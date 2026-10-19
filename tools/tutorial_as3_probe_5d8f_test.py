@@ -35,7 +35,7 @@ class TutorialProbeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             z=Path(temp)/"faux.zip"
             with zipfile.ZipFile(z,"w") as f:
-                f.writestr("social-warriors_0.02a/assets/flash/Basesec_1.5.4.swf",b"FWS"+"x"*25)
+                f.writestr("social-warriors_0.02a/assets/flash/Basesec_1.5.4.swf",b"FWS"+b"x"*25)
             with self.assertRaisesRegex(ValueError,"Unexpected Basesec SHA256"):
                 extract_original(z,Path(temp)/"temp.swf")
 
