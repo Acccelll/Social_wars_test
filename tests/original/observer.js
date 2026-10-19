@@ -11,9 +11,15 @@
   const start=container.querySelector("#sw-start"),stop=container.querySelector("#sw-stop");
   const select=container.querySelector("#sw-action"),status=container.querySelector("#sw-result");
   let current=null;
-  function bounds(){const el=document.querySelector("ruffle-player,ruffle-embed,ruffle-object,embed,object");
-    if(!el)return null;const r=el.getBoundingClientRect();
-    return {x:r.x,y:r.y,width:r.width,height:r.height}}
+  function bounds(){
+    const options=[...document.querySelectorAll("ruffle-player,ruffle-embed,ruffle-object,embed,object")];
+    const valid=options.map(el=>el.getBoundingClientRect())
+      .filter(r=>r.width>20 && r.height>20);
+    valid.sort((a,b)=>(b.width*b.height)-(a.width*a.height));
+    if(!valid.length)return null;
+    const r=valid[0];
+    return {x:r.x,y:r.y,width:r.width,height:r.height};
+  }
   function record(type,data){
     const x={type,relative_ms:Math.round(performance.now()-t0),wall_clock_ms:Date.now(),...data};
     entries.push(x);
