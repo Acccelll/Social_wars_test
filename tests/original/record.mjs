@@ -37,7 +37,7 @@ try{
  page=await context.newPage();
  await page.exposeFunction("__swHostRecord",async ev=>{
    events.push(ev);
-   if(ev.type==="begin_action"||ev.type==="end_action"){
+   if(!unitProbe&&(ev.type==="begin_action"||ev.type==="end_action")){
      const file="event-"+String(shots.length+1).padStart(3,"0")+".png";
      try{await page.screenshot({path:path.join(out,file),timeout:5000});
        shots.push({file,event_index:events.length-1});}catch(e){errors.push("screenshot:"+String(e))}
@@ -98,15 +98,28 @@ try{
    for(const position of positions){
      await page.locator("#sw-action").selectOption("other");
      await page.locator("#sw-start").click();
+     await page.waitForTimeout(180);
+     const bidx=events.findLastIndex(e=>e.type==="begin_action");
+     if(bidx<0)throw Error("Missing beginning of probe "+position.name);
+     const prefix=String(shots.length+1).padStart(3,"0");
+     const bfile="event-"+prefix+"-begin.png";
+     await page.screenshot({path:path.join(out,bfile),timeout:25000,animations:"disabled"});
+     shots.push({file:bfile,event_index:bidx});
      await page.evaluate(step=>window.__swHostRecord?.({
        type:"exploratory_probe",step:step.name,expected_game_action:null,
        unit_item_id:null,sprite_character_id:null,
        wall_clock_ms:Date.now(),location:{x:step.x,y:step.y}
      }),position);
-     await target.click({position:{x:position.x,y:position.y},timeout:7000});
+     await target.click({position:{x:position.x,y:position.y},timeout:10000});
      await page.waitForTimeout(750);
      await page.locator("#sw-stop").click();
-     await page.waitForTimeout(250);
+     await page.waitForTimeout(180);
+     const eidx=events.findLastIndex(e=>e.type==="end_action");
+     if(eidx<0)throw Error("Missing end of probe "+position.name);
+     const efile="event-"+prefix+"-end.png";
+     await page.screenshot({path:path.join(out,efile),timeout:25000,animations:"disabled"});
+     shots.push({file:efile,event_index:eidx});
+     await page.waitForTimeout(200);
    }
  }
  if(smokeMarkers){
