@@ -26,6 +26,11 @@ jobs:
       - name: Unit-test original resource correlation
         run: python tools/correlate_boot_5d8_test.py
 
+      - name: Regression tests for screenshot evidence analysis
+        run: |
+          python -m pip install Pillow
+          python tools/analyze_runtime_5d8b_test.py
+
       - name: Install Ruffle/Chromium tools and run observer unit test
         run: |
           npm install --prefix tests/ruffle --no-audit --no-fund
@@ -107,6 +112,26 @@ jobs:
             "endpoints":[p for p in result["request_paths"] if "/dynamic/" in p],
             "errors":result["errors"][:5],
           }))
+          PY
+
+      - name: Analyze screen changes without assuming sprite or gameplay state
+        run: |
+          python tools/analyze_runtime_5d8b.py \
+            --report dist/original-observation/report.json \
+            --out dist/original-observation
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          folder=Path("dist/original-observation")
+          evidence=json.loads((folder/"action_evidence_5d8b.json").read_text())
+          assert len(evidence["windows"])==1, evidence
+          assert evidence["windows"][0]["operator_label"]=="other"
+          assert evidence["confirmed_actions"]==0
+          assert evidence["confirmed_sprites"]==0
+          assert (folder/"session.webm").stat().st_size>1000
+          print("ORIGINAL_ACTION_EVIDENCE_VERIFIED",
+                evidence["windows"][0]["visual_evidence"],
+                "video_bytes",(folder/"session.webm").stat().st_size)
           PY
 
       - name: Correlate observed SWF URLs to the existing sprite catalog
