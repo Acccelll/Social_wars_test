@@ -193,3 +193,18 @@ foi reconstruída por este procedimento.
 - [Matriz permanente](../data/visual/runtime_boot_presence_5d8.json)
   documenta as 17 linhas e diferencia requisição de ação efetiva.
 - Estados de ataque/deslocamento/dano/destruição ainda **0 confirmados**.
+
+## Lote 5D.8B — Vídeo e auditoria visual do cliente original
+
+- [Execução 39310113510](https://github.com/Acccelll/Social_wars_test/actions/runs/39310113510)
+  **success**; original Flask + Chromium/Ruffle + vila descartável.
+- Em um intervalo de teste rotulado `other`, foi executado um clique
+  real no `ruffle-embed`, com capturas antes/depois.
+- O comparador detectou **uma mudança visual** na região do Flash.
+- `session.webm` produzido com **2.521.901 bytes**.
+- Arquivos `action_evidence_5d8b.json`, `report.json`, PNGs e vídeo
+  estão no [artefato 12215307646](https://github.com/Acccelll/Social_wars_test/actions/runs/39310113510/artifacts/12215307646).
+- **0 ações específicas e 0 sprite IDs identificados**.
+  O CI prova interação de ponteiro e variação visual, não movimento/ataque.
+- Script `tools/analyze_runtime_5d8b.py` e testes sintéticos persistidos;
+  [instruções do lote](LOTE_5D_8B.md) disponíveis para registrar ações reais.
