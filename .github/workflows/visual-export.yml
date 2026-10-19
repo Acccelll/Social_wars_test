@@ -14,7 +14,7 @@ on:
       type:
         description: "Asset types"
         required: false
-        default: "images"
+        default: "visual"
         type: choice
         options:
           - images
@@ -65,7 +65,7 @@ jobs:
             --ffdec "$FFDEC_JAR" \
             --out dist/visual-export \
             --only-basename "${INPUT_SWF:-Basesec_1.5.4.swf}" \
-            --types "${INPUT_TYPE:-images}" \
+            --types "${INPUT_TYPE:-visual}" \
             --timeout 600
           du -sh dist/visual-export || true
           find dist/visual-export -type f | wc -l
