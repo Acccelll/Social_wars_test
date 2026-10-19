@@ -23,7 +23,7 @@ Leia [STATUS.md](docs/STATUS.md), [ARQUITETURA.md](docs/ARQUITETURA.md) e [ROADM
 
 | Diretório | Conteúdo |
 |---|---|
-| `as3/recovered/` | Reconstituições experimentais em ActionScript 3 |
+| `as3/src/com/socialpoint/astar/recovered/` | Reconstituições experimentais em ActionScript 3 |
 | `tools/` | Scripts de verificação e compilação |
 | `docs/` | Resultados dos lotes, limitações, roteiro de continuidade |
 
