@@ -107,3 +107,22 @@ Os arquivos CSV e JSON de metadados estão no artefato
 Somar as contagens não equivale ao número de PNGs a serem gerados.
 Uma extração de sprites em PNG captura quadros estáticos; a recuperação
 das timelines completas será tratada separadamente.
+
+## Inicializador Windows incluído
+
+[`tools/EXTRAIR_IMAGENS_WINDOWS.bat`](../tools/EXTRAIR_IMAGENS_WINDOWS.bat)
+facilita a exportação em pequenos lotes. Coloque o ZIP oficial na raiz
+do repositório e `ffdec.jar` em `tools/`, além de ter Python 3 e
+Java disponíveis no PATH. Clique duas vezes no BAT ou execute no CMD.
+
+Por padrão, processa os primeiros 30 SWFs. Para avançar:
+
+```cmd
+set SW_START=30
+set SW_LIMIT=30
+tools\EXTRAIR_IMAGENS_WINDOWS.bat
+```
+
+Os arquivos extraídos ficam em `dist/visual-export/` e nunca
+alteram a pasta original do jogo. O primeiro lote também extrai os
+1.899 arquivos de imagem diretamente armazenados no ZIP.
