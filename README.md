@@ -164,3 +164,17 @@ visual após um clique no Flash. Ainda **não** confirmou uma animação de
 movimento, ataque ou dano nem sua associação ao ID interno do sprite.
 
 [Ver vídeo, capturas e relatório do lote](https://github.com/Acccelll/Social_wars_test/actions/runs/39310113510/artifacts/12215307646).
+
+## Unidades reais no cenário de teste — 5D.8C
+
+O [Lote 5D.8C](docs/LOTE_5D_8C.md) preparou uma vila
+descartável com **Splinter Mech, Bushwacker e Reaper Drone**,
+confirmando a requisição dos três SWFs pelo cliente original.
+[GitHub Actions 39313160511](https://github.com/Acccelll/Social_wars_test/actions/runs/39313160511)
+aprovou **3 capturas comparativas com mudança visual**.
+
+[Baixar o vídeo, as capturas e os relatórios](https://github.com/Acccelll/Social_wars_test/actions/runs/39313160511/artifacts/12217206551) ·
+[Resumo CSV/JSON técnico](data/visual/original_unit_probe_5d8c.json).
+
+A correspondência entre movimento/ataque e os IDs internos de
+animação segue em investigação; não foi confirmada.
