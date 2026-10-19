@@ -43,4 +43,5 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 | 5D.4C | Atlas e animações editáveis para substituições | Pendente |
 | 5D.5 | Primeira galeria GIF e catálogo offline de 5 SWFs | **Primeira amostra: 8/8 GIFs; catálogo integral ainda pendente** |
 | 5D.6 | Galeria com filtros e busca, 14 SWFs de unidades, construções e telas | **Concluído: 17/17 GIFs; 0 erros** |
-| 5D.7 | Revisão visual, detectar duplicatas e catalogar estados de animação por ação | **Próximo** |
+| 5D.7 | Duplicações, classificação por evidência de labels/instâncias, fila de revisão | **Concluído: 1 duplicata, 17 estados indeterminados** |
+| 5D.8 | Correlacionar eventos/ações do jogo original com seus SWFs e sprites | **Próximo — validação no runtime pendente** |

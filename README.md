@@ -127,3 +127,16 @@ interface/telas. A execução terminou com **0 erros**.
 
 Ainda não existe biblioteca completa de sprites editáveis nem paridade
 com estados dinâmicos da animação original.
+
+## Auditoria de animações — 5D.7
+
+A [auditoria de 17 GIFs](docs/LOTE_5D_7.md) encontrou **um par de
+arquivos exatamente duplicados** (Torre #52 e Oficina #52).
+A checagem por nomes de símbolos, rótulos e instâncias **não**
+permitiu identificar com segurança espera, movimento, ataque,
+dano, destruição ou construção em nenhuma das 17 prévias.
+Por isso, todas continuam marcadas para verificação no jogo.
+
+[Relatório técnico por sprite](data/visual/animation_review_5d7.json) ·
+[Fila de 17 estados a validar](data/visual/animation_review_5d7_queue.csv) ·
+[Galeria de revisão GIF](https://github.com/Acccelll/Social_wars_test/actions/runs/39304404150/artifacts/12212991791).

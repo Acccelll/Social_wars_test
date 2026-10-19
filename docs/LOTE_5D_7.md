@@ -11,3 +11,41 @@ Todos os resultados recebem o estado de revisão original_runtime_confirmation_p
 Saídas: data/visual/animation_review_5d7.csv e .json no repositório; galeria review.html com GIFs e filtros no artefato temporário do GitHub Actions.
 
 O sistema de seleção de ações ainda não foi ligado à IA ou ao gameplay. Os IDs dos sprites são válidos dentro do SWF de origem e não são globais.
+
+## Resultado real — 19/10/2026
+
+A execução [39304404150](https://github.com/Acccelll/Social_wars_test/actions/runs/39304404150)
+terminou com sucesso e **quatro testes Python aprovados**.
+Contagens: 14 SWFs, 17 GIFs, 1 grupo exato de duplicação,
+0 grupos adicionais com pixels equivalentes por assinatura normalizada,
+0 pares próximos dentro do limiar definido.
+
+Par exato (mesmo checksum de GIF renderizado):
+`0022_tower_1_m.swf#52` ⇔ `0040_workshop_1_m.swf#52`.
+**Não excluir nenhum dos dois recursos automaticamente**: podem
+compartilhar animação deliberadamente e ainda ter outros assets
+e comportamentos diferentes em runtime.
+
+O resultado de classificação foi `metadata_hints=0`,
+`unclassified=17` e `runtime_confirmed=0`.
+Os nomes de instâncias e os `FrameLabel` disponíveis não provaram
+nenhum dos estados de ação solicitados. Isso **não significa que
+as unidades não tenham animações**: significa que este método
+estático não consegue identificá-las.
+
+### Arquivos
+
+- [Auditoria completa JSON](../data/visual/animation_review_5d7.json)
+- [Auditoria tabular CSV](../data/visual/animation_review_5d7.csv)
+- [Fila de inspeção no runtime](../data/visual/animation_review_5d7_queue.csv)
+- [Pacote GIF de revisão](https://github.com/Acccelll/Social_wars_test/actions/runs/39304404150/artifacts/12212991791),
+  aproximadamente 2 MB, expiração prevista para 02/11/2026.
+
+## Próxima etapa — 5D.8
+
+Instrumentar em ambiente de teste o cliente original com Ruffle,
+observar as ações disparadas (parado, deslocamento, ataque, dano,
+destruição, produção) e registrar eventos/mapeamento por
+`source SWF` + `character_id` + estado. Preencher o CSV
+**somente com evidência observada**; deixar sem estado o que
+não for possível validar. Não tocar no executável nem nos salvamentos.

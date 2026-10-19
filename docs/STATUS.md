@@ -153,3 +153,20 @@ foi reconstruída por este procedimento.
   [JSON permanente](../data/visual/gallery_5d6.json) preservam metadados.
 - A categoria é classificação preliminar baseada no arquivo; exportar
   uma prévia não garante todas as animações, efeitos nem movimentos em runtime.
+
+## Lote 5D.7 — Auditoria de duplicações e estados
+
+- Workflow [39304404150](https://github.com/Acccelll/Social_wars_test/actions/runs/39304404150):
+  **success**, 4 testes unitários aprovados, 14 SWFs e 17 GIFs analisados.
+- Uma duplicação exata comprovada por SHA-256:
+  `0022_tower_1_m.swf#52` e `0040_workshop_1_m.swf#52`.
+- Nenhuma equivalência nova por assinatura de pixels nem par adicional
+  sinalizado pelos limiares desta amostra (não é prova de inexistência).
+- **0/17 estados de ação classificados por evidência**; todos permanecem
+  como `unclassified` e `original_runtime_confirmation_pending`.
+- [JSON de auditoria](../data/visual/animation_review_5d7.json),
+  [CSV](../data/visual/animation_review_5d7.csv) e
+  [fila para revisão](../data/visual/animation_review_5d7_queue.csv)
+  preservados na branch `main`.
+- [Galeria HTML de revisão](https://github.com/Acccelll/Social_wars_test/actions/runs/39304404150/artifacts/12212991791)
+  inclui os 17 GIFs e filtros; o arquivo é temporário.
