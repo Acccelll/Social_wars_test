@@ -1,0 +1,58 @@
+name: SWF Timeline Inventory 5D.4
+
+on:
+  push:
+    paths:
+      - "tools/visual_timelines.py"
+      - "tools/visual_timelines_test.py"
+      - ".github/workflows/visual-timelines.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  index:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parser unit tests (synthetic FWS and CWS)
+        run: python3 tools/visual_timelines_test.py
+
+      - name: Download official release (temporary)
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Inspect all SWFs and build selected detailed timelines
+        run: |
+          python3 tools/visual_timelines.py \
+            --archive runtime/original.zip \
+            --out dist/timeline-catalog \
+            --details "Basesec_1.5.4.swf,1212_tetrapod_mech.swf,1313_splinterMech.swf,good_10_m.swf,0022_tower_1_m.swf,0026_command_center_1_m.swf" \
+            --strict
+          python3 - <<'PY'
+          import json,csv
+          from pathlib import Path
+          root=Path("dist/timeline-catalog")
+          r=json.loads((root/"timeline_summary.json").read_text())
+          rows=list(csv.DictReader((root/"timeline_inventory.csv").open()))
+          assert r["attempted"] == r["analyzed"] == len(rows) == 1118
+          assert r["found_details"] == r["selected_details"]
+          assert not r["errors"]
+          print("TIMELINE_VALIDATION_PASS",json.dumps(r["totals"]))
+          PY
+
+      - name: Upload metadata and event timelines (not image resources)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-timeline-catalog-5d4
+          path: dist/timeline-catalog
+          if-no-files-found: warn
+          retention-days: 14
