@@ -18,15 +18,21 @@ if(!Number.isFinite(duration)||duration<1||duration>600)throw Error("Duration mu
 const out=path.resolve(option("--out",path.join(root,"dist","original-observation")));
 const headless=args.includes("--headless");
 const newVillage=args.includes("--create-test-village");
+const recordVideo=!args.includes("--no-video");
 const smokeMarkers=args.includes("--smoke-markers");
 const ruffleRoot=path.join(root,"tests/ruffle/node_modules/@ruffle-rs/ruffle");
 const observerPath=path.join(root,"tests/original/observer.js");
 await fs.mkdir(out,{recursive:true});
 const events=[],requests=[],errors=[],shots=[];
-let browser,page,injected=false,serverVersion=null;
+const startedWallClock=Date.now();
+let browser,page,context,injected=false,serverVersion=null;
 try{
  browser=await chromium.launch({headless,args:["--enable-webgl","--use-gl=angle","--use-angle=swiftshader","--enable-unsafe-swiftshader"]});
- page=await browser.newPage({viewport:{width:1280,height:900}});
+ context=await browser.newContext({
+   viewport:{width:1280,height:900},
+   ...(recordVideo?{recordVideo:{dir:out,size:{width:1280,height:900}}}:{})
+ });
+ page=await context.newPage();
  await page.exposeFunction("__swHostRecord",async ev=>{
    events.push(ev);
    if(ev.type==="begin_action"||ev.type==="end_action"){
@@ -60,7 +66,8 @@ try{
  page.on("request",r=>{
    const u=new URL(r.url());
    if(u.origin===server&&(/\/static\/socialwars\/|\/dynamic\/menvswomen\//.test(u.pathname))){
-     requests.push({method:r.method(),path:u.pathname});
+     requests.push({method:r.method(),path:u.pathname,
+       observed_at_ms:Date.now()-startedWallClock,wall_clock_ms:Date.now()});
      if(requests.length>2000)requests.shift();
    }
  });
@@ -98,11 +105,21 @@ try{
  await page.screenshot({path:path.join(out,"final.png"),timeout:7000});
  const report={kind:"original-game-client-observation",serverVersion,
    state,injected,events,screenshots:shots,
+   network_events:requests,
    request_paths:[...new Set(requests.map(r=>r.path))],request_count:requests.length,
    errors,limits:"User labels and clicks are not proof of which original character ID is rendered."};
  await fs.writeFile(path.join(out,"report.json"),JSON.stringify(report,null,2));
+ if(recordVideo){
+   // Chromium finalizes video on context close; no source game files are touched.
+   await context.close();
+   const video=page.video();
+   if(video){
+     await video.saveAs(path.join(out,"session.webm"));
+     console.log("ORIGINAL_RUNTIME_VIDEO",path.join(out,"session.webm"));
+   }
+ }
  console.log("ORIGINAL_RUNTIME_REPORT",JSON.stringify({
    state,swfs:report.request_paths.filter(x=>x.endsWith(".swf")).slice(0,20),
    dynamic:report.request_paths.filter(x=>x.includes("/dynamic/")).slice(0,20),
    events:events.length,errors:errors.slice(0,5)}));
-}finally{if(browser)await browser.close()}
+}finally{if(context){try{await context.close()}catch{}}if(browser)await browser.close()}
