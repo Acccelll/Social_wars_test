@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   observe:
@@ -22,6 +22,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Unit-test original resource correlation
+        run: python tools/correlate_boot_5d8_test.py
 
       - name: Install Ruffle/Chromium tools and run observer unit test
         run: |
@@ -80,7 +83,7 @@ jobs:
         run: |
           node tests/original/record.mjs \
             --server http://127.0.0.1:5055 \
-            --duration 18 --headless --create-test-village \
+            --duration 18 --headless --create-test-village --smoke-markers \
             --out dist/original-observation
           python - <<'PY'
           import json
@@ -92,6 +95,10 @@ jobs:
           assert result["state"]["observer"]
           assert result["state"]["ruffle"]
           assert result["state"]["pathname"]=="/play.html"
+          assert result["state"]["rufflePlayerCount"]>=1
+          assert len([x for x in result["events"] if x["type"]=="begin_action"])==1
+          assert len([x for x in result["events"] if x["type"]=="end_action"])==1
+          assert len(result["screenshots"])>=2
           assert any("SWLoader.swf" in x for x in result["request_paths"]), result["request_paths"]
           print("ORIGINAL_CLIENT_BOOT_VALIDATED", json.dumps({
             "original_server":result["serverVersion"],
@@ -101,6 +108,35 @@ jobs:
             "errors":result["errors"][:5],
           }))
           PY
+
+      - name: Correlate observed SWF URLs to the existing sprite catalog
+        run: |
+          python tools/correlate_boot_5d8.py \
+            --runtime-report dist/original-observation/report.json \
+            --catalog data/visual/gallery_5d6.json \
+            --out dist/original-observation
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          j=json.loads(Path("dist/original-observation/runtime_boot_presence_5d8.json").read_text())
+          assert j["counts"]["catalog_sprites"]==17
+          assert j["counts"]["sprite_actions_confirmed"]==0
+          print("BOOT_ASSET_CORRELATION_VALIDATED",j["counts"])
+          PY
+
+      - name: Persist sanitized boot-matching metadata only
+        run: |
+          cp dist/original-observation/runtime_boot_presence_5d8.json \
+            data/visual/runtime_boot_presence_5d8.json
+          cp dist/original-observation/runtime_boot_presence_5d8.csv \
+            data/visual/runtime_boot_presence_5d8.csv
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/runtime_boot_presence_5d8.*
+          if git diff --cached --quiet; then echo "No asset-boot changes."; else
+            git commit -m "data(runtime): record original SWFs requested at login boot"
+            git push origin HEAD:main
+          fi
 
       - name: Upload test screenshots, request paths and observer report
         if: always()
