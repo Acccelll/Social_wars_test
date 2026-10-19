@@ -1,6 +1,10 @@
 name: Visual Export Sample 0.02a
 
 on:
+  push:
+    paths:
+      - "tools/visual_extract.py"
+      - ".github/workflows/visual-export.yml"
   workflow_dispatch:
     inputs:
       swf_name:
