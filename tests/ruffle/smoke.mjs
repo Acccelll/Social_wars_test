@@ -60,6 +60,17 @@ try {
       report.errors.push("HTTP " + response.status() + " " + response.url());
   });
   await page.goto(report.url, { waitUntil: "domcontentloaded", timeout: 30000 });
+  // In headless browsers, a click or explicit resume can be necessary
+  // even with autoplay=on. The probe has no interactive content.
+  await page.waitForFunction(() => Boolean(window.__swLoaded || window.__swError),
+                             null, { timeout:15000 });
+  if (!await page.evaluate(() => Boolean(window.__swError))) {
+    await page.locator("ruffle-player").click({timeout:5000});
+    await page.evaluate(() => {
+      const api = document.querySelector("ruffle-player").ruffle();
+      if (api.suspended) api.resume();
+    });
+  }
   await page.waitForFunction(
     () => window.__swDone === true || Boolean(window.__swError),
     null, {timeout:30000}
@@ -94,6 +105,7 @@ try {
         ruffleExists: Boolean(window.RufflePlayer),
         ruffleNewest: typeof window.RufflePlayer?.newest,
         playerCount: document.querySelectorAll("ruffle-player").length,
+        api: window.__swApiState,
         currentStage: window.__swStage,
         loaded: window.__swLoaded,
         loadError: window.__swError,

@@ -47,6 +47,13 @@
         };
         window.__swStage = "loading-swf";
         await player.ruffle().load("/dist/AS3Probe.swf");
+        window.__swApiState = {
+          readyState: String(player.ruffle().readyState),
+          suspendedBeforeResume: Boolean(player.ruffle().suspended),
+          metadata: player.ruffle().metadata
+        };
+        player.ruffle().resume();
+        window.__swApiState.suspendedAfterResume = Boolean(player.ruffle().suspended);
         window.__swLoaded = true;
         window.__swStage = "load-resolved";
       } catch (e) {
