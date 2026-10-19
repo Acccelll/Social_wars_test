@@ -297,6 +297,11 @@ def main():
                           "sprites",result["sprite_count"],
                           "declared_frames",result["totals"].get("sprite_frames_declared",0),
                           "warnings",result["totals"].get("parse_warnings",0),flush=True)
+                    for item in [result["root"], *result["sprites"]]:
+                        if item.get("parse_warnings", 0):
+                            print("TIMELINE_PARSE_WARNING", basename,
+                                  "sprite_id", item["character_id"],
+                                  json.dumps(item.get("warnings", [])), flush=True)
             except Exception as exc:
                 errors.append({"source":rel,"error":str(exc)})
                 print("TIMELINE_PARSE_ERROR",rel,str(exc),flush=True)
