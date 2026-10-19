@@ -108,6 +108,7 @@ try {
         api: window.__swApiState,
         currentStage: window.__swStage,
         loaded: window.__swLoaded,
+        swfBytes: window.__swSwfLength,
         loadError: window.__swError,
         traceCount: (window.__swTrace || []).length,
         traces: window.__swTrace || [],

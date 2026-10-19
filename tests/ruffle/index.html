@@ -46,7 +46,17 @@
           }
         };
         window.__swStage = "loading-swf";
-        await player.ruffle().load("/dist/AS3Probe.swf");
+        const swfResponse = await fetch("/dist/AS3Probe.swf", {cache:"no-store"});
+        if (!swfResponse.ok) throw new Error("SWF HTTP " + swfResponse.status);
+        const swfData = await swfResponse.arrayBuffer();
+        window.__swSwfLength = swfData.byteLength;
+        window.__swStage = "loading-buffer";
+        await player.ruffle().load({
+          data: swfData,
+          swfFileName: "AS3Probe.swf",
+          autoplay: "on",
+          splashScreen: false
+        });
         window.__swApiState = {
           readyState: String(player.ruffle().readyState),
           suspendedBeforeResume: Boolean(player.ruffle().suspended),
