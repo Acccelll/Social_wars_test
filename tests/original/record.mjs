@@ -89,7 +89,9 @@ try{
    // Kind 'other' is NOT an actual game action.
    await page.locator("#sw-action").selectOption("other");
    await page.locator("#sw-start").click();
-   await page.waitForTimeout(350);
+   await page.waitForTimeout(500);
+   await page.locator("ruffle-embed").click({position:{x:380,y:300}});
+   await page.waitForTimeout(900);
    await page.locator("#sw-stop").click();
  }
  await page.waitForTimeout(duration*1000);
