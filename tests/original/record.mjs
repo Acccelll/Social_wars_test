@@ -21,6 +21,8 @@ const newVillage=args.includes("--create-test-village");
 const recordVideo=!args.includes("--no-video");
 const smokeMarkers=args.includes("--smoke-markers");
 const unitProbe=args.includes("--unit-probe");
+const introProbe=args.includes("--intro-probe");
+if(introProbe&&(unitProbe||smokeMarkers))throw Error("Choose one probe mode");
 if(unitProbe&&smokeMarkers)throw Error("Use one probe mode at a time");
 const ruffleRoot=path.join(root,"tests/ruffle/node_modules/@ruffle-rs/ruffle");
 const observerPath=path.join(root,"tests/original/observer.js");
@@ -86,6 +88,30 @@ try{
  if(newVillage) await page.goto(server+"/play.html",
                                {waitUntil:"domcontentloaded",timeout:30000});
  if(!headless)console.log("Use a janela do Chromium para entrar na vila e marcar as ações no painel lateral.");
+ if(introProbe){
+   // The 5D.8C video showed a "RESCUE YOUR COMRADE!" intro dialog that
+   // covered the map. Test its visible OK button before probing units.
+   const target=page.locator("ruffle-embed").first();
+   await page.waitForTimeout(10000);
+   await page.screenshot({path:path.join(out,"intro-before.png"),
+                           timeout:25000,animations:"disabled"});
+   await page.evaluate(()=>window.__swHostRecord?.({
+     type:"intro_dismiss_attempt",source:"5D.8C screenshot review",
+     target:"Rescue Your Comrade dialog OK",
+     unit_item_id:null,sprite_character_id:null,
+     wall_clock_ms:Date.now(),player_x:550,player_y:568,
+     gameplay_action_confirmed:false
+   }));
+   await target.click({position:{x:550,y:568},timeout:10000});
+   await page.waitForTimeout(4000);
+   await page.screenshot({path:path.join(out,"intro-after.png"),
+                           timeout:25000,animations:"disabled"});
+   await page.evaluate(()=>window.__swHostRecord?.({
+     type:"intro_dismiss_capture_complete",
+     gameplay_action_confirmed:false,
+     sprite_character_id:null,wall_clock_ms:Date.now()
+   }));
+ }
  if(unitProbe){
    // Controlled exploratory clicks on the ORIGINAL SWF canvas. The "other"
    // label is intentional: no action or SWF child sprite is assumed.
