@@ -75,3 +75,16 @@ Os workflows já concluídos exportaram **1.899 imagens externas** (143 PNG, 1.7
 - [Gerador de catálogo dos arquivos exportados](tools/visual_asset_manifest.py)
 
 Os pacotes de recursos são artefatos temporários do Actions (a expirar), por isso a exportação local com `tools/EXTRAIR_IMAGENS_WINDOWS.bat` permanece como alternativa durável.
+
+### Cobertura da extração (revisada)
+
+Os trabalhos já verificados cobrem **44 dos 1.118 SWFs**:
+1 cliente principal (7.493 saídas PNG/SVG), 5 mechas (14.436
+saídas PNG/SVG), os 26 SWFs de `characters_2` (61 bitmaps)
+e 12 construções (116 bitmaps). Em paralelo, foram copiadas
+**1.899 imagens externas** (PNG/JPG).
+
+**Atenção:** os 38 arquivos de personagens e edifícios foram processados
+apenas em modo bitmap; as formas vetoriais e animações continuam pendentes.
+O índice permanente está em [data/visual/export_coverage.csv](data/visual/export_coverage.csv).
+Os SWFs e suas imagens não são incluídos no repositório público.

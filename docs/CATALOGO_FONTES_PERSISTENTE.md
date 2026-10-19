@@ -19,3 +19,15 @@ salvamentos continuam fora do histórico Git.
 O catálogo permite selecionar SWFs de construções com nomes
 verificados antes de iniciar lotes de exportação, sem gastar
 recursos repetindo amostras de mechas já processadas.
+
+## Publicação verificada
+
+O workflow [39295033702](https://github.com/Acccelll/Social_wars_test/actions/runs/39295033702)
+publicou com sucesso 1.118 fontes SWF e 90 candidatos por nome. Contagens
+por tipo de fonte: `assets/sprites` 862, `assets/fx` 205,
+`assets/characters_2` 26, `assets/magic` 10, `assets/images` 9,
+`assets/flash` 2, `assets/fonts` 2, `assets/externalized` 1 e
+`assets/swf` 1.
+
+Cobertura confirmada de exportação em
+[`data/visual/export_coverage.csv`](../data/visual/export_coverage.csv).

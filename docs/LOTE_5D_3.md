@@ -65,3 +65,25 @@ py -3 tools/visual_asset_manifest.py --root "dist/visual-units"
 
 Execução do lote de cinco unidades:
 https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010
+
+## Resultado conferido — cinco mechas, 19/10/2026
+
+Execução [39292249010](https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010)
+concluída com `success` e **0 erros**.
+
+| SWF de origem | Saídas gráficas |
+|---|---:|
+| `1212_tetrapod_mech.swf` | 1.905 |
+| `1313_splinterMech.swf` | 2.597 |
+| `1358_bushwacker.swf` | 2.959 |
+| `1376_reaperDrone.swf` | 1.678 |
+| `1408_urbanBuster.swf` | 5.297 |
+| **Total** | **14.436** |
+
+- [Artefato com as imagens](https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010/artifacts/12207326037):
+  ZIP de aproximadamente 1,35 GB, expira em 20/10/2026.
+- [Catálogo de origem](https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010/artifacts/12207660225)
+  tem retenção mais longa.
+- O grande tamanho tornou **bitmap-only** o padrão dos lotes seguintes;
+  a exportação de animações e vetores detalhados será feita apenas por
+  grupo selecionado.

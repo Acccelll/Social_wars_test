@@ -37,6 +37,6 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 |---|---|---|
 | 5D.1 | Inventário de todos os arquivos gráficos/SWFs e hash do cliente | **Concluído, 0 erros em 1.118 SWFs** |
 | 5D.2 | Exportação de bitmaps e recursos do SWF principal, mais imagens externas | **Concluído: 1.899 externas e 7.493 exportações do cliente** |
-| 5D.3 | Exportação incremental dos 1.117 SWFs restantes, iniciando por cinco unidades | **Em processamento; ainda não é extração integral** |
+| 5D.3 | 5 mechas (visual), 26 personagens e 12 construções (bitmaps) | **44/1.118 SWFs cobertos; exportação integral pendente** |
 | 5D.4 | Exportação de timelines completas e atlas de animação | Pendente |
 | 5D.5 | Catalogar recursos por unidade, edifício e UI, com prévias | Pendente |

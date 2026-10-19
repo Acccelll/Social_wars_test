@@ -83,3 +83,21 @@ Os arquivos `Social_Wars_0.02a_AVM2_Lote3C.zip` até os lotes 3I foram entregues
 - **Lote de cinco unidades:** workflow [39292249010](https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010) iniciado. O resultado final depende da conclusão do Actions; não considerar aprovado sem examinar `export_results.csv`.
 - **Catálogo:** `tools/visual_source_catalog.py` produz lista de SWFs por pasta e identificador. `tools/visual_asset_manifest.py` gera metadados de arquivos PNG/SVG/JPG exportados, preservando hashes e dimensões quando disponíveis.
 - Recursos originais continuam fora do Git; animações completas ainda não foram reconstituídas.
+
+## 5D.3 — Situação final deste micro-lote
+
+- [Lote de 5 mechas](https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010):
+  5/5 arquivos `assets/sprites`, 14.436 imagens/vetores/quadros renderizados, 0 erros.
+- [Pasta `assets/characters_2`](https://github.com/Acccelll/Social_wars_test/actions/runs/39294770739):
+  26/26 SWFs, **61 bitmaps**, 0 erros.
+- [12 construções](https://github.com/Acccelll/Social_wars_test/actions/runs/39295245833):
+  12/12 SWFs, **116 bitmaps**, 0 erros.
+- Catálogo original pesquisável [data/visual/swf_catalog.csv](../data/visual/swf_catalog.csv):
+  **1.118 SWFs** e [90 arquivos candidatos a construções](../data/visual/building_candidates.csv),
+  com identificação preliminar apenas pelos nomes.
+- [Tabela de cobertura](../data/visual/export_coverage.csv) e
+  [resumo JSON](../data/visual/coverage_summary.json) registram **44 SWFs com alguma exportação**.
+- Quantidade de arquivos produzidos somando os quatro lotes SWF distintos:
+  **22.106**; as imagens externas somam mais **1.899**.
+- **1.074 SWFs ainda não têm exportação verificada**, e a conversão integral
+  de animações editáveis continua pendente.

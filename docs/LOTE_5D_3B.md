@@ -28,3 +28,14 @@ não por uma taxonomia funcional de unidades do jogo.
 
 O pacote é temporário; nenhuma imagem original é incorporada ao
 repositório público. O script local permite repetir a extração.
+
+## Resultado confirmado
+
+[Execução 39294770739](https://github.com/Acccelll/Social_wars_test/actions/runs/39294770739):
+**26/26 SWFs processados, 61 bitmaps exportados, 0 erros.**
+Arquivo de imagens temporário
+[characters2-bitmaps](https://github.com/Acccelll/Social_wars_test/actions/runs/39294770739/artifacts/12207640982)
+e [manifesto](https://github.com/Acccelll/Social_wars_test/actions/runs/39294770739/artifacts/12207675863).
+
+As imagens-base dessa pasta foram extraídas. **Não** significa que os
+vetores e animações dos 26 SWFs tenham sido totalmente recompostos.

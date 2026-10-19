@@ -30,3 +30,14 @@ todos os estados separadamente.
 
 **Limite:** isso não extrai animações completas nem garante que os
 bitmaps sejam suficientes para recriar as construções.
+
+## Resultado confirmado
+
+[Execução 39295245833](https://github.com/Acccelll/Social_wars_test/actions/runs/39295245833):
+**12/12 SWFs processados, 116 bitmaps exportados, 0 erros.**
+O [pacote temporário de bitmaps](https://github.com/Acccelll/Social_wars_test/actions/runs/39295245833/artifacts/12207343363)
+e o [manifesto CSV/JSON](https://github.com/Acccelll/Social_wars_test/actions/runs/39295245833/artifacts/12207462968)
+foram publicados no GitHub Actions.
+
+A próxima etapa exportará os recursos vetoriais e avaliará a
+renderização de animações de construções em lotes pequenos.

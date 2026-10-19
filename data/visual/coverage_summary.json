@@ -1,0 +1,44 @@
+{
+  "source_release": "Social Warriors 0.02a",
+  "source_swfs_in_release": 1118,
+  "swfs_with_at_least_one_export": 44,
+  "swfs_without_confirmed_export": 1074,
+  "output_files_from_confirmed_non_overlapping_swf_batches": 22106,
+  "external_png_jpg_exported": 1899,
+  "external_png": 143,
+  "external_jpg": 1756,
+  "external_files_bytes": 95899970,
+  "batches": {
+    "main": {
+      "swfs": 1,
+      "files": 7493,
+      "run": 39278874264,
+      "mode": "visual"
+    },
+    "mechas": {
+      "swfs": 5,
+      "files": 14436,
+      "run": 39292249010,
+      "mode": "visual"
+    },
+    "characters_2": {
+      "swfs": 26,
+      "files": 61,
+      "run": 39294770739,
+      "mode": "bitmap"
+    },
+    "buildings": {
+      "swfs": 12,
+      "files": 116,
+      "run": 39295245833,
+      "mode": "bitmap"
+    }
+  },
+  "notes": [
+    "The 369-image initial extraction is a subset of the main client's later 7493-file visual export; excluded to prevent double counting.",
+    "Visual output means FFDec exported PNG/SVG/frame representations, not an editable reconstruction of animation timelines.",
+    "Bitmap-only does not imply full graphic extraction; vectors and animation frames remain.",
+    "Counts are files exported, not counts of independent art assets.",
+    "Graphics are not committed, only source metadata and verified result counts are."
+  ]
+}
