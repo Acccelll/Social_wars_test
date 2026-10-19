@@ -101,3 +101,14 @@ Os arquivos `Social_Wars_0.02a_AVM2_Lote3C.zip` até os lotes 3I foram entregues
   **22.106**; as imagens externas somam mais **1.899**.
 - **1.074 SWFs ainda não têm exportação verificada**, e a conversão integral
   de animações editáveis continua pendente.
+
+## 5D.4 — Timeline estrutural dos SWFs
+
+- [Execução 39297155116](https://github.com/Acccelll/Social_wars_test/actions/runs/39297155116)
+  aprovada para **1.118/1.118 SWFs** com **0 falhas de análise**.
+- 43.426 sprites, 400.023 quadros declarados/observados, 2.782.788
+  operações `PlaceObject` e 109.884 remoções em timelines de sprites.
+- 2 advertências de interpretação de posicionamento; investigação separada.
+- CSV geral e seis relatórios de eventos por quadro gerados como
+  artefato temporário. Nenhum asset original foi commitado.
+- Animações controladas dinamicamente por AS3 não foram recriadas.

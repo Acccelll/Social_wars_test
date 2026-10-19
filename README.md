@@ -88,3 +88,12 @@ e 12 construções (116 bitmaps). Em paralelo, foram copiadas
 apenas em modo bitmap; as formas vetoriais e animações continuam pendentes.
 O índice permanente está em [data/visual/export_coverage.csv](data/visual/export_coverage.csv).
 Os SWFs e suas imagens não são incluídos no repositório público.
+
+## Recuperação das animações — 5D.4
+
+O [inventário de timelines](docs/LOTE_5D_4.md) analisou os
+**1.118 SWFs**, totalizando **43.426 sprites**, **400.023 quadros**
+e **2.782.788 eventos de posicionamento**. Foram registrados
+quadros, relações de dependência entre sprites, identidades e
+transformações presentes nos tags Flash. O conjunto ainda não
+corresponde à reprodução completa de animações em runtime.
