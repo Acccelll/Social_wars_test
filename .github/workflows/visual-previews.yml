@@ -1,0 +1,73 @@
+name: Visual Animated Previews 5D.5
+
+on:
+  push:
+    paths:
+      - ".github/workflows/visual-previews.yml"
+      - "tools/visual_preview_catalog.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Pillow
+        run: python3 -m pip install --user Pillow
+
+      - name: Select sprite IDs from permanent 5D4 timelines
+        run: |
+          python3 tools/visual_preview_catalog.py --plan-only --out dist/visual-previews
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=json.loads(Path("dist/visual-previews/preview_plan.json").read_text())
+          assert len(rows)>=5, len(rows)
+          assert all(2<=row["frames_declared"]<=40 for row in rows)
+          print("PREVIEW_SELECTION_OK",len(rows))
+          PY
+
+      - name: Download original Social Warriors 0.02a ZIP
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Download FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Export selected animated sprites and assemble offline gallery
+        run: |
+          python3 tools/visual_preview_catalog.py \
+            --archive runtime/original.zip --ffdec "$FFDEC_JAR" \
+            --out dist/visual-previews --per-source 2 --strict
+          test -s dist/visual-previews/index.html
+          du -sh dist/visual-previews
+
+      - name: Upload gallery and metadata independently from repository
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-animated-preview-gallery
+          path: dist/visual-previews/
+          if-no-files-found: warn
+          retention-days: 14
