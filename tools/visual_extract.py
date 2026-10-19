@@ -50,6 +50,8 @@ def main():
                    help="Extract external .png/.jpg/.webp/.svg/etc entries")
     p.add_argument("--only-basename", default="",
                    help="Optional exact SWF basename, e.g. Basesec_1.5.4.swf")
+    p.add_argument("--names", default="",
+                   help="Comma-separated exact SWF basenames to export as a group")
     p.add_argument("--types", choices=("images", "visual", "sprites"),
                    default="visual")
     p.add_argument("--timeout", type=int, default=240)
@@ -83,6 +85,19 @@ def main():
             selection = [x for x in swfs
                          if PurePosixPath(x.filename).name.lower() ==
                          args.only_basename.lower()]
+        if args.names:
+            chosen = [name.strip().lower() for name in args.names.split(",") if name.strip()]
+            if len(chosen) != len(set(chosen)):
+                p.error("--names contains duplicate basenames")
+            selected_names = set(chosen)
+            selection = [x for x in swfs
+                         if PurePosixPath(x.filename).name.lower() in selected_names]
+            found = {PurePosixPath(x.filename).name.lower() for x in selection}
+            missing = selected_names - found
+            if missing:
+                p.error("SWF basename(s) missing from distribution: " + ", ".join(sorted(missing)))
+        if not selection:
+            p.error("No SWF matched the selected filters")
         print(f"SWF_SELECTION total={len(swfs)} start={args.start} "
               f"selected={len(selection)} type={types}", flush=True)
 
