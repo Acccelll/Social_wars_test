@@ -11,7 +11,7 @@
   const start=container.querySelector("#sw-start"),stop=container.querySelector("#sw-stop");
   const select=container.querySelector("#sw-action"),status=container.querySelector("#sw-result");
   let current=null;
-  function bounds(){const el=document.querySelector("ruffle-player,embed,object");
+  function bounds(){const el=document.querySelector("ruffle-player,ruffle-embed,ruffle-object,embed,object");
     if(!el)return null;const r=el.getBoundingClientRect();
     return {x:r.x,y:r.y,width:r.width,height:r.height}}
   function record(type,data){
