@@ -1,0 +1,138 @@
+name: Original Move RPC and Intro Evidence 5D.8E
+
+on:
+  push:
+    paths:
+      - ".github/workflows/original-move-5d8e.yml"
+      - "tools/original_move_probe_5d8e.py"
+      - "tools/original_move_probe_5d8e_test.py"
+      - "tools/intro_text_probe_5d8e.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: original-move-5d8e
+  cancel-in-progress: false
+
+jobs:
+  original_move:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Test request serialization and refuse nonlocal servers
+        run: |
+          python tools/original_move_probe_5d8e_test.py
+          python tools/seed_original_units_5d8c_test.py
+
+      - name: Download original distribution and server to isolated paths
+        run: |
+          mkdir -p runtime/release
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = "492630085"
+          unzip -q runtime/release.zip -d runtime/release
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          asset_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          git clone --depth 1 --filter=blob:none --sparse \
+            https://github.com/AcidCaos/socialwarriors.git runtime/source
+          git -C runtime/source sparse-checkout set config villages templates stub mods
+          ln -s "$asset_dir" runtime/source/assets
+          test -f runtime/source/server.py
+          mkdir -p runtime/source/saves
+          test -z "$(ls -A runtime/source/saves)"
+          echo "SW_SERVER_DIR=$(realpath runtime/source)" >> "$GITHUB_ENV"
+
+      - name: Scan original script text and game configuration for intro hints
+        run: |
+          mkdir -p dist/original-move-5d8e
+          python tools/intro_text_probe_5d8e.py \
+            --archive runtime/release.zip \
+            --config runtime/source/config \
+            --out dist/original-move-5d8e/intro_text_evidence.json
+
+      - name: Seed exact original unit item indices in ephemeral initial village
+        run: |
+          python tools/seed_original_units_5d8c.py \
+            --initial "$SW_SERVER_DIR/villages/initial.json" \
+            --out "$SW_SERVER_DIR/villages/initial_for_test.json" \
+            --manifest runtime/fixture_5d8e.json
+          mv "$SW_SERVER_DIR/villages/initial_for_test.json" "$SW_SERVER_DIR/villages/initial.json"
+
+      - name: Start original Flask server in disposable workspace
+        run: |
+          python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+          cd "$SW_SERVER_DIR"
+          nohup python -u server.py --host 127.0.0.1 --port 5055 \
+            > "$GITHUB_WORKSPACE/runtime/server.log" 2>&1 &
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5055/health; then
+              echo "ORIGINAL_SERVER_HEALTHY"
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$GITHUB_WORKSPACE/runtime/server.log"
+          exit 1
+
+      - name: POST original move command and validate exact persisted delta
+        run: |
+          python tools/original_move_probe_5d8e.py \
+            --host http://127.0.0.1:5055 \
+            --saves "$SW_SERVER_DIR/saves" \
+            --fixture runtime/fixture_5d8e.json \
+            --out dist/original-move-5d8e/move_proof.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path("dist/original-move-5d8e")
+          move=json.loads((d/"move_proof.json").read_text())
+          strings=json.loads((d/"intro_text_evidence.json").read_text())
+          assert move["result"]=="move_persisted"
+          assert move["original_unit_item_id"]==1313
+          assert move["original_item_index"]==41
+          assert move["coordinates_before"]!=move["coordinates_after"]
+          assert move["changed_map_object_count"]==1
+          assert not move["original_client_animation_observed"]
+          assert move["sprite_character_id_confirmed"] is None
+          assert len(strings["swfs"])==2
+          print("ORIGINAL_MOVE_PERSISTENCE_VALIDATED",move["coordinates_before"],
+                move["coordinates_after"])
+          PY
+
+      - name: Version sanitized original protocol evidence (no saves)
+        run: |
+          cp dist/original-move-5d8e/move_proof.json \
+            data/visual/original_move_proof_5d8e.json
+          cp dist/original-move-5d8e/intro_text_evidence.json \
+            data/visual/original_intro_text_5d8e.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/original_move_proof_5d8e.json \
+                  data/visual/original_intro_text_5d8e.json
+          if git diff --cached --quiet; then
+            echo "No evidence changes"
+          else
+            git commit -m "data(5D.8E): verify original server move and intro string clues"
+            git push origin HEAD:main
+          fi
+
+      - name: Upload logs and proof without disposable save files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-original-move-5d8e
+          path: |
+            dist/original-move-5d8e/
+            runtime/fixture_5d8e.json
+            runtime/server.log
+          if-no-files-found: warn
+          retention-days: 14
