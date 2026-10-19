@@ -28,7 +28,7 @@ if [[ ! -f "$DEST/bin/mxmlc" ]]; then
   if [[ -f "$STAGING/unpacked/bin/mxmlc" ]]; then
     root="$STAGING/unpacked"
   else
-    root="$(find "$STAGING/unpacked" -mindepth 1 -maxdepth 2 -type f -path '*/bin/mxmlc' -print -quit)"
+    root="$(find "$STAGING/unpacked" -mindepth 1 -maxdepth 6 -path '*/bin/mxmlc' -print -quit)"
     if [[ -z "$root" ]]; then
       echo "Flex SDK extraction does not contain bin/mxmlc" >&2
       exit 11
