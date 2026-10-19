@@ -45,4 +45,5 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 | 5D.6 | Galeria com filtros e busca, 14 SWFs de unidades, construções e telas | **Concluído: 17/17 GIFs; 0 erros** |
 | 5D.7 | Duplicações, classificação por evidência de labels/instâncias, fila de revisão | **Concluído: 1 duplicata, 17 estados indeterminados** |
 | 5D.8A | Carregar servidor original e observar requests/marks de UI em Chromium/Ruffle | **Concluído: CI original validado; 2 SWFs do catálogo requisitados no boot** |
-| 5D.8B | Dirigir movimento/ataque/dano no jogo e confirmar sprite/ação por evidências de imagem e eventos | **Próximo — 0 ações ainda confirmadas** |
+| 5D.8B | Registrar vídeo do original, clicar no Flash e medir mudanças visuais | **Captura concluída: 1 mudança visual; 0 ações específicas confirmadas** |
+| 5D.8C | Correlacionar animação de unidade em deslocamento/ataque/dano com IDs no SWF | **Próximo — exige sequência de jogo com unidade identificada** |
