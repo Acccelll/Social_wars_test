@@ -1,0 +1,41 @@
+{
+  "lot": "5D.8F",
+  "date": "2026-10-19",
+  "original_swf": "assets/flash/Basesec_1.5.4.swf",
+  "decompiler": "JPEXS FFDec 26.3.0",
+  "decompiled_class_count": 11,
+  "ui_controller": "popups.PopupMissionInfo",
+  "related_classes": [
+    "popups.PopupTutorial",
+    "core.TutorialMain",
+    "managers.PopupManager",
+    "popups.PopupIntro",
+    "popups.PopupConfirm"
+  ],
+  "inferred_modal_controller_status": "strong_static_correspondence_to_screenshot_not_instrumented_movieclip_instance",
+  "btnOk_listener": "MouseEvent.MOUSE_UP",
+  "btnOk_handler": "closeWindow",
+  "handler_dispatch": "Event.CLOSE",
+  "original_swf_patched": false,
+  "ruffle_warning_observed": true,
+  "warning": "It looks like hardware acceleration is disabled",
+  "test_stage_size": [
+    760,
+    600
+  ],
+  "button_position_relative": [
+    385,
+    568
+  ],
+  "first_click_result": "ruffle_warning_dismissed; mission_dialog_remains",
+  "second_click_result": "mission_dialog_dismissed; original_world_map_visible",
+  "first_click_dialog_change_fraction": 0,
+  "second_click_dialog_change_fraction": 0.898668,
+  "second_click_visually_confirmed": true,
+  "actual_move_or_attack_confirmed": false,
+  "sprite_character_id_confirmed": false,
+  "as3_workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39320622043",
+  "button_workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39321595058",
+  "button_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39321595058/artifacts/12220326999",
+  "limitations": "Popup class correlation is based on recovered code and UI, not runtime tracing of class instances; no movement/attack state identified."
+}

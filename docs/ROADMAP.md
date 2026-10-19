@@ -50,4 +50,5 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 
 | 5D.8D | Diagnosticar modal “Rescue Your Comrade” e clique/Enter no Ruffle | **Concluído como diagnóstico: botão não fecha apesar de clique atingir canvas** |
 | 5D.8E | Comando MOVE original por HTTP, save verificado e busca de strings de tutorial | **Concluído: Splinter de (52,45) para (53,46); vídeo do movimento pendente** |
-| 5D.8F | Investigar PopupTutorialMC / TutorialMain e validar processamento da interface | **Próximo** |
+| 5D.8F | Decompilar controladores de popup e validar fechamento do modal no Ruffle | **Concluído: 11 classes AS3; aviso Ruffle dispensado e OK funcionando** |
+| 5D.8G | Capturar ordem de movimento pela interface original sem bloqueio do modal | **Próximo** |

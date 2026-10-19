@@ -255,3 +255,23 @@ foi reconstruída por este procedimento.
 - [Prova persistida](../data/visual/original_move_proof_5d8e.json) e [strings da missão](../data/visual/original_intro_text_5d8e.json).
 - **0 animações Ruffle e 0 IDs internos de sprite confirmados.**
 - Nenhum arquivo de jogo ou save do computador do usuário foi alterado.
+
+## Lote 5D.8F — Janela inicial liberada no Ruffle
+
+- [FFDec 39320622043](https://github.com/Acccelll/Social_wars_test/actions/runs/39320622043)
+  decompilou em cópia temporária **11 classes AS3** do cliente original, incluindo
+  \`popups.PopupMissionInfo\`, \`popups.PopupTutorial\`,
+  \`popups.PopupIntro\`, \`managers.PopupManager\` e \`core.TutorialMain\`.
+- \`PopupMissionInfo\` registra \`btnOk.addEventListener(MouseEvent.MOUSE_UP, closeWindow)\`;
+  \`closeWindow()\` emite \`Event.CLOSE\`, recebido pelo \`PopupManager\`.
+- O [ensaio 39321595058](https://github.com/Acccelll/Social_wars_test/actions/runs/39321595058)
+  confirmou que o primeiro clique dispensou uma camada de aviso de
+  aceleração de hardware do Ruffle, mas manteve a missão.
+- **Um segundo clique no OK fechou efetivamente a janela**: a captura
+  mostrou o mapa, mechas e HUD visíveis; mudança na região
+  do diálogo **~89,87%** em relação ao quadro anterior.
+- [Capturas/vídeo originais do Ruffle](https://github.com/Acccelll/Social_wars_test/actions/runs/39321595058/artifacts/12220326999);
+  [índice AS3](../data/visual/tutorial_as3_index_5d8f.json).
+- Isso resolve **o bloqueio de entrada nos testes**, não confirma
+  movimento ou ataque de unidades nem identificação do DefineSprite.
+- O SWF e os salvamentos do usuário permanecem intocados.

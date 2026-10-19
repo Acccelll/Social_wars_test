@@ -138,12 +138,14 @@ jobs:
               "scores":scores,
               "no_confirmed_sprite_character_ids":True,
               "modal_confirmed_dismissed":False,
-              "modal_dismissal_candidate_by_pixels":scores["dialog_second_up_vs_before"]>0.18,
+              "modal_dismissal_candidate_by_pixels":scores["dialog_second_up_vs_before"]>0.6,
               "warning_overlay_considered":True,
               "modal_dismissal_visual_review_required":True,
               "limitations":"Pixel differences are not proof of AS3 handler execution"
           }
-          (root/"button_event_5d8f.json").write_text(json.dumps(result,indent=2)+"\n")
+          assert scores["dialog_up_vs_before"]<0.03, scores
+          assert scores["dialog_second_up_vs_before"]>0.6, scores
+          (root/"button_event_5d8f.json").write_text(json.dumps(result,indent=2)+"\\n")
           print("ORIGINAL_BUTTON_5D8F",json.dumps(result))
           PY
 

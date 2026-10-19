@@ -52,7 +52,7 @@ def run_ffdec(java,jar,arguments,log,timeout):
     return output,status
 
 def summarize_scripts(folder):
-    files=sorted(folder.rglob("*.as"))
+    files=sorted(p for p in folder.rglob("*") if p.is_file() and p.suffix in (".as",".pcode"))
     indexed=[]
     class_methods={}
     for path in files:

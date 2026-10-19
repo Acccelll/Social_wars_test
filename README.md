@@ -197,3 +197,14 @@ descartável. O workflow GitHub Actions concluiu com sucesso.
 A pesquisa do Flash encontrou referências ao tutorial e à janela
 Rescue Your Comrade, porém **a rotina do botão ainda não foi
 identificada e nenhuma animação em runtime foi comprovada**.
+
+## Janela da missão desbloqueada — 5D.8F
+
+O [Lote 5D.8F](docs/LOTE_5D_8F.md) identificou em ActionScript a
+sequência do botão OK em \`popups.PopupMissionInfo\`. Foi descoberto
+que um aviso de aceleração de hardware do Ruffle interceptava a
+primeira interação no cliente automatizado. Após dispensá-lo, o
+**segundo clique fechou a missão e mostrou o mapa com os mechas**.
+
+[Ver vídeo e capturas do jogo original](https://github.com/Acccelll/Social_wars_test/actions/runs/39321595058/artifacts/12220326999).
+A validação de ações reais de movimento/ataque no cliente será feita no 5D.8G.
