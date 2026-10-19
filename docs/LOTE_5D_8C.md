@@ -64,3 +64,39 @@ Após a validação do cenário na CI, confrontar imagens do vídeo com os
 sprites GIF existentes e instrumentar interações de unidade
 reconhecidas visualmente. Somente observações corroboradas devem
 entrar no mapeamento de `source_swf` + `character_id` + ação.
+
+## Resultado confirmado — 19/10/2026
+
+A primeira execução [39312898050](https://github.com/Acccelll/Social_wars_test/actions/runs/39312898050)
+encontrou timeouts de screenshots em três sondagens. **Foi reprovada**
+corretamente e as capturas foram serializadas para a repetição.
+
+A execução final [39313160511](https://github.com/Acccelll/Social_wars_test/actions/runs/39313160511)
+terminou com **success**, sem etapas reprovadas:
+
+- **4 unidades** no snapshot da vila: Splinter aliado e oponente,
+  Bushwacker e Reaper Drone;
+- **3 eventos exploratórios** e **3 pares válidos de capturas PNG**;
+- **3 mudanças visuais** medidas dentro do player Ruffle;
+- **3 SWFs de unidade efetivamente requisitados**:
+  `1313_splinterMech.swf`, `1358_bushwacker.swf` e
+  `1376_reaperDrone.swf`;
+- **0 ações específicas de gameplay confirmadas** e
+  **0 `DefineSprite character_id` confirmados**.
+
+Os quatro objetos iniciais usam os índices 41–44 e posicionamentos
+indicados neste documento. O manifesto comprova a inclusão das
+unidades na cópia descartável; a rede comprova a requisição de seus
+SWFs pelo cliente original. Isso não constitui prova de que
+movimentação, ataque ou dano tenham sido acionados.
+
+[Baixar vídeo WebM, seis capturas, manifestos e logs do 5D.8C](https://github.com/Acccelll/Social_wars_test/actions/runs/39313160511/artifacts/12217206551)
+(cerca de 10,3 MB comprimidos, expiração prevista em 02/11/2026).
+
+[Resumo persistente do ensaio](../data/visual/original_unit_probe_5d8c.json).
+
+**Status:** cenário preparado e captura exploratória **concluídos**;
+validação de ações por unidade ainda **pendente**. Próximo
+micro-lote 5D.8D: utilizar evidência de quadro para descobrir
+quais unidades são visíveis e quais ações do jogo são efetivamente
+disparadas, comparando as sequências com os GIFs exportados.
