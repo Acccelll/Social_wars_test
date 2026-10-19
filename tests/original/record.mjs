@@ -22,6 +22,8 @@ const recordVideo=!args.includes("--no-video");
 const smokeMarkers=args.includes("--smoke-markers");
 const unitProbe=args.includes("--unit-probe");
 const introProbe=args.includes("--intro-probe");
+const buttonEventProbe=args.includes("--button-event-probe");
+if(buttonEventProbe&&(introProbe||unitProbe||smokeMarkers))throw Error("Choose one probe mode");
 if(introProbe&&(unitProbe||smokeMarkers))throw Error("Choose one probe mode");
 if(unitProbe&&smokeMarkers)throw Error("Use one probe mode at a time");
 const ruffleRoot=path.join(root,"tests/ruffle/node_modules/@ruffle-rs/ruffle");
@@ -88,6 +90,46 @@ try{
  if(newVillage) await page.goto(server+"/play.html",
                                {waitUntil:"domcontentloaded",timeout:30000});
  if(!headless)console.log("Use a janela do Chromium para entrar na vila e marcar as ações no painel lateral.");
+ if(buttonEventProbe){
+   // In the original AS3 class popups.PopupMissionInfo, btnOk listens to
+   // MouseEvent.MOUSE_UP; test a real pointer down/hold/up at its visible
+   // center on a 760x600 player. This test does not modify ActionScript.
+   const player=page.locator("ruffle-embed").first();
+   await page.waitForTimeout(9000);
+   await player.evaluate(el=>{
+      el.style.width="760px";el.setAttribute("width","760");
+   });
+   await page.waitForTimeout(1000);
+   const box=await player.boundingBox();
+   if(!box || box.width<700 || box.height<500)
+      throw Error("Ruffle native stage not visible");
+   const location={x:box.x+385,y:box.y+568};
+   await page.screenshot({path:path.join(out,"event-before.png"),
+                          timeout:25000,animations:"disabled"});
+   await page.mouse.move(location.x,location.y,{steps:8});
+   await page.waitForTimeout(600);
+   await page.screenshot({path:path.join(out,"event-hover.png"),
+                          timeout:25000,animations:"disabled"});
+   await page.mouse.down();
+   await page.waitForTimeout(380);
+   await page.screenshot({path:path.join(out,"event-down.png"),
+                          timeout:25000,animations:"disabled"});
+   await page.mouse.up();
+   await page.waitForTimeout(1700);
+   await page.screenshot({path:path.join(out,"event-up.png"),
+                          timeout:25000,animations:"disabled"});
+   const focus=await page.evaluate(()=>{
+     const e=document.querySelector("ruffle-embed");
+     return {active:document.activeElement?.tagName||null,
+             shadowActive:e?.shadowRoot?.activeElement?.tagName||null,
+             canvasCount:e?.shadowRoot?.querySelectorAll("canvas").length||0};
+   });
+   await page.evaluate(info=>window.__swHostRecord?.({
+     type:"button_mouseup_event_probe",location_relative:[385,568],
+     focus_after:info,action_execution_confirmed:false,
+     internal_movieclip_id_confirmed:null,wall_clock_ms:Date.now()
+   }),focus);
+ }
  if(introProbe){
    // The 5D.8C video showed a "RESCUE YOUR COMRADE!" intro dialog that
    // covered the map. Test its visible OK button before probing units.
