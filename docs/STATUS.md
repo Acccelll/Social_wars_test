@@ -112,3 +112,13 @@ Os arquivos `Social_Wars_0.02a_AVM2_Lote3C.zip` até os lotes 3I foram entregues
 - CSV geral e seis relatórios de eventos por quadro gerados como
   artefato temporário. Nenhum asset original foi commitado.
 - Animações controladas dinamicamente por AS3 não foram recriadas.
+
+## Registro final 5D.4
+
+Workflow final [39297904335](https://github.com/Acccelll/Social_wars_test/actions/runs/39297904335):
+**sucesso**, 1.118/1.118 SWFs, 5 testes sintéticos aprovados.
+Inventário permanente: [timeline_inventory.csv](../data/visual/timeline_inventory.csv)
+e [seis timelines compactadas](../data/visual/timeline_details).
+As duas operações PlaceObject3 com decodificação parcial foram preservadas
+em hex nos eventos `place_raw`; nenhuma animação AS3 dinâmica
+foi reconstruída por este procedimento.

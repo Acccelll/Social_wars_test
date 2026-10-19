@@ -75,3 +75,30 @@ O script usa exclusivamente a biblioteca padrão do Python.
 vinculadas ao SWF e `character_id`, e um catálogo navegável de
 unidades, construções e interface. Não é necessária uma nova
 exportação massiva de todos os frames do jogo.
+
+## Resultado final registrado de forma permanente
+
+A execução [39297904335](https://github.com/Acccelll/Social_wars_test/actions/runs/39297904335)
+foi aprovada e publicou os metadados na branch `main`:
+[commit 039abaad](https://github.com/Acccelll/Social_wars_test/commit/039abaad88e59c3f52a7099207ceaed7962a05dd).
+
+- [`data/visual/timeline_inventory.csv`](../data/visual/timeline_inventory.csv):
+  resultado de todos os 1.118 SWFs (caminho, fps, frames, sprites e eventos).
+- [`data/visual/timeline_summary.json`](../data/visual/timeline_summary.json):
+  contagens e validação agregada.
+- [`data/visual/timeline_details/`](../data/visual/timeline_details):
+  seis arquivos compactados `*.timeline.json.gz` com os eventos ordenados
+  por quadro e as referências/transformações por sprite.
+- [Artefato CI](https://github.com/Acccelll/Social_wars_test/actions/runs/39297904335/artifacts/12208506655):
+  alternativa temporária de download.
+
+O teste sintético foi ampliado para **5 testes aprovados**.
+Os dois eventos PlaceObject3 com campos ainda não interpretados
+(`Basesec` sprite ID 677, quadro 8; sprite ID 802, quadro 1)
+são conservados também como `place_raw` com `raw_hex` nos detalhes,
+permitindo investigação posterior **sem perder os bytes originais**.
+Ambos permanecem sinalizados como advertência, e não como
+interpretação 100% resolvida.
+
+**Status 5D.4 estrutural: concluído.** A reconstrução dinâmica
+de animações (5D.4B/5D.4C) continua pendente.

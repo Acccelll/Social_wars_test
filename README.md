@@ -97,3 +97,8 @@ e **2.782.788 eventos de posicionamento**. Foram registrados
 quadros, relações de dependência entre sprites, identidades e
 transformações presentes nos tags Flash. O conjunto ainda não
 corresponde à reprodução completa de animações em runtime.
+
+A extração de timelines já está **registrada permanentemente** em
+[data/visual/timeline_inventory.csv](data/visual/timeline_inventory.csv)
+e nos [seis exemplos detalhados](data/visual/timeline_details), sem
+necessidade de baixar artefatos temporários para consultar os metadados.
