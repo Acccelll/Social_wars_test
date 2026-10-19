@@ -15,7 +15,7 @@ Consolidar em um único repositório o conhecimento e os protótipos obtidos a p
 - Reconstrução parcial dos métodos de dano, inteligência artificial e movimentação.
 - Port experimental do algoritmo A* em ActionScript 3, com verificação específica da regra de custo `g`.
 - Adaptação experimental do contrato `NodesPath` / `IsoUnit`.
-- Pipeline reproduzível de compilação e **execução de um SWF experimental em Ruffle/Chromium, com 8/8 testes AS3 aprovados** (Lote 5B).
+- Pipeline reproduzível que compilou e executou **dois SWFs experimentais** em Ruffle/Chromium: **8/8 testes A*** e **15/15 testes de contratos NodesPath/IsoUnit** (Lote 5C).
 
 Leia [STATUS.md](docs/STATUS.md), [ARQUITETURA.md](docs/ARQUITETURA.md) e [ROADMAP.md](docs/ROADMAP.md).
 
@@ -24,6 +24,7 @@ Leia [STATUS.md](docs/STATUS.md), [ARQUITETURA.md](docs/ARQUITETURA.md) e [ROADM
 | Diretório | Conteúdo |
 |---|---|
 | `as3/src/com/socialpoint/astar/recovered/` | Reconstituições experimentais em ActionScript 3 |
+| `as3/contract_harness/` | Doubles isolados de contratos com nomes originais (NÃO integrar ao jogo real) |
 | `tools/` | Scripts de verificação e compilação |
 | `tests/ruffle/` | Teste de execução do SWF real em Chromium/Ruffle, com relatório e captura de tela |
 | `docs/` | Resultados dos lotes, limitações, roteiro de continuidade |
@@ -51,4 +52,4 @@ Este repositório **não inclui** o jogo, o servidor original, recursos gráfico
 
 ## Próximo passo
 
-**Lotes 5A e 5B concluídos:** o SWF experimental foi compilado com Flex e executado em Chromium/Ruffle: **8/8 testes AS3 aprovados** na [execução CI 39260961090](https://github.com/Acccelll/Social_wars_test/actions/runs/39260961090). Veja [LOTE_5B.md](docs/LOTE_5B.md). **Próximo lote 5C:** confrontar a lógica com o SWF original e preparar o adaptador tipado. Ainda não recompilamos o jogo completo.
+**Lote 5C.1 concluído:** o workflow [39262967632](https://github.com/Acccelll/Social_wars_test/actions/runs/39262967632) compilou e executou dois SWFs experimentais com **23/23 verificações aprovadas**. Veja [LOTE_5C.md](docs/LOTE_5C.md) e [MATRIZ_COMPATIBILIDADE_5C.md](docs/MATRIZ_COMPATIBILIDADE_5C.md). **Próximo lote 5C.2:** comparação de saídas com o cliente original. O jogo completo ainda não foi recompilado.

@@ -36,7 +36,8 @@ SHA-256 do SWF de referência: `e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117
 | `IsoUnit.setMove/updateMove` | Consumo de pontos `aNodes[0]`, `TileToPixel`, `splice` identificado | 3H |
 | `IsoUnit.aNodes` | Setter tipado para NodesPath e evento `onMoveStart(isAI)` identificados | 3I |
 | Probe `AS3Probe` | **SWF compilado e executado em Chromium/Ruffle**, 8/8 casos ActionScript aprovados (via ExternalInterface); não é o cliente integral | 5B |
-| Projeto AS3 completo recompilável | NÃO EXISTE ainda | 5A pendente |
+| Contratos nominais NodesPath/IsoUnit | **15/15 testes Ruffle** aprovados em doubles isolados (5C.1); cliente real NÃO integrado | 5C.1 |
+| Projeto AS3 completo recompilável | NÃO EXISTE ainda | futuro |
 | Port HTML5 sem Flash | NÃO EXISTE ainda | futuro |
 
 ## Testes registrados nos lotes prévios
@@ -47,6 +48,7 @@ SHA-256 do SWF de referência: `e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117
 - 3I: 38 verificações de contrato em P-code/modelo, **não** no runtime AS3.
 - **Lote 5A (19/10/2026):** primeiro `AS3Probe.swf` compilado com Apache Flex 4.16.1/Flash 32.0 no GitHub Actions, com cabeçalho válido.
 - **Lote 5B (19/10/2026):** SWF executado **realmente** em Chromium/Ruffle 0.7.1; `ExternalInterface` devolveu `SWTEST:SUMMARY pass=8 fail=0`, 11 sinais totais e 0 erros. O `traceObserver` retornou 0 mensagens nesta configuração. Execução [39260961090](https://github.com/Acccelll/Social_wars_test/actions/runs/39260961090). Testes do **protótipo**, não paridade com o jogo original.
+- **Lote 5C.1 (19/10/2026):** outro SWF `ContractProbe.swf` compilado e executado no Chromium/Ruffle; **15/15 contratos** aprovados (setter tipado, evento manual/IA, Proxy, conversão de rota, cópia independente). O `AS3Probe.swf` anterior também foi aprovado **8/8**. Workflow [39262967632](https://github.com/Acccelll/Social_wars_test/actions/runs/39262967632). **Não** foi executado o cliente original nesses testes.
 
 Os códigos neste repositório são **protótipos**. A compilação e execução **do AS3Probe** foram demonstradas no runtime Ruffle. A reconstrução, compilação e validação **do jogo completo** continuam pendentes.
 

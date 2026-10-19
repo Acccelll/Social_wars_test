@@ -57,3 +57,26 @@ dados e/ou instrumentar execução do SWF original e comparar:
 - eventos de atualização e conclusão do movimento.
 
 O jogo do usuário e seus salvamentos permanecem intocados.
+
+## Execução concluída — 19/10/2026
+
+- Pipeline: https://github.com/Acccelll/Social_wars_test/actions/runs/39262967632
+- Resultado GitHub Actions: **success**.
+- `AS3Probe.swf`: **8 PASS, 0 FAIL**; teste já exercitado no 5B.
+- `ContractProbe.swf`: **15 PASS, 0 FAIL**; código executado no Ruffle.
+- SWF carregado (prova A*): **7.628 bytes**.
+- SWF carregado (contratos nominais): **4.687 bytes**.
+- Canal de verificação: **ExternalInterface** (mensagens ActionScript consumidas pelo JavaScript).
+- Artefato dos dois SWFs: `social-wars-as3-probe`, ID **12191402903**.
+- Relatórios e capturas de tela: `social-wars-ruffle-smoke`, ID **12190828019**.
+- Os dois casos retornaram erros de navegador **[]**.
+
+**Aceite deste sublote (5C.1): APROVADO.** O código testado é de
+nossa própria implementação isolada. A verificação não comprova
+compatibilidade binária com o SWF real, nem comparação de trajetórias reais.
+
+**Próximo micro-lote (5C.2):** obter as saídas da versão original,
+montar fixtures `x,y,terrain,occupied,isAI` e confrontá-las com
+`AStarRecovered`. A instalação que já funciona no Windows é a
+referência final; não incluir `NodesPath.as` nem `IsoUnit.as` de
+`contract_harness` dentro dela.

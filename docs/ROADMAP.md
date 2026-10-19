@@ -17,7 +17,8 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 | 4B | Inicializador com Ruffle próprio | Planejado; não validado |
 | 5A | Estrutura AS3 e compilação automatizada do AS3Probe | **Concluído (build CI aprovado)** |
 | 5B | Executar `AS3Probe` no Ruffle, testar a rota e registrar resultados | **Concluído (8/8 runtime AS3, via ExternalInterface)** |
-| 5C | Comparar caminhos reais, colisões e IA com cliente SWF | **Próximo** |
+| 5C.1 | Harness isolado de contratos `IsoUnit`/`NodesPath` com dois SWFs testados | **Concluído (8/8 + 15/15 Ruffle)** |
+| 5C.2 | Comparar trajetórias, colisões e IA com o SWF **original** | **Próximo; pendente instrumentação original** |
 | 5D | Empacotar SWF modificado usando o servidor existente | Pendente |
 | 6A | Replanejar evolução de mecânicas e interface | Futuro |
 

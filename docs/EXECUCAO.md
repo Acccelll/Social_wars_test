@@ -33,3 +33,14 @@ No Windows, executar `tools/build_probe_windows.bat`. Em Linux, `tools/build_pro
 Se o jogo original funciona e o `AS3Probe` não, o bloqueio está na compilação/porta experimental; **não** representa falha do jogo original.
 
 Se a porta 5055 estiver ocupada, verificar o servidor já aberto antes de iniciar outra instância.
+
+## Lote 5C.1 — Prova de contrato nominal (isolada)
+
+Foi validado outro SWF gerado pela compilação de `as3/contract_harness/src/ContractProbe.as`:
+
+```bash
+bash tools/build_contract_probe_linux.sh
+SW_SMOKE_SWF=ContractProbe.swf SW_EXPECT_TESTS=15 npm run smoke --prefix tests/ruffle
+```
+
+Resultado da [execução CI 39262967632](https://github.com/Acccelll/Social_wars_test/actions/runs/39262967632): 15/15 no harness + 8/8 no probe de A*. Os **tipos fictícios com nomes iguais aos originais servem apenas para esse SWF de teste** e não devem ser combinados com os binários do jogo original.
