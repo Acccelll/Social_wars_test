@@ -7,7 +7,7 @@ if defined FLEX_HOME (
   set "MXMLC=mxmlc"
 )
 if not exist "%ROOT%\dist" mkdir "%ROOT%\dist"
-call "%MXMLC%" -source-path+="%ROOT%\as3\src" -output="%ROOT%\dist\AS3Probe.swf" "%ROOT%\as3\src\AS3Probe.as"
+call "%MXMLC%" -debug=true -omit-trace-statements=false -source-path+="%ROOT%\as3\src" -output="%ROOT%\dist\AS3Probe.swf" "%ROOT%\as3\src\AS3Probe.as"
 if errorlevel 1 (
   echo COMPILATION_FAILED_OR_COMPILER_UNAVAILABLE
   exit /b 1

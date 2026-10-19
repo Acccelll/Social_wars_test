@@ -19,6 +19,8 @@ mkdir -p "$ROOT/dist"
 echo "Compiling AS3Probe with: $COMPILER"
 "$COMPILER" \
   "-target-player=32.0" \
+  "-debug=true" \
+  "-omit-trace-statements=false" \
   "-static-link-runtime-shared-libraries=true" \
   "-source-path+=$ROOT/as3/src" \
   "-output=$ROOT/dist/AS3Probe.swf" \
