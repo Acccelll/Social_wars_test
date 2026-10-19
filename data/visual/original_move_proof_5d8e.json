@@ -1,0 +1,24 @@
+{
+  "protocol": "original_flask_command.php POST",
+  "result": "move_persisted",
+  "source": "official AcidCaos socialwarriors server.py/command.py",
+  "original_item_index": 41,
+  "original_unit_item_id": 1313,
+  "coordinates_before": [
+    52,
+    45
+  ],
+  "coordinates_after": [
+    53,
+    46
+  ],
+  "changed_map_object_count": 1,
+  "map_object_count": 44,
+  "before_sha256": "6059d9e9fd58041879d1c87f456871b6d25a01040ca831c0c0e91e66cc90c626",
+  "after_sha256": "a6b596c48f5546b1b9d0f358965778fd7ac0eaa49e4a15eb16f840ed8cbec010",
+  "saved_file": true,
+  "original_client_animation_observed": false,
+  "sprite_character_id_confirmed": null,
+  "tutorial_dialog_resolved": false,
+  "warning": "Server-side persisted move is not evidence of in-client movement animation."
+}

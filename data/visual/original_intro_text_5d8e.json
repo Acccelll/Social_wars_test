@@ -1,0 +1,296 @@
+{
+  "scope": "string evidence only, NOT Flash UI or AS3 control flow",
+  "swfs": {
+    "Basesec_1.5.4.swf": {
+      "uncompressed_body_bytes": 6089489,
+      "term_matches": {
+        "rescue your comrade": {
+          "occurrences": 2,
+          "samples": [
+            "ton_3 writeObject , count: Speed up for #0# RESCUE YOUR COMRADES! 100000502 100000509 Southeast iPixelY Number No robots close enough",
+            "DealSpotNPPIcon secerror: btn_laser_dragon RESCUE YOUR COMRADE!MDon't let the enemy launch the rocket! No flying units allowed on this"
+          ]
+        },
+        "rescue": {
+          "occurrences": 22,
+          "samples": [
+            "change done disableButtons _-6a DESCENDING rescueScene _-9 pushInAirFrom _-t qty removeElementByBuildRef _-3Y inventory g",
+            "ID_BUILDING_ORC_HEADQUATERS P_FIRE_BALL_BIG rescued ID_BUILDING_VIKING_HOUSE buyLabel updateChapterState ID_UNIT_FIREMAN S",
+            "AttackRange catIdCSteal the cargo ships and rescue your allies before the airstrike!. xpGainedBonus registrationPossible p",
+            "T Inupiak STATUS LANCE WHIRLWIND Now we can rescue our troops! cancelBSelect a worker and then click on the Corn Field you",
+            "blood all over the screen! Come back faster(RESCUE THE BAZOOKA SOLDIERS! (CHAPTER 3)OTo make it, we need to get into the r",
+            "2494811_1250.jpgfThis must be a coordinated rescue, we are running short on time Commander...May the force be with you! 51"
+          ]
+        },
+        "comrade": {
+          "occurrences": 9,
+          "samples": [
+            "t for a few seconds gost Building Null;Dear Comrade, i need your help on a very important mission. You can now buy:>Bunkers",
+            "yToObject Select Island Now we can free our comrades! TagalogXWe must prevent the enemy of building that megatank, otherwis",
+            "bject , count: Speed up for #0# RESCUE YOUR COMRADES! 100000502 100000509 Southeast iPixelY Number No robots close enough",
+            "ldiers, invade the West island and save our comrades. Don't rush, they have build trenches on key spots. Start _-5I 22 5 mi",
+            "1239_dark_ether_messiah_sw1 _-Al _-FM~Dear comrade, we have a last hour issue. Enemies have kidnapped Guille, one of are m",
+            "y improve your army!!CCooperating with your comrades will provide you with juicy rewards! getCategory&Check the results and"
+          ]
+        },
+        "tutorial": {
+          "occurrences": 48,
+          "samples": [
+            "ing1x1 - PopupCollectMC 2 IconCollect 6 IconTutorialMC 9 Loading2x2 < Loading3x3 @ FotoNeighbourMC C IconAssaultObjectivMC F",
+            "MC PopupGoalCompleteMC PopOverMC PopupTutorialMC y mcBuidaMC Tile2x2 Tile3x3 SelectionTeamWindowMC cross.Popup",
+            "enericMC EPSW_UnitMC EP_SpecialUnitMc TutorialTreesMC PopupResearchCenterMC tooltipColMC SpaceWarsAssets_fla.spe",
+            "move _-Er numAttacks PopupManager Date _-D2 tutorialMode MapInitializer AbstractGoal sentence SpawnDroneCondition tutorial i",
+            "r AbstractGoal sentence SpawnDroneCondition tutorial iLevel closeWindow _-2q getTimer _-DK chapterList _-56 destroy _list co",
+            "sts _-3O nextStep s filters fauxBar content TutorialMain EXPRESSION_ANGRY _data _damage _-Ak element _-4T stage goalProgre"
+          ]
+        },
+        "welcome": {
+          "occurrences": 13,
+          "samples": [
+            "p {@ 8N w 1 Welcome to men vs women P m Q @ 1 h wellcome",
+            "opupTitle $ \" C & T `welcomeMessage W ! ! & C`P M%0 butSki",
+            "j P i k w 1 Welcome to k P l g 2 0` 2 @ g@! < { \" d W 8 ` c m g",
+            "AY TOKEN_MANA statusbar makeGoalButton STEP_WELCOME SFX_BUMBLEBEE_MOVING _sourceList FEATURE_SELECT_STARTING_POINT st SFX_E",
+            "j setConstructionStepGraphic ID_UNIT_REAPER welcomeMessage wasTakingPartInRound insertMultiple getCurrentArmy TORNADO_DURAT",
+            ") memoryUsed 100000548 nebula_priest_mentor WELCOME, SOLDIER! ficha9 initFromFiles getLocale Greek Lethal Stomp Play #0#! ,"
+          ]
+        },
+        "mission": {
+          "occurrences": 186,
+          "samples": [
+            "info. k p4 ^' 1 INFO MISSION P s w . 1 BUILD TIME: 00:00:00",
+            "fffff\" letterSpacing=\"0.000000\" kerning=\"1\">Missions</font></p><p align=\"center\"><font face=\"Arial Rounded MT Bold\" size=\"1",
+            "fffff\" letterSpacing=\"0.000000\" kerning=\"1\">Missions</font></p> P & ] lbl",
+            "Counter & 0 mcCollect & 0 . mcMissions & = @y@squareTool \" & # Ff dz callAllies",
+            "\" letterSpacing=\"-1.000000\" kerning=\"0\">New Mission!</font></p> A & @ &] lbl #@ t B",
+            "t B Q 2 l & A P p newMission > K k @ S p @ & V$ p @ /tX p @"
+          ]
+        },
+        "quest": {
+          "occurrences": 318,
+          "samples": [
+            "buttonAuctions & h03[ buttonQuest & V/ buttonPVP & h( [ buttonWeeklyQuest @ R, +",
+            "V/ buttonPVP & h( [ buttonWeeklyQuest @ R, + JFIF C",
+            "% MORE XP & RESOURCES FROM: Players world, QUESTS, FACTORIES & COLLECTED RESOURCES! u P j v * 1 T",
+            "p w 1 popupLoadingQuest P R 1 t Collect the 4 gems t",
+            "o 9 ! Complete the quest with 1 star to unlock P T q 2",
+            "ic & lblFrequency & -, question @ o x FI 1 Possible Prizes P ?"
+          ]
+        },
+        "popup": {
+          "occurrences": 537,
+          "samples": [
+            "btnClose & 6h popupTitle & ,3 buildTimeTF & F 0` * c btnSpeedup & F 0`",
+            "OE ( l U 1 <popuptitle> P f x o A @ A * P",
+            "P k w 1 <popuptitle> P o ^ 3 <p align=\"cente",
+            "E X t n w d ;h 1 0 D< <popupBuilding> P ? p ` |2 {Gk# @ }",
+            "Zone @ @ k w p 1 X <popuptitle> P o S 3 <p align=\"cente",
+            "holder & P (9 { noBtn & %S popupTitle $ \" & l,[ yesBtn & C footer @"
+          ]
+        },
+        "dialog": {
+          "occurrences": 2,
+          "samples": [
+            "! (CHAPTER 11) ]</font> SPEAR MEGASHOT likeDialog SpawnElements _1070 btn_1220_special2 Rocket blast ru rw Not ready yet!",
+            "Battle Results onEscaparateMouseOut bookmarDialog You got #0#! Check the Store! eo Defeat the Orc Commander! Disc Saw Att"
+          ]
+        },
+        "close": {
+          "occurrences": 141,
+          "samples": [
+            "belTF @ K & btnClose & 6h popupTitle & ,3 buildTimeTF & F",
+            "\" &s dartsPlay &| E closeButt &~ help & 6 5 preview & R :@titl",
+            "iv T j ^ 0 & 5 closeButt 1 & 0 j 4 foto & 0 pack & 2 : :@txCash",
+            "w A , q & M closeButt & r d T lblTitle $ \" t & u M header1",
+            "hitZone { C & 9 : @closeButt & 9 e lblDescription ! & G btnGetIt @",
+            "desc & 0 friendFoto & F 4 lcloseButt & *pyesBtn @ } o h p R ( b ."
+          ]
+        },
+        "mouseevent": {
+          "occurrences": 1,
+          "samples": [
+            "rina.transitions chapters core.goals Number MouseEvent commands id addEventListener visible utils Math TargetElement cutscene."
+          ]
+        },
+        "click": {
+          "occurrences": 366,
+          "samples": [
+            "6 _ W@# xpGained j 6 L jx`@ clicksRemaining @ l l & bgBar &} . parteArribaGui &",
+            "ission & H h anim & I >* C@y) btnClick & btnHelp & J ( \\ mcGoal3 &# J mcGoal2 &' J",
+            "00000\" letterSpacing=\"0.000000\" kerning=\"1\">Click to buy</font></p> . P / , & - ~ lblForSale",
+            ", & - ~ lblForSale & . [ lblClick @ h 0 o - h \"-` A ex 49 3 )",
+            "fffff\" letterSpacing=\"0.000000\" kerning=\"1\">CLICK HERE!</font></p> P D 0 &",
+            "i @ @ m w ! @ Click to build P i o q ! @ 1/3 Builds P"
+          ]
+        }
+      }
+    },
+    "SWLoader.swf": {
+      "uncompressed_body_bytes": 143448,
+      "term_matches": {
+        "rescue your comrade": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "rescue": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "comrade": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "tutorial": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "welcome": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "mission": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "quest": {
+          "occurrences": 1,
+          "samples": [
+            "ash.events:EventDispatcher Object file URLRequest flash.net ur URLLoader uld URLLoaderDataFormat BINARY dataFormat IOErro"
+          ]
+        },
+        "popup": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "dialog": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "close": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "mouseevent": {
+          "occurrences": 0,
+          "samples": []
+        },
+        "click": {
+          "occurrences": 0,
+          "samples": []
+        }
+      }
+    }
+  },
+  "config_matches": {
+    "get_game_config.php_29august2012_nohash.json": {
+      "mission": {
+        "occurrences": 4,
+        "samples": [
+          "\"description\": \"Prepare you army... Your mission is to destroy 5 enemy buildings! Make sure you have enough units!\",",
+          "\"w\": 20000 }, \"NUM_ACTIVE_MISSIONS\": 5, \"COLLECT_MINUTES\": [ 5, 60,",
+          "4.0,4.0.0,3.23.0,7.0.0,4.33.0\", \"PERMISSION_PACK_UNITS\": [ 10, 20, 30,",
+          "30, 40 ], \"PERMISSION_COSTS\": { \"10\": 10, \"20\": 20, \"30\":"
+        ]
+      },
+      "quest": {
+        "occurrences": 231,
+        "samples": [
+          "_bestciv2_5,megabot_NEW,reptilegun_NEW,NEWS_QUESTS,NEWS_QUESTS19_20,NEWS_casa_subasta,news_laboratory,new_wonder,NEWS_ALL",
+          "megabot_NEW,reptilegun_NEW,NEWS_QUESTS,NEWS_QUESTS19_20,NEWS_casa_subasta,news_laboratory,new_wonder,NEWS_ALLIANCE,new_pr",
+          "S_ALLIANCE,new_premium2,NEWS_SHOTTING,4_NEW_QUEST,new_xp,NEWS_tanques_helicopteros5,NEWS_tanques_helicopteros4,NEWS_massi",
+          "NIDO_ROBOTS,NEWS_recruitmentcenter,NEWS_new_quest,NEWS_mr_t,NEWS_healer,NEWS_mecanico,news_aviones_2,NEWS_fortress,NEWS_w",
+          "0 } ], \"REWARDS_QUESTS\": [ {}, { \"g\": 1500,",
+          "\": 50, \"CASH_WONDER\": 176, \"QUESTS_MIN_LEVELS\": { \"100000021\": 40, \"100000022\": 4"
+        ]
+      },
+      "popup": {
+        "occurrences": 13,
+        "samples": [
+          "_offer_building.png\": \"en\", \"button_popupDragonCenter.png\": \"en\", \"button_popupRecruitment.png\": \"en\",",
+          "pupDragonCenter.png\": \"en\", \"button_popupRecruitment.png\": \"en\", \"button_popupRoboticCenter.png\": \"en\",",
+          "opupRecruitment.png\": \"en\", \"button_popupRoboticCenter.png\": \"en\", \"collect_g0.jpg\": \"en\", \"colle",
+          ": \"en\", \"PILA4.jpg\": \"en\", \"popupRecruitment_1046.jpg\": \"en\", \"popupRecruitment_1048.jpg\": \"en\",",
+          "\"popupRecruitment_1046.jpg\": \"en\", \"popupRecruitment_1048.jpg\": \"en\", \"popupRecruitment_1050.jpg\": \"en\",",
+          "\"popupRecruitment_1048.jpg\": \"en\", \"popupRecruitment_1050.jpg\": \"en\", \"popupRecruitment_1051.jpg\": \"en\","
+        ]
+      },
+      "click": {
+        "occurrences": 844,
+        "samples": [
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_"
+        ]
+      }
+    },
+    "main.json": {
+      "mission": {
+        "occurrences": 4,
+        "samples": [
+          "\"description\": \"Prepare you army... Your mission is to destroy 5 enemy buildings! Make sure you have enough units!\",",
+          "\"w\": 20000 }, \"NUM_ACTIVE_MISSIONS\": 5, \"COLLECT_MINUTES\": [ 5, 60,",
+          "4.0,4.0.0,3.23.0,7.0.0,4.33.0\", \"PERMISSION_PACK_UNITS\": [ 10, 20, 30,",
+          "30, 40 ], \"PERMISSION_COSTS\": { \"10\": 10, \"20\": 20, \"30\":"
+        ]
+      },
+      "quest": {
+        "occurrences": 231,
+        "samples": [
+          "_bestciv2_5,megabot_NEW,reptilegun_NEW,NEWS_QUESTS,NEWS_QUESTS19_20,NEWS_casa_subasta,news_laboratory,new_wonder,NEWS_ALL",
+          "megabot_NEW,reptilegun_NEW,NEWS_QUESTS,NEWS_QUESTS19_20,NEWS_casa_subasta,news_laboratory,new_wonder,NEWS_ALLIANCE,new_pr",
+          "S_ALLIANCE,new_premium2,NEWS_SHOTTING,4_NEW_QUEST,new_xp,NEWS_tanques_helicopteros5,NEWS_tanques_helicopteros4,NEWS_massi",
+          "NIDO_ROBOTS,NEWS_recruitmentcenter,NEWS_new_quest,NEWS_mr_t,NEWS_healer,NEWS_mecanico,news_aviones_2,NEWS_fortress,NEWS_w",
+          "0 } ], \"REWARDS_QUESTS\": [ {}, { \"g\": 1500,",
+          "\": 50, \"CASH_WONDER\": 176, \"QUESTS_MIN_LEVELS\": { \"100000021\": 40, \"100000022\": 4"
+        ]
+      },
+      "popup": {
+        "occurrences": 13,
+        "samples": [
+          "_offer_building.png\": \"en\", \"button_popupDragonCenter.png\": \"en\", \"button_popupRecruitment.png\": \"en\",",
+          "pupDragonCenter.png\": \"en\", \"button_popupRecruitment.png\": \"en\", \"button_popupRoboticCenter.png\": \"en\",",
+          "opupRecruitment.png\": \"en\", \"button_popupRoboticCenter.png\": \"en\", \"collect_g0.jpg\": \"en\", \"colle",
+          ": \"en\", \"PILA4.jpg\": \"en\", \"popupRecruitment_1046.jpg\": \"en\", \"popupRecruitment_1048.jpg\": \"en\",",
+          "\"popupRecruitment_1046.jpg\": \"en\", \"popupRecruitment_1048.jpg\": \"en\", \"popupRecruitment_1050.jpg\": \"en\",",
+          "\"popupRecruitment_1048.jpg\": \"en\", \"popupRecruitment_1050.jpg\": \"en\", \"popupRecruitment_1051.jpg\": \"en\","
+        ]
+      },
+      "click": {
+        "occurrences": 844,
+        "samples": [
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_",
+          "\"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_"
+        ]
+      }
+    },
+    "patch/atom_fusion_item.json": {
+      "click": {
+        "occurrences": 1,
+        "samples": [
+          "\"cost_unit_cash\": \"0\", \"race\": \"-\", \"clicks_to_build\": \"1\", \"trains_ids\": \"-1\", \"upgrades_to\": \"-1\", \"bes"
+        ]
+      }
+    },
+    "patch/unit_patch.json": {
+      "click": {
+        "occurrences": 121,
+        "samples": [
+          ": \"4\", \"cost_unit_cash\": \"3\", \"race\": \"h\", \"clicks_to_build\": \"0\", \"trains_ids\": \"-1\", \"upgrades_to\": \"-1\", \"best_against",
+          ": \"1\", \"cost_unit_cash\": \"3\", \"race\": \"h\", \"clicks_to_build\": \"0\", \"trains_ids\": \"-1\", \"upgrades_to\": \"-1\", \"best_against",
+          ": \"4\", \"cost_unit_cash\": \"3\", \"race\": \"h\", \"clicks_to_build\": \"0\", \"trains_ids\": \"-1\", \"upgrades_to\": \"-1\", \"best_against",
+          ": \"1\", \"cost_unit_cash\": \"3\", \"race\": \"h\", \"clicks_to_build\": \"0\", \"trains_ids\": \"-1\", \"upgrades_to\": \"-1\", \"best_against",
+          ": \"4\", \"cost_unit_cash\": \"3\", \"race\": \"h\", \"clicks_to_build\": \"0\", \"trains_ids\": \"-1\", \"upgrades_to\": \"-1\", \"best_against",
+          ": \"1\", \"cost_unit_cash\": \"3\", \"race\": \"h\", \"clicks_to_build\": \"0\", \"trains_ids\": \"-1\", \"upgrades_to\": \"-1\", \"best_against"
+        ]
+      }
+    }
+  },
+  "likely_tutorial_code_located": false
+}
