@@ -66,3 +66,12 @@ Os arquivos `Social_Wars_0.02a_AVM2_Lote3C.zip` até os lotes 3I foram entregues
 - Sprites declaram **400.023 quadros de timeline**, não imagens únicas.
 - SWF principal `Basesec_1.5.4.swf`: **369 bitmaps, 1.468 shapes, 4 morphshapes, 1.224 sprites, 52 botões**, SHA-256 corresponde à referência.
 - [`tools/visual_extract.py`](../tools/visual_extract.py) permite processar lotes com FFDec; a extração integral de PNG/SVG e de animações **não está concluída**.
+
+## Prova de exportação do SWF principal — 5D.2
+
+- Workflow [39277803644](https://github.com/Acccelll/Social_wars_test/actions/runs/39277803644): **success**.
+- JPEXS FFDec 26.3.0 exportou **369/369 definições de bitmaps** de `Basesec_1.5.4.swf`, **0 erros**.
+- Tempo do comando FFDec: aproximadamente **5,09 segundos**.
+- Pasta de saída: aproximadamente **9,7 MB**.
+- Artefato temporário: [social-wars-visual-export-sample](https://github.com/Acccelll/Social_wars_test/actions/runs/39277803644/artifacts/12198640486) (ID 12198640486; expira em 20/10/2026).
+- A exportação completa dos outros SWFs e das animações ainda NÃO foi finalizada. Não interpretar este resultado como descompilação integral de todas as imagens.

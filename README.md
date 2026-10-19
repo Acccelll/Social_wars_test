@@ -61,3 +61,7 @@ Este repositório **não inclui** o jogo, o servidor original, recursos gráfico
 O [inventário completo](docs/LOTE_5D.md) da distribuição oficial 0.02a percorreu **1.118 SWFs** e **1.899 imagens externas**. Foram localizadas **41.069 definições de bitmaps**, **62.318 formas vetoriais** e **43.426 sprites**, além de morphshapes e botões. Essas definições **ainda não representam PNGs exportados**. Use o exportador local por lotes para preservar recursos fora do repositório público.
 
 GitHub Actions: [inventário de 0.02a](https://github.com/Acccelll/Social_wars_test/actions/runs/39277345729).
+
+## Exportação visual verificada
+
+Em 19/10/2026, o [GitHub Actions 39277803644](https://github.com/Acccelll/Social_wars_test/actions/runs/39277803644) exportou **369 bitmaps** de `Basesec_1.5.4.swf`, sem erros, usando JPEXS FFDec 26.3.0. Essa é uma extração real em PNG/JPEG (não apenas contagem de tags). Os recursos **não foram commitados**; pacote disponível temporariamente na página da execução. A exportação das demais imagens e animações continua em lotes.

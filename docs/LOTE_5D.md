@@ -143,3 +143,21 @@ py -3 tools/extract_external_images.py --archive "social-warriors_0.02a.zip" --o
 
 O GitHub Actions [Export Direct Image Files 0.02a](../.github/workflows/visual-external.yml)
 também gera um artefato temporário de imagens separado do código.
+
+## Primeira extração real verificada (5D.2)
+
+A execução do exportador no GitHub Actions foi concluída com **success**:
+
+- Execução: https://github.com/Acccelll/Social_wars_test/actions/runs/39277803644
+- FFDec exportou **369 imagens** de `Basesec_1.5.4.swf`, conforme
+  contagem original das 369 tags de bitmap.
+- `VISUAL_EXPORT_SUMMARY`: `swf_attempted=1`,
+  `swf_exported=1`, `exported_files=369`, `external_files=0`.
+- Falhas: **0**; tempo do comando de extração ~5,09 segundos.
+- Saída ~9,7 MB, organizada por origem SWF.
+- Artefato: [social-wars-visual-export-sample](https://github.com/Acccelll/Social_wars_test/actions/runs/39277803644/artifacts/12198640486),
+  **ID 12198640486**. Retenção de 1 dia, até 20/10/2026.
+
+Isso comprova que o FFDec funciona para **bitmaps do cliente principal**.
+Vetores, sprites e animações do mesmo SWF, e bitmaps dos outros
+1.117 arquivos SWF, continuam pendentes de exportação em lotes.
