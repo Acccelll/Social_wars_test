@@ -15,7 +15,7 @@
     if(!el)return null;const r=el.getBoundingClientRect();
     return {x:r.x,y:r.y,width:r.width,height:r.height}}
   function record(type,data){
-    const x={type,relative_ms:Math.round(performance.now()-t0),...data};
+    const x={type,relative_ms:Math.round(performance.now()-t0),wall_clock_ms:Date.now(),...data};
     entries.push(x);
     if(typeof window.__swHostRecord==="function")
       Promise.resolve(window.__swHostRecord(x)).catch(()=>{});
