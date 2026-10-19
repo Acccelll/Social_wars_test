@@ -1,0 +1,53 @@
+name: Handoff Repository Snapshot
+
+on:
+  push:
+    paths:
+      - ".github/workflows/handoff-repo-snapshot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Package all tracked repository files at exact SHA
+        run: |
+          mkdir -p dist/handoff/repository
+          git ls-files -z | tar --null --files-from=- -cf - | tar -xf - -C dist/handoff/repository
+          git rev-parse HEAD > dist/handoff/COMMIT_SHA.txt
+          git remote -v > dist/handoff/GIT_REMOTE.txt
+          git ls-files > dist/handoff/TRACKED_FILES.txt
+          git status --porcelain > dist/handoff/WORKTREE_STATUS.txt
+          test -f dist/handoff/repository/docs/LOTE_5D_8F.md
+          test -f dist/handoff/repository/tools/tutorial_as3_probe_5d8f.py
+          python3 - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          root=Path('dist/handoff/repository')
+          paths=[p for p in root.rglob('*') if p.is_file()]
+          stats={
+             'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+             'tracked_files':len(paths),
+             'sha256':{str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()
+                       for p in sorted(paths)}
+          }
+          Path('dist/handoff/MANIFEST.json').write_text(json.dumps(stats,indent=2)+'\\n')
+          print('HANDOFF_SNAPSHOT',stats['head_sha'],stats['tracked_files'])
+          assert stats['tracked_files']>=115
+          PY
+
+      - name: Upload exact source tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-rebuild-source-snapshot
+          path: dist/handoff/
+          if-no-files-found: error
+          retention-days: 14
