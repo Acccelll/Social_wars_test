@@ -5,6 +5,7 @@ on:
     paths:
       - 'as3/**'
       - 'tools/**'
+      - 'tests/ruffle/**'
       - '.github/workflows/as3-probe.yml'
   workflow_dispatch:
 
@@ -12,14 +13,14 @@ permissions:
   contents: read
 
 jobs:
-  compile-as3-probe:
+  compile-and-run-as3-probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Setup Java 8 (compatible with Flex 4.16.1)
+      - name: Setup Java 8 for Flex
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -45,10 +46,36 @@ jobs:
           print(f"SWF header {data[:3]!r}, size {len(data)} bytes")
           PY
 
+      - name: Setup Node for Ruffle smoke test
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Ruffle and Playwright
+        run: npm install --prefix tests/ruffle --no-audit --no-fund
+
+      - name: Install headless Chromium
+        run: |
+          cd tests/ruffle
+          npx playwright install chromium --with-deps
+
+      - name: Run actual SWF inside Ruffle
+        run: npm run smoke --prefix tests/ruffle
+
       - name: Upload SWF proof of concept
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: social-wars-as3-probe
           path: dist/AS3Probe.swf
-          if-no-files-found: error
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload Ruffle smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-ruffle-smoke
+          path: dist/ruffle-smoke/
+          if-no-files-found: warn
           retention-days: 14

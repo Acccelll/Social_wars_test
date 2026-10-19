@@ -1,0 +1,13 @@
+{
+  "name": "social-wars-ruffle-smoke",
+  "private": true,
+  "type": "module",
+  "description": "Headless Chromium and Ruffle smoke test for the AS3 probe",
+  "scripts": {
+    "smoke": "node smoke.mjs"
+  },
+  "dependencies": {
+    "@ruffle-rs/ruffle": "0.7.1",
+    "playwright": "1.58.2"
+  }
+}

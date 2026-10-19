@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Social Wars — AS3Probe Ruffle Smoke</title>
+  <style>
+    body{margin:0;background:#101722;color:#e7f1fa;font:14px sans-serif}
+    #container{width:800px;height:500px;margin:14px auto;background:#202d3b}
+    #message{padding:10px}
+  </style>
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      publicPath: "/tests/ruffle/node_modules/@ruffle-rs/ruffle/",
+      polyfills: false,
+      autoplay: "on",
+      unmuteOverlay: "hidden",
+      logLevel: "warn",
+      warnOnUnsupportedContent: false
+    };
+    window.__swTrace = [];
+    window.__swDone = false;
+    window.__swError = null;
+  </script>
+  <script src="/tests/ruffle/node_modules/@ruffle-rs/ruffle/ruffle.js"></script>
+</head>
+<body>
+  <div id="container"></div>
+  <div id="message">Inicializando Ruffle...</div>
+  <script>
+    (async function () {
+      try {
+        const player = window.RufflePlayer.newest().createPlayer();
+        document.getElementById("container").appendChild(player);
+        player.ruffle().traceObserver = function (message) {
+          const str = String(message).trim();
+          window.__swTrace.push(str);
+          console.log("AVM2_TRACE " + str);
+          if (str.indexOf("SWTEST:SUMMARY ") === 0) {
+            window.__swDone = true;
+            document.getElementById("message").textContent = str;
+          }
+        };
+        await player.ruffle().load("/dist/AS3Probe.swf");
+        window.__swLoaded = true;
+      } catch (e) {
+        window.__swError = String(e && e.stack || e);
+        console.error("Ruffle load error:", e);
+      }
+    })();
+  </script>
+</body>
+</html>
