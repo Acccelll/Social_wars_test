@@ -123,11 +123,15 @@ def main():
                 (root/(name[:-4]+".ffdec.log")).write_text(run.stdout[-3000:],
                                                            encoding="utf-8")
                 gifs=list(output.rglob("*.gif"))
-                print("PREVIEW_GIFS",name,len(gifs),[g.name for g in gifs[:15]],flush=True)
+                print("PREVIEW_GIFS",name,len(gifs),
+                      [str(g.relative_to(output)) for g in gifs[:15]],flush=True)
                 for row in selection:
                     cid=str(row["id"])
+                    # FFDec sprite:gif stores frames.gif under a directory
+                    # identifying the sprite, rather than naming it ID.gif.
                     candidates=[p for p in gifs if re.search(
-                        r"(?<![0-9])"+re.escape(cid)+r"(?![0-9])",p.stem)]
+                        r"(?<![0-9])"+re.escape(cid)+r"(?![0-9])",
+                        p.relative_to(output).as_posix())]
                     if not candidates:
                         row["error"]="GIF inexistente para o sprite ID "+cid
                         continue
