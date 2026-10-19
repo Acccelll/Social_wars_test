@@ -1,0 +1,121 @@
+name: Original Client Movement 5D.8G
+
+on:
+  push:
+    paths:
+      - '.github/workflows/original-client-move-5d8g.yml'
+      - 'tests/original/client_move_5d8g.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: original-client-move-5d8g
+  cancel-in-progress: false
+
+jobs:
+  original-client-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate original fixture and recorder syntax
+        run: |
+          python tools/seed_original_units_5d8c_test.py
+          node --check tests/original/client_move_5d8g.mjs
+      - name: Install Playwright and Ruffle
+        run: |
+          npm install --prefix tests/ruffle --no-audit --no-fund
+          npx --prefix tests/ruffle playwright install chromium
+          node tests/original/test.mjs
+      - name: Download original Social Wars distribution and Flask source
+        run: |
+          mkdir -p runtime/release
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = '492630085'
+          unzip -q runtime/release.zip -d runtime/release
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          asset_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          git clone --depth 1 --filter=blob:none --sparse \
+            'https://github.com/AcidCaos/socialwarriors.git' runtime/source
+          git -C runtime/source sparse-checkout set config villages templates stub mods
+          ln -s "$asset_dir" runtime/source/assets
+          test -f runtime/source/server.py
+          mkdir -p runtime/source/saves
+          test -z "$(find runtime/source/saves -name '*.save.json' -print -quit)"
+          echo "SW_SERVER_DIR=$(realpath runtime/source)" >> "$GITHUB_ENV"
+      - name: Verify original unit IDs and seed disposable map
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          patch=json.loads(Path('runtime/source/config/patch/unit_patch.json').read_text())
+          catalog={int(row['value']['id']):row['value'] for row in patch
+                   if isinstance(row,dict) and isinstance(row.get('value'),dict)
+                   and 'id' in row['value']}
+          for key in (1313,1358,1376):
+              assert catalog[key]['type']=='u'
+              print('ORIGINAL_UNIT_VERIFIED',key,catalog[key]['name'])
+          PY
+          python tools/seed_original_units_5d8c.py \
+            --initial "$SW_SERVER_DIR/villages/initial.json" \
+            --out "$SW_SERVER_DIR/villages/initial_for_test.json" \
+            --manifest runtime/fixture_5d8c.json
+          mv "$SW_SERVER_DIR/villages/initial_for_test.json" "$SW_SERVER_DIR/villages/initial.json"
+      - name: Start original Flask on loopback
+        run: |
+          python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+          cd "$SW_SERVER_DIR"
+          nohup python -u server.py --host 127.0.0.1 --port 5055 \
+            > "$GITHUB_WORKSPACE/runtime/server-private.log" 2>&1 &
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5055/health; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Click original SWF units and observe native move requests
+        run: |
+          node tests/original/client_move_5d8g.mjs \
+            --server 'http://127.0.0.1:5055' \
+            --save-dir "$SW_SERVER_DIR/saves" \
+            --fixture runtime/fixture_5d8c.json \
+            --out dist/client-move-5d8g
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('dist/client-move-5d8g')
+          r=json.loads((p/'report.json').read_text())
+          assert r['original_swf_untouched'] and r['no_synthetic_move_posts']
+          assert r['modal_ok_clicks']==2 and r['attempts']>0
+          assert len(list(p.glob('probe-*-selected.png')))==r['attempts']
+          assert len(list(p.glob('probe-*-destination.png')))==r['attempts']
+          assert (p/'session.webm').stat().st_size>1000
+          print('ORIGINAL_5D8G',json.dumps({
+             'client_move_and_save_persistence_matched':r['browser_move_and_save_persistence_matched'],
+             'browser_move_count':r['browser_move_count'],
+             'moved_seeded_units':r['moved_seeded_units'],
+             'attempts':r['attempts'],
+             'request_count':r['request_count'],
+             'animation_visual_confirmed':r['animation_visual_confirmed']
+          }))
+          PY
+      - name: Upload sanitized movement report, screenshots and video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-client-move-5d8g
+          path: |
+            dist/client-move-5d8g/
+            runtime/fixture_5d8c.json
+          retention-days: 14
+          if-no-files-found: warn
