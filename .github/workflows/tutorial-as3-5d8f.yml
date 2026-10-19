@@ -1,0 +1,90 @@
+name: Tutorial ActionScript Inspection 5D.8F
+
+on:
+  push:
+    paths:
+      - ".github/workflows/tutorial-as3-5d8f.yml"
+      - "tools/tutorial_as3_probe_5d8f.py"
+      - "tools/tutorial_as3_probe_5d8f_test.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tutorial-as3-5d8f
+  cancel-in-progress: false
+
+jobs:
+  decompile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 23
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Run offline AS3 parsing and origin-integrity tests
+        run: python3 tools/tutorial_as3_probe_5d8f_test.py
+
+      - name: Download unchanged original distribution
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Download FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Inspect AVM2 class dump and decompile selected popup classes
+        run: |
+          python3 tools/tutorial_as3_probe_5d8f.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/tutorial-as3-5d8f
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          meta=json.loads(Path("dist/tutorial-as3-5d8f/tutorial_as3_index.json").read_text())
+          assert len(meta["original_sha256"])==64
+          assert meta["root_cause_verified"] is False
+          assert meta["runtime_modal_dismissed"] is False
+          print("TUTORIAL_AS3_INDEX_CHECK",json.dumps({
+            "found_classes":meta["dump_class_candidates"][:20],
+            "source_files":meta["as_source_files"],
+            "pcode_files":meta["pcode_files"]
+          }))
+          PY
+
+      - name: Commit only class/method summary metadata
+        run: |
+          cp dist/tutorial-as3-5d8f/tutorial_as3_index.json \
+            data/visual/tutorial_as3_index_5d8f.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/tutorial_as3_index_5d8f.json
+          if git diff --cached --quiet; then echo "AS3 metadata unchanged"; else
+            git commit -m "data(5D.8F): index original popup AS3 classes and method names"
+            git push origin HEAD:main
+          fi
+
+      - name: Upload selected decompilation only as temporary private CI artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-tutorial-as3-5d8f
+          path: dist/tutorial-as3-5d8f/
+          if-no-files-found: warn
+          retention-days: 1
