@@ -1,0 +1,79 @@
+name: Visual Gallery 5D.6
+
+on:
+  push:
+    paths:
+      - "tools/visual_gallery_5d6.py"
+      - "tools/visual_gallery_5d6_test.py"
+      - ".github/workflows/visual-gallery-5d6.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: visual-gallery-5d6
+  cancel-in-progress: false
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Unit tests
+        run: python3 tools/visual_gallery_5d6_test.py
+      - name: Install Pillow
+        run: python3 -m pip install --user Pillow
+      - name: Download official Social Warriors 0.02a
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+      - name: Plan category previews from original SWFs
+        run: |
+          python3 tools/visual_gallery_5d6.py --archive runtime/original.zip \
+            --out dist/gallery-5d6 --plan-only --strict
+      - name: Download JPEXS FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+      - name: Export category GIFs and HTML
+        run: |
+          python3 tools/visual_gallery_5d6.py \
+            --archive runtime/original.zip --ffdec "$FFDEC_JAR" \
+            --out dist/gallery-5d6 --strict
+          test -s dist/gallery-5d6/index.html
+          du -sh dist/gallery-5d6
+      - name: Persist metadata-only catalog
+        run: |
+          mkdir -p data/visual
+          cp dist/gallery-5d6/catalog.json data/visual/gallery_5d6.json
+          cp dist/gallery-5d6/catalog.csv data/visual/gallery_5d6.csv
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/gallery_5d6.*
+          if git diff --cached --quiet; then echo "Metadata unchanged."; else
+            git commit -m "data(visual): catalog categorized GIF previews 5D.6"
+            git push origin HEAD:main
+          fi
+      - name: Upload standalone gallery (GIFs outside Git)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-gallery-5d6
+          path: dist/gallery-5d6
+          if-no-files-found: warn
+          retention-days: 14
