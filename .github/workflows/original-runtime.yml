@@ -1,0 +1,103 @@
+name: Original Social Wars Ruffle Boot 5D.8
+
+on:
+  push:
+    paths:
+      - "tests/original/**"
+      - ".github/workflows/original-runtime.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Ruffle/Chromium tools and run observer unit test
+        run: |
+          npm install --prefix tests/ruffle --no-audit --no-fund
+          npx --prefix tests/ruffle playwright install chromium
+          node tests/original/test.mjs
+
+      - name: Download ORIGINAL 0.02a distribution into disposable workspace
+        run: |
+          mkdir -p runtime/release
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = "492630085"
+          unzip -q runtime/release.zip -d runtime/release
+          server_file="$(find runtime/release -name server.py -type f -print -quit)"
+          test -n "$server_file"
+          server_dir="$(dirname "$server_file")"
+          echo "SW_SERVER_DIR=$(realpath "$server_dir")" >> "$GITHUB_ENV"
+          test -f "$server_dir/assets/flash/Basesec_1.5.4.swf"
+          mkdir -p "$server_dir/saves"
+          echo "Disposable copy installed; no user saves are used."
+
+      - name: Install Flask server dependencies
+        run: |
+          python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+
+      - name: Start official Flask server in isolated release folder
+        run: |
+          cd "$SW_SERVER_DIR"
+          nohup python -u server.py --host 127.0.0.1 --port 5055 \
+            > "$GITHUB_WORKSPACE/runtime/server.log" 2>&1 &
+          echo "$!" > "$GITHUB_WORKSPACE/runtime/server.pid"
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5055/health; then
+              echo "Original Flask server ready."
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$GITHUB_WORKSPACE/runtime/server.log"
+          exit 1
+
+      - name: Observe real client loader and runtime in Chromium/Ruffle
+        run: |
+          node tests/original/record.mjs \
+            --server http://127.0.0.1:5055 \
+            --duration 18 --headless --create-test-village \
+            --out dist/original-observation
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("dist/original-observation/report.json")
+          result=json.loads(p.read_text())
+          assert result["serverVersion"]
+          assert result["injected"]
+          assert result["state"]["observer"]
+          assert result["state"]["ruffle"]
+          assert result["state"]["pathname"]=="/play.html"
+          assert any("SWLoader.swf" in x for x in result["request_paths"]), result["request_paths"]
+          print("ORIGINAL_CLIENT_BOOT_VALIDATED", json.dumps({
+            "original_server":result["serverVersion"],
+            "playerCount":result["state"]["rufflePlayerCount"],
+            "swfPaths":[p for p in result["request_paths"] if p.endswith(".swf")],
+            "endpoints":[p for p in result["request_paths"] if "/dynamic/" in p],
+            "errors":result["errors"][:5],
+          }))
+          PY
+
+      - name: Upload test screenshots, request paths and observer report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-original-runtime-5d8
+          path: |
+            dist/original-observation/
+            runtime/server.log
+          if-no-files-found: warn
+          retention-days: 14
