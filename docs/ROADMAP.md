@@ -47,7 +47,7 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 | 5D.8A | Carregar servidor original e observar requests/marks de UI em Chromium/Ruffle | **Concluído: CI original validado; 2 SWFs do catálogo requisitados no boot** |
 | 5D.8B | Registrar vídeo do original, clicar no Flash e medir mudanças visuais | **Captura concluída: 1 mudança visual; 0 ações específicas confirmadas** |
 | 5D.8C | Injetar unidades originais em vila descartável e sondar visibilidade no Ruffle | **Concluído: 3 SWFs requisitados, 3 mudanças visuais; estados de ação pendentes** |
-| 5D.8D | Validar unidade visível, movimento/ataque no jogo e ID interno do sprite | **Próximo** |
 
 | 5D.8D | Diagnosticar modal “Rescue Your Comrade” e clique/Enter no Ruffle | **Concluído como diagnóstico: botão não fecha apesar de clique atingir canvas** |
-| 5D.8E | Investigar diálogo original e movimentos pelo servidor descartável com evidências | **Próximo — 0 animações de gameplay confirmadas** |
+| 5D.8E | Comando MOVE original por HTTP, save verificado e busca de strings de tutorial | **Concluído: Splinter de (52,45) para (53,46); vídeo do movimento pendente** |
+| 5D.8F | Investigar PopupTutorialMC / TutorialMain e validar processamento da interface | **Próximo** |

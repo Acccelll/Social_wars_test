@@ -245,3 +245,13 @@ foi reconstruída por este procedimento.
   e [evidências visuais](https://github.com/Acccelll/Social_wars_test/actions/runs/39316722288/artifacts/12219005558).
 - **Nenhuma animação de movimento/ataque e nenhum character_id
   foram validados.**
+
+## Lote 5D.8E — Movimento real no servidor original
+
+- [Workflow aprovado 39318650244](https://github.com/Acccelll/Social_wars_test/actions/runs/39318650244), 6 testes Python concluídos.
+- Via endpoint original command.php, Splinter Mech (item 1313; índice 41) movido de **(52,45) para (53,46)**.
+- O save temporário foi reaberto; **1 de 44 itens** do mapa mudou, com identidade/dono intactos.
+- O SWF principal contém 2 referências à frase Rescue Your Comrade e 48 ao termo tutorial, mas a rotina responsável pelo OK permanece não identificada.
+- [Prova persistida](../data/visual/original_move_proof_5d8e.json) e [strings da missão](../data/visual/original_intro_text_5d8e.json).
+- **0 animações Ruffle e 0 IDs internos de sprite confirmados.**
+- Nenhum arquivo de jogo ou save do computador do usuário foi alterado.

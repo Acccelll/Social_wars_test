@@ -186,3 +186,14 @@ O [diagnóstico 5D.8D](docs/LOTE_5D_8D.md) identificou um modal
 Ruffle em resolução nativa, mas nem o OK nem Enter alteraram o
 diálogo na automação atual. Portanto, não houve comprovação
 de ações de mechas; a causa exata ainda está em investigação.
+
+## Movimento confirmado no servidor — 5D.8E
+
+O [Lote 5D.8E](docs/LOTE_5D_8E.md) comprovou um comando real
+MOVE por HTTP no servidor original, movimentando o Splinter Mech
+de **(52,45) para (53,46)** e alterando somente um objeto no save
+descartável. O workflow GitHub Actions concluiu com sucesso.
+
+A pesquisa do Flash encontrou referências ao tutorial e à janela
+Rescue Your Comrade, porém **a rotina do botão ainda não foi
+identificada e nenhuma animação em runtime foi comprovada**.
