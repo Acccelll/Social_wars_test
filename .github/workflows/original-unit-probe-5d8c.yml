@@ -1,0 +1,163 @@
+name: Original Unit Scenario 5D.8C
+
+on:
+  push:
+    paths:
+      - ".github/workflows/original-unit-probe-5d8c.yml"
+      - "tools/seed_original_units_5d8c.py"
+      - "tools/seed_original_units_5d8c_test.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: original-unit-probe-5d8c
+  cancel-in-progress: false
+
+jobs:
+  scenario:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate fixture and screenshot methods
+        run: |
+          python tools/seed_original_units_5d8c_test.py
+          python -m pip install pillow
+          python tools/analyze_runtime_5d8b_test.py
+
+      - name: Install browser and Ruffle
+        run: |
+          npm install --prefix tests/ruffle --no-audit --no-fund
+          npx --prefix tests/ruffle playwright install chromium
+          node tests/original/test.mjs
+
+      - name: Download original Social Wars distribution and Python server
+        run: |
+          mkdir -p runtime/release
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = "492630085"
+          unzip -q runtime/release.zip -d runtime/release
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          asset_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          git clone --depth 1 --filter=blob:none --sparse \
+            https://github.com/AcidCaos/socialwarriors.git runtime/source
+          git -C runtime/source sparse-checkout set config villages templates stub mods
+          ln -s "$asset_dir" runtime/source/assets
+          test -f runtime/source/server.py
+          mkdir -p runtime/source/saves
+          echo "SW_SERVER_DIR=$(realpath runtime/source)" >> "$GITHUB_ENV"
+
+      - name: Verify unit IDs and seed only disposable initial village
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          patch=json.loads(Path("runtime/source/config/patch/unit_patch.json").read_text())
+          catalog={int(row["value"]["id"]):row["value"] for row in patch
+                   if isinstance(row,dict) and "value" in row and
+                   isinstance(row["value"],dict) and "id" in row["value"]}
+          for key in [1313,1358,1376]:
+              assert catalog[key]["type"]=="u"
+              print("SOURCE_UNIT_VERIFIED",key,catalog[key]["name"],
+                    catalog[key]["img_name"])
+          PY
+          python tools/seed_original_units_5d8c.py \
+            --initial "$SW_SERVER_DIR/villages/initial.json" \
+            --out "$SW_SERVER_DIR/villages/initial_for_test.json" \
+            --manifest runtime/fixture_5d8c.json
+          mv "$SW_SERVER_DIR/villages/initial_for_test.json" "$SW_SERVER_DIR/villages/initial.json"
+          echo "Fixture affects isolated clone ONLY."
+
+      - name: Start real Flask server on loopback
+        run: |
+          python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+          cd "$SW_SERVER_DIR"
+          nohup python -u server.py --host 127.0.0.1 --port 5055 \
+            > "$GITHUB_WORKSPACE/runtime/server.log" 2>&1 &
+          for i in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:5055/health; then exit 0; fi
+            sleep 1
+          done
+          cat "$GITHUB_WORKSPACE/runtime/server.log"
+          exit 1
+
+      - name: Capture three original Ruffle probes and visual changes
+        run: |
+          node tests/original/record.mjs --server http://127.0.0.1:5055 \
+            --headless --create-test-village --unit-probe --duration 6 \
+            --out dist/unit-probe-5d8c
+          python tools/analyze_runtime_5d8b.py \
+            --report dist/unit-probe-5d8c/report.json \
+            --out dist/unit-probe-5d8c
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("dist/unit-probe-5d8c")
+          report=json.loads((root/"report.json").read_text())
+          changes=json.loads((root/"action_evidence_5d8b.json").read_text())
+          fixture=json.loads(Path("runtime/fixture_5d8c.json").read_text())
+          assert report["state"]["pathname"]=="/play.html"
+          assert report["state"]["rufflePlayerCount"]>=1
+          assert len([e for e in report["events"] if e["type"]=="exploratory_probe"])==3
+          assert len([e for e in report["events"] if e["type"]=="pointer"])>=3
+          assert len(changes["windows"])==3
+          assert all(x["visual_evidence"]!="insufficient" for x in changes["windows"])
+          assert changes["confirmed_actions"]==changes["confirmed_sprites"]==0
+          assert len(fixture["seeded_units"])==4
+          assert (root/"session.webm").stat().st_size>1000
+          requested=sorted({p for p in report["request_paths"]
+                           if any(x in p for x in [
+                             "1313_splinterMech.swf","1358_bushwacker.swf",
+                             "1376_reaperDrone.swf"])})
+          evidence={
+              "status":"scenario_probe_only",
+              "seeded_gameplay_item_ids":[1313,1358,1376],
+              "seeded_units":len(fixture["seeded_units"]),
+              "probe_steps":3,
+              "screenshot_pairs":len(changes["windows"]),
+              "image_changes":sum(x["visual_evidence"]=="visual_change"
+                                  for x in changes["windows"]),
+              "requested_unit_swfs":requested,
+              "runtime_gameplay_actions_confirmed":0,
+              "sprite_character_ids_confirmed":0,
+              "limitations":"Known save item IDs are not SWF MovieClip IDs. Scripted clicks are exploratory, not verified move/attack."
+          }
+          (root/"scenario_summary_5d8c.json").write_text(json.dumps(evidence,indent=2)+"\n")
+          print("UNIT_PROBE_5D8C_VERIFIED",json.dumps(evidence))
+          PY
+
+      - name: Save only non-sensitive scenario metadata in main
+        run: |
+          cp dist/unit-probe-5d8c/scenario_summary_5d8c.json \
+            data/visual/original_unit_probe_5d8c.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/original_unit_probe_5d8c.json
+          if git diff --cached --quiet; then echo "No scenario changes"; else
+            git commit -m "data(runtime): record original unit scenario and unconfirmed action probes"
+            git push origin HEAD:main
+          fi
+
+      - name: Upload original-game session video/screenshots and fixture manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-original-unit-probe-5d8c
+          path: |
+            dist/unit-probe-5d8c/
+            runtime/fixture_5d8c.json
+            runtime/server.log
+          if-no-files-found: warn
+          retention-days: 14
