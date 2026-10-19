@@ -78,3 +78,32 @@ Workflow [Visual Export Sample 0.02a](../.github/workflows/visual-export.yml)
 recebe o nome de um SWF e a classe de recursos. Os arquivos exportados
 são enviados como artefato **temporário por 1 dia**, fora do
 histórico do Git. Não publique esses recursos no repositório público.
+
+## Resultado verificado do inventário (5D.1)
+
+GitHub Actions: https://github.com/Acccelll/Social_wars_test/actions/runs/39277345729
+
+| Categoria | Quantidade |
+|---|---:|
+| Arquivos totais no ZIP | 3.272 |
+| SWFs | 1.118 |
+| Arquivos de imagem externos | 1.899 |
+| Bitmaps embutidos (definições SWF) | 41.069 |
+| Formas vetoriais | 62.318 |
+| Morphshapes | 316 |
+| Sprites (definições) | 43.426 |
+| Botões | 53 |
+| Quadros declarados nas timelines dos sprites | 400.023 |
+| Erros de análise | **0** |
+
+SWF principal `Basesec_1.5.4.swf`: **369 bitmaps**, **1.468 shapes**,
+**1.224 sprites**, **52 buttons**, **4 morphshapes** e **420 nomes de símbolos**.
+SHA-256 verificado: `e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77`.
+
+Os arquivos CSV e JSON de metadados estão no artefato
+`social-wars-visual-inventory` (artifact ID 12197443842).
+
+**Atenção:** sprites, shapes e quadros do Flash são entidades diferentes.
+Somar as contagens não equivale ao número de PNGs a serem gerados.
+Uma extração de sprites em PNG captura quadros estáticos; a recuperação
+das timelines completas será tratada separadamente.

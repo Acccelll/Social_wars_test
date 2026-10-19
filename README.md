@@ -26,7 +26,9 @@ Leia [STATUS.md](docs/STATUS.md), [ARQUITETURA.md](docs/ARQUITETURA.md) e [ROADM
 | `as3/src/com/socialpoint/astar/recovered/` | Reconstituições experimentais em ActionScript 3 |
 | `as3/contract_harness/` | Doubles isolados de contratos com nomes originais (NÃO integrar ao jogo real) |
 | `tools/` | Scripts de verificação e compilação |
-| `tests/ruffle/` | Teste de execução do SWF real em Chromium/Ruffle, com relatório e captura de tela |
+| `tests/ruffle/` | Teste de execução do SWF experimental em Chromium/Ruffle, com relatório e captura de tela |
+| `tools/visual_inventory.py` | Inventário automatizado dos recursos de TODOS os SWFs do jogo |
+| `tools/visual_extract.py` | Exportação em lotes para arquivos PNG e SVG via JPEXS FFDec |
 | `docs/` | Resultados dos lotes, limitações, roteiro de continuidade |
 
 ## Executar o jogo original
@@ -53,3 +55,9 @@ Este repositório **não inclui** o jogo, o servidor original, recursos gráfico
 ## Próximo passo
 
 **Lote 5C.1 concluído:** o workflow [39262967632](https://github.com/Acccelll/Social_wars_test/actions/runs/39262967632) compilou e executou dois SWFs experimentais com **23/23 verificações aprovadas**. Veja [LOTE_5C.md](docs/LOTE_5C.md) e [MATRIZ_COMPATIBILIDADE_5C.md](docs/MATRIZ_COMPATIBILIDADE_5C.md). **Próximo lote 5C.2:** comparação de saídas com o cliente original. O jogo completo ainda não foi recompilado.
+
+## Recursos visuais (Lote 5D)
+
+O [inventário completo](docs/LOTE_5D.md) da distribuição oficial 0.02a percorreu **1.118 SWFs** e **1.899 imagens externas**. Foram localizadas **41.069 definições de bitmaps**, **62.318 formas vetoriais** e **43.426 sprites**, além de morphshapes e botões. Essas definições **ainda não representam PNGs exportados**. Use o exportador local por lotes para preservar recursos fora do repositório público.
+
+GitHub Actions: [inventário de 0.02a](https://github.com/Acccelll/Social_wars_test/actions/runs/39277345729).

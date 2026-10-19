@@ -30,3 +30,13 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 - Não declarar "recompilável" antes de um `mxmlc` bem-sucedido.
 - Documentar os resultados dos testes com entradas, saídas e ferramentas.
 - Preferir evoluir a árvore `as3/src/` ao invés de gerar ZIPs desconectados.
+
+## Extração dos recursos gráficos
+
+| Lote | Meta | Estado |
+|---|---|---|
+| 5D.1 | Inventário de todos os arquivos gráficos/SWFs e hash do cliente | **Concluído, 0 erros em 1.118 SWFs** |
+| 5D.2 | Exportador FFDec em lotes + prova de extração real | Ferramenta publicada, validação em andamento |
+| 5D.3 | Exportação integral de imagens, SVG e sprites estáticos | Pendente |
+| 5D.4 | Exportação de timelines completas e atlas de animação | Pendente |
+| 5D.5 | Catalogar recursos por unidade, edifício e UI, com prévias | Pendente |

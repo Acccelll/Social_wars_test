@@ -55,3 +55,14 @@ Os códigos neste repositório são **protótipos**. A compilação e execução
 ## Importante: origem dos pacotes históricos
 
 Os arquivos `Social_Wars_0.02a_AVM2_Lote3C.zip` até os lotes 3I foram entregues na conversa original, mas **não foram importados integralmente aqui**. Este repositório armazena a documentação e a nova árvore de continuidade. Para importação verificável dos artefatos históricos, recuperar os ZIPs locais, comparar com o inventário e incluir somente fontes legalmente redistribuíveis.
+
+## Lote 5D — Recursos visuais
+
+- Inventário executado no GitHub Actions em 19/10/2026, execução [39277345729](https://github.com/Acccelll/Social_wars_test/actions/runs/39277345729).
+- Original confirmado: distribuição oficial ZIP com **492.630.085 bytes**.
+- **3.272 arquivos** no ZIP; **1.118 arquivos SWF** analisados sem erros.
+- **1.899 imagens externas** com extensões PNG/JPG/GIF/WebP/BMP/SVG/APNG.
+- Tags SWF: **41.069 bitmaps**, **62.318 formas vetoriais**, **316 morphshapes**, **43.426 sprites**, **53 botões**.
+- Sprites declaram **400.023 quadros de timeline**, não imagens únicas.
+- SWF principal `Basesec_1.5.4.swf`: **369 bitmaps, 1.468 shapes, 4 morphshapes, 1.224 sprites, 52 botões**, SHA-256 corresponde à referência.
+- [`tools/visual_extract.py`](../tools/visual_extract.py) permite processar lotes com FFDec; a extração integral de PNG/SVG e de animações **não está concluída**.
