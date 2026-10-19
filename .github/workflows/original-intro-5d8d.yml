@@ -133,7 +133,7 @@ jobs:
           result["click_delivered_to_browser"]=True
           result["dom_hit_test"]=hit[0]["details"]
           result["modal_dismissal_status"]="not_dismissed_or_unchanged" if ratio<0.05 else "visual_review_required"
-          (out/"intro_probe_summary.json").write_text(json.dumps(result,indent=2)+"\\n")
+          (out/"intro_probe_summary.json").write_text(json.dumps(result,indent=2))
           print("INTRO_PROBE_5D8D",json.dumps(result))
           PY
 
