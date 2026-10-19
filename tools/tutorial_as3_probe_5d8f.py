@@ -84,7 +84,19 @@ def inspect(archive,jar,out,java="java"):
         filtered=sorted(set(matches),key=lambda s:(s.count("."),len(s)),reverse=True)
         # Fully qualified names, if provided by FFDec dump, take priority.
         chosen=filtered[:20]
-        candidates = chosen or ["PopupTutorialMC","TutorialMain"]
+        # These original class names were verified from FFDec's AS3 dump
+        # in the first 5D.8F pass, not inferred from file names.
+        followup_classes=[
+            "popups.PopupTutorial","popups.PopupIntro","popups.PopupConfirm",
+            "popups.PopupMissionInfo","popups.PopupNextMission",
+            "popups.PopupAlert","managers.PopupManager",
+            "cutscene.CutScene","quest.QuestInfo"
+        ]
+        present=set(re.findall(
+            r"^([A-Za-z_$][A-Za-z0-9_$]*(?:\\.[A-Za-z_$][A-Za-z0-9_$]*)*)\\s+\\d+\\s*$",
+            listing,re.M))
+        followup=[name for name in followup_classes if name in present]
+        candidates = sorted(set((chosen or ["PopupTutorialMC","TutorialMain"])+followup))
         selected=out/"selected_actionscript"
         selected.mkdir(exist_ok=True)
         formats=[("as","as3_source"),("pcode","as3_pcode")]
@@ -106,6 +118,7 @@ def inspect(archive,jar,out,java="java"):
             "dump_status":ls,"dump_matched_lines":matched_lines[:60],
             "dump_class_candidates":matches[:60],
             "selected_class_names":candidates,
+            "verified_popup_logic_classes":followup,
             "export_statuses":statuses,
             "exported_scripts":all_index,
             "as_source_files":sum(x["format"]=="as" for x in all_index),
