@@ -155,3 +155,12 @@ MovieClips/IDs internos automaticamente**. A [matriz de
 presença na inicialização](data/visual/runtime_boot_presence_5d8.csv)
 confirma apenas quais recursos SWF foram requisitados, não se as ações
 das animações foram executadas. Veja [LOTE_5D_8.md](docs/LOTE_5D_8.md).
+
+## Captura do cliente original (5D.8B)
+
+O [lote 5D.8B](docs/LOTE_5D_8B.md) grava vídeo WebM e capturas do
+Social Wars 0.02a no Ruffle. O teste automatizado confirmou alteração
+visual após um clique no Flash. Ainda **não** confirmou uma animação de
+movimento, ataque ou dano nem sua associação ao ID interno do sprite.
+
+[Ver vídeo, capturas e relatório do lote](https://github.com/Acccelll/Social_wars_test/actions/runs/39310113510/artifacts/12215307646).
