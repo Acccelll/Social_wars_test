@@ -95,14 +95,23 @@ try{
    await page.waitForTimeout(10000);
    await page.screenshot({path:path.join(out,"intro-before.png"),
                            timeout:25000,animations:"disabled"});
+   // Original play.html sets width=1090 even though the SWF's actual
+   // stage is 760x600. At native width, click hit testing is unambiguous.
+   await target.evaluate(el=>{
+     el.style.width="760px";
+     el.setAttribute("width","760");
+   });
+   await page.waitForTimeout(1300);
+   await page.screenshot({path:path.join(out,"intro-resized.png"),
+                           timeout:25000,animations:"disabled"});
    await page.evaluate(()=>window.__swHostRecord?.({
      type:"intro_dismiss_attempt",source:"5D.8C screenshot review",
-     target:"Rescue Your Comrade dialog OK",
+     target:"Rescue Your Comrade dialog OK at 760px native width",
      unit_item_id:null,sprite_character_id:null,
-     wall_clock_ms:Date.now(),player_x:550,player_y:568,
+     wall_clock_ms:Date.now(),player_x:380,player_y:568,
      gameplay_action_confirmed:false
    }));
-   await target.click({position:{x:550,y:568},timeout:10000});
+   await target.click({position:{x:380,y:568},timeout:10000});
    await page.waitForTimeout(4000);
    await page.screenshot({path:path.join(out,"intro-after.png"),
                            timeout:25000,animations:"disabled"});
