@@ -15,19 +15,39 @@
     "core.TutorialMain"
   ],
   "selected_class_names": [
+    "PopupTutorialMC",
     "core.TutorialMain",
-    "PopupTutorialMC"
+    "cutscene.CutScene",
+    "managers.PopupManager",
+    "popups.PopupAlert",
+    "popups.PopupConfirm",
+    "popups.PopupIntro",
+    "popups.PopupMissionInfo",
+    "popups.PopupNextMission",
+    "popups.PopupTutorial",
+    "quest.QuestInfo"
+  ],
+  "verified_popup_logic_classes": [
+    "popups.PopupTutorial",
+    "popups.PopupIntro",
+    "popups.PopupConfirm",
+    "popups.PopupMissionInfo",
+    "popups.PopupNextMission",
+    "popups.PopupAlert",
+    "managers.PopupManager",
+    "cutscene.CutScene",
+    "quest.QuestInfo"
   ],
   "export_statuses": {
     "as3_source": {
       "returncode": 0,
       "timed_out": false,
-      "output_chars": 240
+      "output_chars": 713
     },
     "as3_pcode": {
       "returncode": 0,
       "timed_out": false,
-      "output_chars": 240
+      "output_chars": 713
     }
   },
   "exported_scripts": [
@@ -85,9 +105,195 @@
         "unlockTabs",
         "update"
       ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/cutscene/CutScene.as",
+      "bytes": 12307,
+      "target_occurrences": {
+        "MouseEvent": 4,
+        "addEventListener": 5
+      },
+      "method_names": [
+        "CutScene",
+        "addCallback",
+        "addClean",
+        "addEndChapter",
+        "addEndQuest",
+        "addHighlight",
+        "addRemoveElement",
+        "addRemoveSpeaker",
+        "addSpawnSegment",
+        "addStep",
+        "addTalk",
+        "addTravelling",
+        "added",
+        "checkSpeakerAt",
+        "clean",
+        "doTalk",
+        "finishStep",
+        "fullScreenChanged",
+        "highlightSpeakerBox",
+        "onKeyDown",
+        "playStep",
+        "removeSkipButton",
+        "removeSpeaker",
+        "removed",
+        "setSpeaker",
+        "setSpeakerExpression",
+        "shutMouth",
+        "skip",
+        "start",
+        "stepCompleted"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/managers/PopupManager.as",
+      "bytes": 16356,
+      "target_occurrences": {
+        "TutorialMain": 2,
+        "closeWindow": 5,
+        "MouseEvent": 3,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "Init",
+        "PopupManager",
+        "canRemoveGuiCover",
+        "closeAllPopups",
+        "closePopOver",
+        "doOpenPopup",
+        "enquePopup",
+        "fondoNegro",
+        "freeze",
+        "getFrozenPriority",
+        "getPopupLayerIndex",
+        "hasPopup",
+        "moneyConfirm",
+        "onClickFondoNegro",
+        "onClosePopup",
+        "openPopOver",
+        "openPopup",
+        "removeFondoNegro",
+        "sortQueue",
+        "tutorialBox",
+        "unfreeze",
+        "updatePopupPositions"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/popups/PopupAlert.as",
+      "bytes": 1940,
+      "target_occurrences": {
+        "MouseEvent": 4,
+        "addEventListener": 3
+      },
+      "method_names": [
+        "PopupAlert",
+        "getParams",
+        "setLangLiterals"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/popups/PopupConfirm.as",
+      "bytes": 2062,
+      "target_occurrences": {
+        "MouseEvent": 3,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "PopupConfirm",
+        "confirm",
+        "deny",
+        "enableButtons",
+        "getParams",
+        "setLangLiterals"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/popups/PopupIntro.as",
+      "bytes": 4225,
+      "target_occurrences": {
+        "MouseEvent": 6,
+        "addEventListener": 6
+      },
+      "method_names": [
+        "PopupIntro",
+        "doCallback",
+        "enableButtons",
+        "getParams",
+        "loadIntro",
+        "nextText"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/popups/PopupMissionInfo.as",
+      "bytes": 6912,
+      "target_occurrences": {
+        "closeWindow": 3,
+        "MouseEvent": 3,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "PopupMissionInfo",
+        "closeWindow",
+        "getParams",
+        "onShare",
+        "prepUnitReward",
+        "setEndLiterals",
+        "setStartLiterals"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/popups/PopupNextMission.as",
+      "bytes": 1532,
+      "target_occurrences": {
+        "MouseEvent": 3,
+        "addEventListener": 1
+      },
+      "method_names": [
+        "PopupNextMission",
+        "getParams",
+        "onOut",
+        "onOver"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/popups/PopupTutorial.as",
+      "bytes": 2747,
+      "target_occurrences": {
+        "PopupTutorialMC": 1,
+        "closeWindow": 3,
+        "MouseEvent": 4,
+        "addEventListener": 3
+      },
+      "method_names": [
+        "PopupTutorial",
+        "activate",
+        "closeWindow",
+        "confirm",
+        "deny",
+        "enableButtons"
+      ]
+    },
+    {
+      "format": "as",
+      "relative_path": "scripts/quest/QuestInfo.as",
+      "bytes": 953,
+      "target_occurrences": {},
+      "method_names": [
+        "QuestInfo"
+      ]
     }
   ],
-  "as_source_files": 2,
+  "as_source_files": 11,
   "pcode_files": 0,
   "root_cause_verified": false,
   "click_handler_verified": false,
