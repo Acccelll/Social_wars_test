@@ -50,3 +50,18 @@ nem os salvamentos do usuário.
 - Nomes/categorias derivados da árvore do ZIP não são classificação
   visual confirmada.
 - Exportação integral dos 1.118 SWFs não foi concluída.
+
+## Inventário pesquisável dos arquivos já extraídos
+
+O script `tools/visual_asset_manifest.py` produz `visual_files.csv`
+e `visual_files_summary.json` após a exportação, relacionando
+o caminho exportado ao SWF de origem, formato, SHA-256 e dimensões
+de PNG/GIF. É um índice para futura substituição de assets, não
+um importador automático.
+
+```powershell
+py -3 tools/visual_asset_manifest.py --root "dist/visual-units"
+```
+
+Execução do lote de cinco unidades:
+https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010

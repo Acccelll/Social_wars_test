@@ -75,3 +75,11 @@ Os arquivos `Social_Wars_0.02a_AVM2_Lote3C.zip` até os lotes 3I foram entregues
 - Pasta de saída: aproximadamente **9,7 MB**.
 - Artefato temporário: [social-wars-visual-export-sample](https://github.com/Acccelll/Social_wars_test/actions/runs/39277803644/artifacts/12198640486) (ID 12198640486; expira em 20/10/2026).
 - A exportação completa dos outros SWFs e das animações ainda NÃO foi finalizada. Não interpretar este resultado como descompilação integral de todas as imagens.
+
+## 5D.3 — Verificações adicionais em 19/10/2026
+
+- **Imagens externas:** workflow [39278619312](https://github.com/Acccelll/Social_wars_test/actions/runs/39278619312) aprovado, com 1.899 arquivos extraídos (143 PNG e 1.756 JPG), 95.899.970 bytes antes da compressão do artefato, zero erros.
+- **Recursos do SWF principal:** workflow [39278874264](https://github.com/Acccelll/Social_wars_test/actions/runs/39278874264) aprovado, com 7.493 arquivos PNG/SVG exportados pelo FFDec, zero erros, ~62,61 s.
+- **Lote de cinco unidades:** workflow [39292249010](https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010) iniciado. O resultado final depende da conclusão do Actions; não considerar aprovado sem examinar `export_results.csv`.
+- **Catálogo:** `tools/visual_source_catalog.py` produz lista de SWFs por pasta e identificador. `tools/visual_asset_manifest.py` gera metadados de arquivos PNG/SVG/JPG exportados, preservando hashes e dimensões quando disponíveis.
+- Recursos originais continuam fora do Git; animações completas ainda não foram reconstituídas.

@@ -19,7 +19,7 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 | 5B | Executar `AS3Probe` no Ruffle, testar a rota e registrar resultados | **Concluído (8/8 runtime AS3, via ExternalInterface)** |
 | 5C.1 | Harness isolado de contratos `IsoUnit`/`NodesPath` com dois SWFs testados | **Concluído (8/8 + 15/15 Ruffle)** |
 | 5C.2 | Comparar trajetórias, colisões e IA com o SWF **original** | **Próximo; pendente instrumentação original** |
-| 5D | Empacotar SWF modificado usando o servidor existente | Pendente |
+| 5E | Empacotar SWF modificado usando o servidor existente (frente de código) | Pendente |
 | 6A | Replanejar evolução de mecânicas e interface | Futuro |
 
 ## Regras de trabalho
@@ -36,7 +36,7 @@ Um projeto Social Wars editável, compilável e jogável, usando a distribuiçã
 | Lote | Meta | Estado |
 |---|---|---|
 | 5D.1 | Inventário de todos os arquivos gráficos/SWFs e hash do cliente | **Concluído, 0 erros em 1.118 SWFs** |
-| 5D.2 | Exportador FFDec em lotes + prova de extração real | Ferramenta publicada, validação em andamento |
-| 5D.3 | Exportação integral de imagens, SVG e sprites estáticos | Pendente |
+| 5D.2 | Exportação de bitmaps e recursos do SWF principal, mais imagens externas | **Concluído: 1.899 externas e 7.493 exportações do cliente** |
+| 5D.3 | Exportação incremental dos 1.117 SWFs restantes, iniciando por cinco unidades | **Em processamento; ainda não é extração integral** |
 | 5D.4 | Exportação de timelines completas e atlas de animação | Pendente |
 | 5D.5 | Catalogar recursos por unidade, edifício e UI, com prévias | Pendente |

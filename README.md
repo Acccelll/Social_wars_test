@@ -65,3 +65,13 @@ GitHub Actions: [inventário de 0.02a](https://github.com/Acccelll/Social_wars_t
 ## Exportação visual verificada
 
 Em 19/10/2026, o [GitHub Actions 39277803644](https://github.com/Acccelll/Social_wars_test/actions/runs/39277803644) exportou **369 bitmaps** de `Basesec_1.5.4.swf`, sem erros, usando JPEXS FFDec 26.3.0. Essa é uma extração real em PNG/JPEG (não apenas contagem de tags). Os recursos **não foram commitados**; pacote disponível temporariamente na página da execução. A exportação das demais imagens e animações continua em lotes.
+
+### Lote 5D.3 — Exportações e catálogo
+
+Os workflows já concluídos exportaram **1.899 imagens externas** (143 PNG, 1.756 JPG) e **7.493 arquivos visuais do SWF principal** em uma segunda execução FFDec. O próximo lote separa cinco SWFs de unidades e cria uma tabela geral de identificação de arquivos, sem guardar os recursos na branch main.
+
+- [Unidades: lote selecionado](https://github.com/Acccelll/Social_wars_test/actions/runs/39292249010)
+- [Relatório do 5D.3](docs/LOTE_5D_3.md)
+- [Gerador de catálogo dos arquivos exportados](tools/visual_asset_manifest.py)
+
+Os pacotes de recursos são artefatos temporários do Actions (a expirar), por isso a exportação local com `tools/EXTRAIR_IMAGENS_WINDOWS.bat` permanece como alternativa durável.
