@@ -52,6 +52,9 @@ try {
   page = await browser.newPage({ viewport: {width:1100, height:720} });
   page.on("console", msg => report.console.push(msg.type() + ": " + msg.text()));
   page.on("pageerror", error => report.errors.push("pageerror: " + String(error)));
+  page.on("requestfailed", request =>
+    report.errors.push("requestfailed: " + request.url() + " " +
+                       (request.failure()?.errorText || "")));
   page.on("response", response => {
     if (response.status() >= 400)
       report.errors.push("HTTP " + response.status() + " " + response.url());
@@ -59,7 +62,7 @@ try {
   await page.goto(report.url, { waitUntil: "domcontentloaded", timeout: 30000 });
   await page.waitForFunction(
     () => window.__swDone === true || Boolean(window.__swError),
-    null, {timeout:60000}
+    null, {timeout:30000}
   );
   report.traces = await page.evaluate(() => window.__swTrace || []);
   report.loadError = await page.evaluate(() => window.__swError);
@@ -82,7 +85,27 @@ try {
 } catch (e) {
   report.result = "failed";
   report.errors.push(String(e && e.stack || e));
-} finally {
+ } finally {
+  if (page) {
+    try {
+      const state = await page.evaluate(() => ({
+        location: location.href,
+        readyState: document.readyState,
+        ruffleExists: Boolean(window.RufflePlayer),
+        ruffleNewest: typeof window.RufflePlayer?.newest,
+        playerCount: document.querySelectorAll("ruffle-player").length,
+        currentStage: window.__swStage,
+        loaded: window.__swLoaded,
+        loadError: window.__swError,
+        traceCount: (window.__swTrace || []).length,
+        traces: window.__swTrace || [],
+        message: document.getElementById("message")?.textContent,
+      }));
+      report.browserState = state;
+      report.loaded = Boolean(state.loaded);
+      report.traces = state.traces;
+    } catch (e) { report.errors.push("browserState: " + e.message); }
+  }
   if (page) {
     try { await page.screenshot({ path: path.join(out, "screenshot.png"),
                                    fullPage:true,timeout:5000 }); }
@@ -94,7 +117,7 @@ try {
                   JSON.stringify(report,null,2) + "\n","utf8");
   console.log("SW-RUFFLE-REPORT", JSON.stringify({
     result:report.result,loaded:report.loaded,summary:report.summary,
-    errors:report.errors, traces:report.traces
+    errors:report.errors, traces:report.traces, browserState:report.browserState, console:report.console.slice(-35)
   }));
 }
 if (report.result !== "passed") process.exitCode = 1;

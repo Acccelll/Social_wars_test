@@ -22,6 +22,7 @@
     window.__swTrace = [];
     window.__swDone = false;
     window.__swError = null;
+    window.__swStage = "before-ruffle";
   </script>
   <script src="/tests/ruffle/node_modules/@ruffle-rs/ruffle/ruffle.js"></script>
 </head>
@@ -31,8 +32,10 @@
   <script>
     (async function () {
       try {
+        window.__swStage = "creating-player";
         const player = window.RufflePlayer.newest().createPlayer();
         document.getElementById("container").appendChild(player);
+        window.__swStage = "trace-observer";
         player.ruffle().traceObserver = function (message) {
           const str = String(message).trim();
           window.__swTrace.push(str);
@@ -42,10 +45,13 @@
             document.getElementById("message").textContent = str;
           }
         };
+        window.__swStage = "loading-swf";
         await player.ruffle().load("/dist/AS3Probe.swf");
         window.__swLoaded = true;
+        window.__swStage = "load-resolved";
       } catch (e) {
         window.__swError = String(e && e.stack || e);
+        window.__swStage = "load-error";
         console.error("Ruffle load error:", e);
       }
     })();
