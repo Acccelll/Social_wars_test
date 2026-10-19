@@ -4,7 +4,12 @@ on:
   push:
     paths:
       - 'as3/**'
-      - 'tools/**'
+      - 'tools/test_astar_cost.py'
+      - 'tools/bootstrap_flex_linux.sh'
+      - 'tools/build_probe_linux.sh'
+      - 'tools/build_probe_windows.bat'
+      - 'tools/build_contract_probe_linux.sh'
+      - 'tools/build_contract_probe_windows.bat'
       - 'tests/ruffle/**'
       - '.github/workflows/as3-probe.yml'
   workflow_dispatch:
