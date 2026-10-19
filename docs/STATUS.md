@@ -208,3 +208,21 @@ foi reconstruída por este procedimento.
   O CI prova interação de ponteiro e variação visual, não movimento/ataque.
 - Script `tools/analyze_runtime_5d8b.py` e testes sintéticos persistidos;
   [instruções do lote](LOTE_5D_8B.md) disponíveis para registrar ações reais.
+
+## Lote 5D.8C — Três tipos de unidades no cliente original
+
+- [Execução final 39313160511](https://github.com/Acccelll/Social_wars_test/actions/runs/39313160511):
+  **success**, testes de seed e de screenshots aprovados.
+- A distribuição 0.02a foi iniciada em **cópia isolada**, com quatro unidades
+  no template da vila (Splinter Mech ×2, Bushwacker e Reaper Drone).
+- O cliente Ruffle requisitou os três SWFs
+  `1313_splinterMech.swf`, `1358_bushwacker.swf` e
+  `1376_reaperDrone.swf`.
+- Foram gerados vídeo, 3 pares de capturas, 3 sondagens e
+  **3 diferenças visuais**.
+- **Nenhuma** ação de combate/deslocamento foi comprovada; nenhum ID
+  interno de animação foi associado ao gameplay. Clique e carregamento
+  de SWF não demonstram execução de ação.
+- [Resumo permanente](../data/visual/original_unit_probe_5d8c.json);
+  [vídeo/capturas/manifesto](https://github.com/Acccelll/Social_wars_test/actions/runs/39313160511/artifacts/12217206551).
+- [Procedimento e limites técnicos](LOTE_5D_8C.md).
