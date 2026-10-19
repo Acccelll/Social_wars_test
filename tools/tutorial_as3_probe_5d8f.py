@@ -93,7 +93,7 @@ def inspect(archive,jar,out,java="java"):
             "cutscene.CutScene","quest.QuestInfo"
         ]
         present=set(re.findall(
-            r"^([A-Za-z_$][A-Za-z0-9_$]*(?:\\.[A-Za-z_$][A-Za-z0-9_$]*)*)\\s+\\d+\\s*$",
+            r"^([A-Za-z_$][A-Za-z0-9_$]*(?:\.[A-Za-z_$][A-Za-z0-9_$]*)*)\s+\d+\s*$",
             listing,re.M))
         followup=[name for name in followup_classes if name in present]
         candidates = sorted(set((chosen or ["PopupTutorialMC","TutorialMain"])+followup))
