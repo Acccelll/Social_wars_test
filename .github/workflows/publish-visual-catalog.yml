@@ -1,0 +1,57 @@
+name: Publish Visual SWF Catalog Metadata
+
+on:
+  push:
+    paths:
+      - ".github/workflows/publish-visual-catalog.yml"
+      - "tools/visual_source_catalog.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-metadata:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Download original public 0.02a archive (temporary)
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Build ONLY filename/path/size metadata
+        run: |
+          python3 tools/visual_source_catalog.py \
+            --archive runtime/original.zip \
+            --out data/visual
+          python3 - <<'PY'
+          import csv,json
+          from pathlib import Path
+          root=Path("data/visual")
+          rows=list(csv.DictReader((root/"swf_catalog.csv").open()))
+          counts=json.loads((root/"catalog_summary.json").read_text())
+          assert len(rows)==1118, f"Unexpected SWF count: {len(rows)}"
+          assert len(rows)==counts["swf_count"]
+          assert sum(counts["swf_by_category"].values())==1118
+          print("CATALOG_VERIFIED",len(rows),"SWFs; candidates",counts["building_candidate_count"])
+          PY
+
+      - name: Commit searchable metadata, not graphic assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visual/swf_catalog.csv data/visual/catalog_summary.json data/visual/building_candidates.csv
+          if git diff --cached --quiet; then
+            echo "Catalog identical: no commit needed."
+          else
+            git commit -m "data(assets): index 0.02a SWF filenames and building candidates"
+            git push origin HEAD:main
+          fi
