@@ -118,6 +118,23 @@ try{
    await page.waitForTimeout(1700);
    await page.screenshot({path:path.join(out,"event-up.png"),
                           timeout:25000,animations:"disabled"});
+   // First click may only dismiss the Ruffle hardware acceleration warning.
+   // Now send an independent SECOND click to the actual Flash OK button.
+   // Take a separate frame so the two UI effects cannot be conflated.
+   await page.waitForTimeout(650);
+   await page.mouse.move(location.x,location.y,{steps:2});
+   await page.mouse.down();
+   await page.waitForTimeout(280);
+   await page.mouse.up();
+   await page.waitForTimeout(2400);
+   await page.screenshot({path:path.join(out,"event-second-up.png"),
+                          timeout:25000,animations:"disabled"});
+   await page.evaluate(()=>window.__swHostRecord?.({
+     type:"intro_second_click_after_ruffle_overlay",
+     action_execution_confirmed:false,
+     visual_review_required:true,
+     position_local:[385,568],wall_clock_ms:Date.now()
+   }));
    const focus=await page.evaluate(()=>{
      const e=document.querySelector("ruffle-embed");
      return {active:document.activeElement?.tagName||null,
