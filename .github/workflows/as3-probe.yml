@@ -35,15 +35,19 @@ jobs:
       - name: Compile proof-of-concept SWF
         run: bash tools/build_probe_linux.sh
 
+      - name: Compile typed contract probe
+        run: bash tools/build_contract_probe_linux.sh
+
       - name: Check SWF header
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p = Path("dist/AS3Probe.swf")
-          data = p.read_bytes()
-          assert len(data) > 12, "empty/invalid SWF"
-          assert data[:3] in (b"FWS", b"CWS", b"ZWS"), "not an SWF"
-          print(f"SWF header {data[:3]!r}, size {len(data)} bytes")
+          for name in ("AS3Probe.swf", "ContractProbe.swf"):
+              p = Path("dist") / name
+              data = p.read_bytes()
+              assert len(data) > 12, "empty/invalid SWF"
+              assert data[:3] in (b"FWS", b"CWS", b"ZWS"), "not an SWF"
+              print(f"{name} header {data[:3]!r}, size {len(data)} bytes")
           PY
 
       - name: Setup Node for Ruffle smoke test
@@ -59,15 +63,26 @@ jobs:
           cd tests/ruffle
           npx playwright install chromium --with-deps
 
-      - name: Run actual SWF inside Ruffle
+      - name: Run experimental AStar in Ruffle
         run: npm run smoke --prefix tests/ruffle
+        env:
+          SW_SMOKE_SWF: AS3Probe.swf
+          SW_EXPECT_TESTS: '8'
+
+      - name: Run nominal IsoUnit contract in Ruffle
+        run: npm run smoke --prefix tests/ruffle
+        env:
+          SW_SMOKE_SWF: ContractProbe.swf
+          SW_EXPECT_TESTS: '15'
 
       - name: Upload SWF proof of concept
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: social-wars-as3-probe
-          path: dist/AS3Probe.swf
+          path: |
+            dist/AS3Probe.swf
+            dist/ContractProbe.swf
           if-no-files-found: warn
           retention-days: 14
 

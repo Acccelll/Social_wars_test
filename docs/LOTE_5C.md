@@ -35,7 +35,7 @@ nominais iguais aos do SWF real para testar tipagem, acesso ao Proxy e ordem
 - `AbstractUnitDelegate.as`: observador fictício dos eventos.
 - `RecoveredRouteAdapter.as`: faz cópia explícita da rota experimental
   `NodesPathRecovered` ao tipo nominal de teste.
-- `ContractProbe.as`: testa 14 casos de contrato em runtime ActionScript 3.
+- `ContractProbe.as`: testa 15 casos de contrato em runtime ActionScript 3.
 
 **Nunca empacotar essas classes homônimas com o SWF original**: provocariam
 colisões de tipos. A integração real deverá usar o `NodesPath` original,

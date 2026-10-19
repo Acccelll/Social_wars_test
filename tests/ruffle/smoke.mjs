@@ -15,7 +15,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const base = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const out = path.join(base, "dist", "ruffle-smoke");
+const swfName = process.env.SW_SMOKE_SWF || "AS3Probe.swf";
+if (!["AS3Probe.swf", "ContractProbe.swf"].includes(swfName))
+  throw new Error("Unsupported SWF_NAME: " + swfName);
+const expectedTests = Number(process.env.SW_EXPECT_TESTS || (swfName === "ContractProbe.swf" ? 15 : 8));
+const out = path.join(base, "dist", "ruffle-smoke", swfName.replace(".swf",""));
 await mkdir(out, { recursive: true });
 
 const host = "http://127.0.0.1:18765";
@@ -23,7 +27,8 @@ let browser;
 let page;
 let server;
 let report = { result: "not-started", traces: [], errors: [], console: [],
-               url: host + "/tests/ruffle/index.html" };
+               swfName, expectedTests,
+               url: host + "/tests/ruffle/index.html?swf=" + encodeURIComponent(swfName) };
 
 try {
   server = spawn("python3", ["-m","http.server","18765","--bind","127.0.0.1",
@@ -95,7 +100,7 @@ try {
       report.failed !== report.failTests.length) {
     throw new Error("Trace counts are inconsistent");
   }
-  if (report.failed > 0 || report.passed < 8) {
+  if (report.failed > 0 || report.passed !== expectedTests) {
     throw new Error("ActionScript smoke tests failed or did not all run");
   }
   report.result = "passed";

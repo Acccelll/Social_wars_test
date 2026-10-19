@@ -57,14 +57,18 @@
           }
         };
         window.__swStage = "loading-swf";
-        const swfResponse = await fetch("/dist/AS3Probe.swf", {cache:"no-store"});
+        const requestedSWF = new URL(location.href).searchParams.get("swf") || "AS3Probe.swf";
+        if (requestedSWF !== "AS3Probe.swf" && requestedSWF !== "ContractProbe.swf")
+          throw new Error("Unsupported probe: " + requestedSWF);
+        window.__swProbe = requestedSWF;
+        const swfResponse = await fetch("/dist/" + requestedSWF, {cache:"no-store"});
         if (!swfResponse.ok) throw new Error("SWF HTTP " + swfResponse.status);
         const swfData = await swfResponse.arrayBuffer();
         window.__swSwfLength = swfData.byteLength;
         window.__swStage = "loading-buffer";
         await player.ruffle().load({
           data: swfData,
-          swfFileName: "AS3Probe.swf",
+          swfFileName: requestedSWF,
           autoplay: "on",
           allowScriptAccess: true,
           splashScreen: false
