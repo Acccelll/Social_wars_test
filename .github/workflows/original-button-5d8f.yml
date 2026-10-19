@@ -110,7 +110,7 @@ jobs:
           assert any(e["type"]=="button_mouseup_event_probe" for e in report["events"])
           assert len([e for e in report["events"] if e["type"]=="pointer"])>=1
           names=["event-before.png","event-hover.png","event-down.png",
-                 "event-up.png","session.webm"]
+                 "event-up.png","event-second-up.png","session.webm"]
           assert all((root/f).stat().st_size>1000 for f in names)
           rect=(558,652,734,708)
           dialog=(275,145,995,709)
@@ -125,7 +125,9 @@ jobs:
              "hover_vs_before_button":fraction("event-before.png","event-hover.png",rect),
              "down_vs_hover_button":fraction("event-hover.png","event-down.png",rect),
              "up_vs_down_button":fraction("event-down.png","event-up.png",rect),
-             "dialog_up_vs_before":fraction("event-before.png","event-up.png",dialog)
+             "dialog_up_vs_before":fraction("event-before.png","event-up.png",dialog),
+             "dialog_second_up_vs_before":fraction("event-before.png","event-second-up.png",dialog),
+             "dialog_second_up_vs_first_up":fraction("event-up.png","event-second-up.png",dialog)
           }
           result={
               "original_swf":"Basesec_1.5.4.swf",
@@ -136,6 +138,8 @@ jobs:
               "scores":scores,
               "no_confirmed_sprite_character_ids":True,
               "modal_confirmed_dismissed":False,
+              "modal_dismissal_candidate_by_pixels":scores["dialog_second_up_vs_before"]>0.18,
+              "warning_overlay_considered":True,
               "modal_dismissal_visual_review_required":True,
               "limitations":"Pixel differences are not proof of AS3 handler execution"
           }
