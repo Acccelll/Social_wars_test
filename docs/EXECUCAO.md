@@ -24,7 +24,7 @@ Precisa de:
 
 No Windows, executar `tools/build_probe_windows.bat`. Em Linux, `tools/build_probe_linux.sh`. Não há dependências do SDK incluídas no Git.
 
-**Resultado anterior:** nos lotes 3H–3I, a compilação era bloqueada pela ausência de `mxmlc`; as rotinas de teste eram apenas estáticas/modeladas. Qualquer SWF gerado posteriormente deve ser validado separadamente.
+**Atualização 5A (19/10/2026):** compilação aprovada no GitHub Actions, [execução 39255285110](https://github.com/Acccelll/Social_wars_test/actions/runs/39255285110). O artefato `social-wars-as3-probe` contém `AS3Probe.swf` (3.619 bytes), ainda **não executado no Ruffle**. Abra a execução e obtenha o ZIP na seção *Artifacts* (retenção de 14 dias).
 
 ## Diagnóstico
 

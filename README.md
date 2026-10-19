@@ -15,7 +15,7 @@ Consolidar em um único repositório o conhecimento e os protótipos obtidos a p
 - Reconstrução parcial dos métodos de dano, inteligência artificial e movimentação.
 - Port experimental do algoritmo A* em ActionScript 3, com verificação específica da regra de custo `g`.
 - Adaptação experimental do contrato `NodesPath` / `IsoUnit`.
-- Scripts de teste estático e esqueleto de compilação do cliente de prova.
+- Scripts de teste, compilação automatizada no GitHub Actions e **primeiro SWF experimental compilado** (AS3Probe, 3.619 bytes).
 
 Leia [STATUS.md](docs/STATUS.md), [ARQUITETURA.md](docs/ARQUITETURA.md) e [ROADMAP.md](docs/ROADMAP.md).
 
@@ -50,4 +50,4 @@ Este repositório **não inclui** o jogo, o servidor original, recursos gráfico
 
 ## Próximo passo
 
-**Lote 5A:** preparar uma árvore organizada de fontes AS3 e tentar a compilação do *probe* de navegação com Apache Flex (dependências/compilador devem estar disponíveis). Só depois planejar a integração compilada com o SWF original.
+**Lote 5A concluído:** o AS3Probe compilou no [GitHub Actions](https://github.com/Acccelll/Social_wars_test/actions/runs/39255285110). Veja [BUILD_5A_RESULTADO.md](docs/BUILD_5A_RESULTADO.md). **Próximo lote 5B:** execução do SWF de prova no Ruffle e integração gradual. Nenhum jogo completo foi recompilado.

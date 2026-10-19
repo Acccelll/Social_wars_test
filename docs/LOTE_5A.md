@@ -43,8 +43,6 @@ tools\build_probe_windows.bat
 
 ## Status da validação
 
-Este commit prepara **a tentativa efetiva de compilação no GitHub Actions**. Verificar o run CI na aba Actions para conferir erros e obter o artefato de prova.
+**Concluído em 19/10/2026.** Após corrigir a detecção do SDK, a execução [39255285110](https://github.com/Acccelll/Social_wars_test/actions/runs/39255285110) terminou com **success**. O compilador gerou `dist/AS3Probe.swf` de **3.619 bytes**, cabeçalho `CWS` válido, e o Actions publicou o artefato `social-wars-as3-probe` (ID 12187886426; retenção de 14 dias). Os três testes Python também passaram.
 
-O ambiente local de geração de arquivos deste chat não dispõe de `mxmlc` e apresentou erros ao acessar o disco; por isso, um resultado compilado não pode ser afirmado sem **run concluído com sucesso**.
-
-Mesmo um SWF compilado é somente prova de `AS3Probe`: rodá-lo dentro do navegador e integrar ao servidor original ainda são etapas posteriores.
+O ambiente local deste chat segue sem `mxmlc`, mas a compilação **real em CI** foi confirmada. O SWF é somente o probe; sua execução no Ruffle e a integração no jogo original permanecem pendentes. Veja [BUILD_5A_RESULTADO.md](BUILD_5A_RESULTADO.md).
