@@ -20,6 +20,8 @@ const headless=args.includes("--headless");
 const newVillage=args.includes("--create-test-village");
 const recordVideo=!args.includes("--no-video");
 const smokeMarkers=args.includes("--smoke-markers");
+const unitProbe=args.includes("--unit-probe");
+if(unitProbe&&smokeMarkers)throw Error("Use one probe mode at a time");
 const ruffleRoot=path.join(root,"tests/ruffle/node_modules/@ruffle-rs/ruffle");
 const observerPath=path.join(root,"tests/original/observer.js");
 await fs.mkdir(out,{recursive:true});
@@ -84,6 +86,29 @@ try{
  if(newVillage) await page.goto(server+"/play.html",
                                {waitUntil:"domcontentloaded",timeout:30000});
  if(!headless)console.log("Use a janela do Chromium para entrar na vila e marcar as ações no painel lateral.");
+ if(unitProbe){
+   // Controlled exploratory clicks on the ORIGINAL SWF canvas. The "other"
+   // label is intentional: no action or SWF child sprite is assumed.
+   const target=page.locator("ruffle-embed").first();
+   const positions=[
+     {name:"center_selection_probe",x:380,y:300},
+     {name:"offset_destination_probe",x:430,y:320},
+     {name:"offset_target_probe",x:470,y:270},
+   ];
+   for(const position of positions){
+     await page.locator("#sw-action").selectOption("other");
+     await page.locator("#sw-start").click();
+     await page.evaluate(step=>window.__swHostRecord?.({
+       type:"exploratory_probe",step:step.name,expected_game_action:null,
+       unit_item_id:null,sprite_character_id:null,
+       wall_clock_ms:Date.now(),location:{x:step.x,y:step.y}
+     }),position);
+     await target.click({position:{x:position.x,y:position.y},timeout:7000});
+     await page.waitForTimeout(750);
+     await page.locator("#sw-stop").click();
+     await page.waitForTimeout(250);
+   }
+ }
  if(smokeMarkers){
    // Test only that the overlay works on the original client's page.
    // Kind 'other' is NOT an actual game action.
