@@ -1,0 +1,184 @@
+{
+  "method": "HTTP resource URL match against archive SWF path",
+  "scope": "bootstrap-only; not an animation-state observation",
+  "counts": {
+    "catalog_sprites": 17,
+    "catalog_source_swfs": 14,
+    "sprites_whose_swf_was_requested": 3,
+    "source_swfs_requested": 2,
+    "sprite_actions_confirmed": 0
+  },
+  "records": [
+    {
+      "source_swf": "assets/sprites/1212_tetrapod_mech.swf",
+      "sprite_id": 362,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/1212_tetrapod_mech.swf",
+      "sprite_id": 393,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/1313_splinterMech.swf",
+      "sprite_id": 188,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/1313_splinterMech.swf",
+      "sprite_id": 189,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/0022_tower_1_m.swf",
+      "sprite_id": 85,
+      "catalog_category": "buildings",
+      "requested_during_boot": true,
+      "requested_resource_path": "/static/socialwars/sprites/0022_tower_1_m.swf",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "http_resource_requested"
+    },
+    {
+      "source_swf": "assets/sprites/0022_tower_1_m.swf",
+      "sprite_id": 52,
+      "catalog_category": "buildings",
+      "requested_during_boot": true,
+      "requested_resource_path": "/static/socialwars/sprites/0022_tower_1_m.swf",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "http_resource_requested"
+    },
+    {
+      "source_swf": "assets/sprites/0026_command_center_1_m.swf",
+      "sprite_id": 21,
+      "catalog_category": "buildings",
+      "requested_during_boot": true,
+      "requested_resource_path": "/static/socialwars/sprites/0026_command_center_1_m.swf",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "http_resource_requested"
+    },
+    {
+      "source_swf": "assets/characters_2/good_10_m.swf",
+      "sprite_id": 11,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/1358_bushwacker.swf",
+      "sprite_id": 327,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/1376_reaperDrone.swf",
+      "sprite_id": 1654,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/1037_megatank.swf",
+      "sprite_id": 132,
+      "catalog_category": "units",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/0039_tower_2_m.swf",
+      "sprite_id": 74,
+      "catalog_category": "buildings",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/0040_workshop_1_m.swf",
+      "sprite_id": 52,
+      "catalog_category": "buildings",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/sprites/0118_laboratory_m.swf",
+      "sprite_id": 11,
+      "catalog_category": "buildings",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/images/en/popupResearchCenter_buildingProcess.swf",
+      "sprite_id": 74,
+      "catalog_category": "interface",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/images/en/popupResearchCenter_buildingProcess_2.swf",
+      "sprite_id": 73,
+      "catalog_category": "interface",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    },
+    {
+      "source_swf": "assets/externalized/viral_buttons/crossDCi.swf",
+      "sprite_id": 123,
+      "catalog_category": "interface",
+      "requested_during_boot": false,
+      "requested_resource_path": "",
+      "observed_action": "",
+      "runtime_sprite_identity_verified": false,
+      "evidence_type": "not_observed_in_boot_window"
+    }
+  ],
+  "warning": "Requesting an SWF does NOT prove its character ID rendered or played."
+}
