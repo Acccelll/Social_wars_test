@@ -1,10 +1,6 @@
 name: Visual Unit Batch 5D.3
 
 on:
-  push:
-    paths:
-      - "tools/visual_source_catalog.py"
-      - ".github/workflows/visual-units-batch.yml"
   workflow_dispatch:
     inputs:
       names:
