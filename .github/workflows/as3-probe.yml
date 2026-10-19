@@ -1,0 +1,54 @@
+name: AS3 Probe Build
+
+on:
+  push:
+    paths:
+      - 'as3/**'
+      - 'tools/**'
+      - '.github/workflows/as3-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-as3-probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Java 8 (compatible with Flex 4.16.1)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Verify Python A-star formula tests
+        run: python3 tools/test_astar_cost.py
+
+      - name: Download compiler and playerglobal
+        run: bash tools/bootstrap_flex_linux.sh
+
+      - name: Compile proof-of-concept SWF
+        run: bash tools/build_probe_linux.sh
+
+      - name: Check SWF header
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("dist/AS3Probe.swf")
+          data = p.read_bytes()
+          assert len(data) > 12, "empty/invalid SWF"
+          assert data[:3] in (b"FWS", b"CWS", b"ZWS"), "not an SWF"
+          print(f"SWF header {data[:3]!r}, size {len(data)} bytes")
+          PY
+
+      - name: Upload SWF proof of concept
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-wars-as3-probe
+          path: dist/AS3Probe.swf
+          if-no-files-found: error
+          retention-days: 14
