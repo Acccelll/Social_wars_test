@@ -291,10 +291,251 @@
       "method_names": [
         "QuestInfo"
       ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/PopupTutorialMC.pcode",
+      "bytes": 2577,
+      "target_occurrences": {
+        "PopupTutorialMC": 3
+      },
+      "method_names": [
+        "PopupTutorialMC"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/core/TutorialMain.pcode",
+      "bytes": 530946,
+      "target_occurrences": {
+        "TutorialMain": 4,
+        "tutorialMode": 2,
+        "closeWindow": 2,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "TutorialMain",
+        "addCounterTrees",
+        "addMayor",
+        "checkStepBattle",
+        "checkStepSoldiers",
+        "chopTree",
+        "doPan",
+        "endHandler",
+        "endTutorial",
+        "getAlignedHorizontalPosition",
+        "getAlignedVerticalPosition",
+        "getArrowPosition",
+        "getCirclePosition",
+        "getStep",
+        "getStepPosition",
+        "hideArrow",
+        "init",
+        "ioErrorHandler",
+        "nextStep",
+        "onExpressionEnd",
+        "onWideScreenChange",
+        "prevStep",
+        "removeMayor",
+        "setStep",
+        "showArrow",
+        "showMarcasuelo",
+        "spawnEnemies",
+        "stopMayor",
+        "unlockMap",
+        "unlockTabs",
+        "update"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/cutscene/CutScene.pcode",
+      "bytes": 195749,
+      "target_occurrences": {
+        "MouseEvent": 5,
+        "addEventListener": 7
+      },
+      "method_names": [
+        "CutScene",
+        "addCallback",
+        "addClean",
+        "addEndChapter",
+        "addEndQuest",
+        "addHighlight",
+        "addRemoveElement",
+        "addRemoveSpeaker",
+        "addSpawnSegment",
+        "addStep",
+        "addTalk",
+        "addTravelling",
+        "added",
+        "checkSpeakerAt",
+        "clean",
+        "doTalk",
+        "finishStep",
+        "fullScreenChanged",
+        "highlightSpeakerBox",
+        "onKeyDown",
+        "playStep",
+        "removeSkipButton",
+        "removeSpeaker",
+        "removed",
+        "setSpeaker",
+        "setSpeakerExpression",
+        "shutMouth",
+        "skip",
+        "start",
+        "stepCompleted"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/managers/PopupManager.pcode",
+      "bytes": 174224,
+      "target_occurrences": {
+        "TutorialMain": 2,
+        "closeWindow": 5,
+        "MouseEvent": 4,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "Init",
+        "PopupManager",
+        "canRemoveGuiCover",
+        "closeAllPopups",
+        "closePopOver",
+        "doOpenPopup",
+        "enquePopup",
+        "fondoNegro",
+        "freeze",
+        "getFrozenPriority",
+        "getPopupLayerIndex",
+        "hasPopup",
+        "moneyConfirm",
+        "onClickFondoNegro",
+        "onClosePopup",
+        "openPopOver",
+        "openPopup",
+        "removeFondoNegro",
+        "sortQueue",
+        "tutorialBox",
+        "unfreeze",
+        "updatePopupPositions"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/popups/PopupAlert.pcode",
+      "bytes": 13865,
+      "target_occurrences": {
+        "MouseEvent": 4,
+        "addEventListener": 3
+      },
+      "method_names": [
+        "PopupAlert",
+        "getParams",
+        "setLangLiterals"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/popups/PopupConfirm.pcode",
+      "bytes": 19150,
+      "target_occurrences": {
+        "MouseEvent": 3,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "PopupConfirm",
+        "confirm",
+        "deny",
+        "enableButtons",
+        "getParams",
+        "setLangLiterals"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/popups/PopupIntro.pcode",
+      "bytes": 31874,
+      "target_occurrences": {
+        "MouseEvent": 7,
+        "addEventListener": 7
+      },
+      "method_names": [
+        "PopupIntro",
+        "doCallback",
+        "enableButtons",
+        "getParams",
+        "loadIntro",
+        "nextText"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/popups/PopupMissionInfo.pcode",
+      "bytes": 63362,
+      "target_occurrences": {
+        "closeWindow": 4,
+        "MouseEvent": 4,
+        "addEventListener": 2
+      },
+      "method_names": [
+        "PopupMissionInfo",
+        "closeWindow",
+        "getParams",
+        "onShare",
+        "prepUnitReward",
+        "setEndLiterals",
+        "setStartLiterals"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/popups/PopupNextMission.pcode",
+      "bytes": 19432,
+      "target_occurrences": {
+        "MouseEvent": 5,
+        "addEventListener": 1
+      },
+      "method_names": [
+        "PopupNextMission",
+        "getParams",
+        "onOut",
+        "onOver"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/popups/PopupTutorial.pcode",
+      "bytes": 21946,
+      "target_occurrences": {
+        "PopupTutorialMC": 8,
+        "closeWindow": 4,
+        "MouseEvent": 4,
+        "addEventListener": 3
+      },
+      "method_names": [
+        "PopupTutorial",
+        "activate",
+        "closeWindow",
+        "confirm",
+        "deny",
+        "enableButtons"
+      ]
+    },
+    {
+      "format": "pcode",
+      "relative_path": "scripts/quest/QuestInfo.pcode",
+      "bytes": 7019,
+      "target_occurrences": {},
+      "method_names": [
+        "QuestInfo"
+      ]
     }
   ],
   "as_source_files": 11,
-  "pcode_files": 0,
+  "pcode_files": 11,
   "root_cause_verified": false,
   "click_handler_verified": false,
   "runtime_modal_dismissed": false,
