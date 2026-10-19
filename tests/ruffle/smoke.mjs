@@ -75,7 +75,13 @@ try {
     () => window.__swDone === true || Boolean(window.__swError),
     null, {timeout:30000}
   );
-  report.traces = await page.evaluate(() => window.__swTrace || []);
+  report.traces = await page.evaluate(() => (
+    (window.__swSignals || []).length > 0
+      ? window.__swSignals
+      : (window.__swTrace || [])
+  ));
+  report.eventSource = await page.evaluate(() =>
+    (window.__swSignals || []).length > 0 ? "ExternalInterface" : "traceObserver");
   report.loadError = await page.evaluate(() => window.__swError);
   report.loaded = await page.evaluate(() => Boolean(window.__swLoaded));
   report.summary = report.traces.find(t => t.startsWith("SWTEST:SUMMARY ")) || null;
@@ -111,12 +117,18 @@ try {
         swfBytes: window.__swSwfLength,
         loadError: window.__swError,
         traceCount: (window.__swTrace || []).length,
+        signalCount: (window.__swSignals || []).length,
         traces: window.__swTrace || [],
         message: document.getElementById("message")?.textContent,
       }));
       report.browserState = state;
       report.loaded = Boolean(state.loaded);
-      report.traces = state.traces;
+      if (report.traces.length === 0) {
+        report.traces = await page.evaluate(() =>
+          (window.__swSignals || []).length > 0
+          ? window.__swSignals
+          : (window.__swTrace || []));
+      }
     } catch (e) { report.errors.push("browserState: " + e.message); }
   }
   if (page) {
@@ -130,7 +142,7 @@ try {
                   JSON.stringify(report,null,2) + "\n","utf8");
   console.log("SW-RUFFLE-REPORT", JSON.stringify({
     result:report.result,loaded:report.loaded,summary:report.summary,
-    errors:report.errors, traces:report.traces, browserState:report.browserState, console:report.console.slice(-35)
+    errors:report.errors, traces:report.traces, eventSource:report.eventSource, browserState:report.browserState, console:report.console.slice(-35)
   }));
 }
 if (report.result !== "passed") process.exitCode = 1;

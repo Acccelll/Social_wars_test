@@ -1,6 +1,7 @@
 package
 {
     import flash.display.Sprite;
+    import flash.external.ExternalInterface;
     import com.socialpoint.astar.recovered.AStarRecovered;
     import com.socialpoint.astar.recovered.NodesPathRecovered;
     import com.socialpoint.astar.recovered.IsoUnitRouteBridge;
@@ -21,7 +22,7 @@ package
 
         public function AS3Probe()
         {
-            trace("SWTEST:BOOT");
+            emit("SWTEST:BOOT");
             try
             {
                 runTests();
@@ -29,10 +30,24 @@ package
             catch (error:Error)
             {
                 failed++;
-                trace("SWTEST:uncaught_exception:FAIL " +
+                emit("SWTEST:uncaught_exception:FAIL " +
                       error.name + " " + error.message);
             }
-            trace("SWTEST:SUMMARY pass=" + passed + " fail=" + failed);
+            emit("SWTEST:SUMMARY pass=" + passed + " fail=" + failed);
+        }
+
+        private function emit(message:String):void
+        {
+            trace(message);
+            try
+            {
+                if (ExternalInterface.available)
+                    ExternalInterface.call("swProbeSignal", message);
+            }
+            catch (error:Error)
+            {
+                // O teste de runtime compara as duas vias separadamente.
+            }
         }
 
         private function check(name:String, condition:Boolean):void
@@ -40,12 +55,12 @@ package
             if (condition)
             {
                 passed++;
-                trace("SWTEST:" + name + ":PASS");
+                emit("SWTEST:" + name + ":PASS");
             }
             else
             {
                 failed++;
-                trace("SWTEST:" + name + ":FAIL");
+                emit("SWTEST:" + name + ":FAIL");
             }
         }
 
@@ -99,7 +114,7 @@ package
             a = grid();
             a.findPath(0,0,6,6,testUnit());
             route = a.walkPath;
-            trace("SWTEST:LONG_PATH_LENGTH=" + route.length);
+            emit("SWTEST:LONG_PATH_LENGTH=" + route.length);
             check("long_path",route.length > 0);
 
             route = new NodesPathRecovered();

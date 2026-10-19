@@ -20,6 +20,17 @@
       warnOnUnsupportedContent: false
     };
     window.__swTrace = [];
+    window.__swSignals = [];
+    window.swProbeSignal = function (message) {
+      const str = String(message).trim();
+      window.__swSignals.push(str);
+      console.log("AVM2_EXTERNAL " + str);
+      if (str.indexOf("SWTEST:SUMMARY ") === 0) {
+        window.__swDone = true;
+        document.getElementById("message").textContent = str;
+      }
+      return true;
+    };
     window.__swDone = false;
     window.__swError = null;
     window.__swStage = "before-ruffle";
@@ -55,6 +66,7 @@
           data: swfData,
           swfFileName: "AS3Probe.swf",
           autoplay: "on",
+          allowScriptAccess: true,
           splashScreen: false
         });
         window.__swApiState = {
