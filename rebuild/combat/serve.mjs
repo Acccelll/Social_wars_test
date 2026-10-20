@@ -7,9 +7,10 @@ const root=path.dirname(fileURLToPath(import.meta.url));
 const host='127.0.0.1',port=Number(process.env.PORT||5179);
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const allow=new Map([
- ['/','demo/index.html'],['/demo/main.js','demo/main.js'],
+ ['/','demo/index.html'],['/arena','demo/arena.html'],['/demo/main.js','demo/main.js'],['/demo/arena.js','demo/arena.js'],
  ['/dist/index.js','dist/index.js'],['/dist/model.js','dist/model.js'],
- ['/dist/healthBar.js','dist/healthBar.js'],['/dist/rng.js','dist/rng.js']
+ ['/dist/healthBar.js','dist/healthBar.js'],['/dist/rng.js','dist/rng.js'],
+ ['/dist/scene.js','dist/scene.js'],['/dist/unitCatalog.js','dist/unitCatalog.js']
 ]);
 http.createServer(async(req,res)=>{
  const file=allow.get(new URL(req.url??'/',`http://${host}:${port}`).pathname);
