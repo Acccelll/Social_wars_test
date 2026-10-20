@@ -143,7 +143,7 @@ def export(jar,src_swf,dir,entry):
             n=getattr(image,"n_frames",1)
             dims=list(image.size)
         return {"status":"EXPORTED","frames_in_gif":n,"gif_size":dims,
-                "gif_path":gif.relative_to(dir.parent).as_posix(),
+                "gif_path":gif.relative_to(dir).as_posix(),
                 "gif_sha256":hashlib.sha256(gif.read_bytes()).hexdigest(),
                 "bytes":gif.stat().st_size,
                 "duration_seconds":round(time.monotonic()-start,2)}
