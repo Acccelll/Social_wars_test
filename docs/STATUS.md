@@ -387,3 +387,14 @@ foi reconstruída por este procedimento.
 - Original 0.02a preservado, saves isolados, zero cliques nas unidades ou POSTs artificiais. Comandos, gravações e comparativos estão nos artefatos de Actions.
 - [Relatório 5D.8P](LOTE_5D_8P.md) · [dados](../data/visual/aggro_boundary_5d8p.json).
 - **Próximo 5D.8Q:** isolar ativação de região/câmera, visibilidade/obstáculos e regras de aquisição de alvos do jogo original.
+
+
+## Lote 5D.8Q — Câmera horizontal isolada do combate automático
+
+- [CI 39411986093](https://github.com/Acccelll/Social_wars_test/actions/runs/39411986093) **3 jobs aprovados**: inimigo Reaper Drone `1376` em (70,45), **15 tiles leste** do Bushwacker `1358` em (55,45), original 0.02a no Ruffle/Flask, zero cliques nas unidades e saves separados.
+- **Sem pan, ArrowRight 280ms e ArrowLeft 280ms:** nenhum `kill(42)` ou deslocamento persistido dos dois objetos durante **23,024 s, 21,440 s e 21,619 s**, respectivamente; nenhum erro de página.
+- Screenshots `camera-before/after` comprovam que **as duas teclas deslocaram a câmera**. Entretanto **não há confirmação de que o inimigo tenha entrado na área visível** após as panorâmicas apenas horizontais.
+- ActionScript original: `Base.UpdateGame1` usa `moveMap(+/-50,0)` nas setas, enquanto `IsoEngine.getNearestTarget` calcula os candidatos por coordenadas do mapa, distância e elegibilidade, sem consultar diretamente o enquadramento. Não foram excluídos outros mecanismos de ativação dependentes da região visível.
+- **Conclusão limitada:** mover a câmera horizontalmente não bastou para iniciar combate persistido nesse cenário; não considerar isso prova de independência universal entre IA e câmera.
+- [Relatório 5D.8Q](LOTE_5D_8Q.md) · [dados](../data/visual/camera_aggro_5d8q.json).
+- **Próximo 5D.8R:** centralizar visualmente o inimigo, testar pan bidimensional e deslocar o par atacante/alvo mantendo distância de 15 tiles para isolar câmera, região ativa e terreno.
