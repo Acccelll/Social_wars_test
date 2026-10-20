@@ -233,3 +233,12 @@ npm run demo
 ```
 
 Abra **http://127.0.0.1:5179/arena**. Os números de vida/ataque/alcance vieram do **patch ativo do servidor comunitário** (verificação e hashes em [dados auditáveis](data/rebuild/unit_stats_5d8u.json)); não há confirmação independente dos atributos históricos de produção. Os mechas vetoriais são desenhos provisórios, com integração dos sprites originais planejada para 5D.8V.
+
+
+## Imagens e efeitos originais na arena (5D.8V)
+
+O [lote 5D.8V](docs/LOTE_5D_8V.md) habilitou Bushwacker, Reaper Drone e seus FX PNG extraídos do original na **arena independente** `/arena`. O pacote executável inclui 12 atlas PNG; o botão **Estilo: original/vetorial** alterna visuais, com fallback sem o pacote opcional. O motor de dano continua TypeScript, não Flash.
+
+Para executar o pacote final com Node.js 22+: `cd rebuild/combat && node serve.mjs`, então **http://127.0.0.1:5179/arena**. Os atlas são mantidos fora do Git; a receita reprodutível e hashes/limites estão em [`tools/prepare_original_visuals_5d8v.py`](tools/prepare_original_visuals_5d8v.py) e no [workflow de integração](.github/workflows/original-sprite-arena-5d8v.yml).
+
+**Limite atual:** o Reaper Drone ainda usa amostras estáticas por estado; os GIFs não equivalem às timelines animadas completas do SWF. O próximo passo é recuperar os quadros e pivôs do Reaper no 5D.8W.
