@@ -5,6 +5,16 @@
 `e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77`,
 **não modificado**.
 
+> **Nota de correção — lote 5D.8N:** o 5D.8J continua comprovando o
+> combate visual e o `kill(42)` do cliente original. Porém,
+> um teste posterior instrumentado detectou `kill` **antes do
+> primeiro clique manual no inimigo**, e um controle independente
+> eliminou o mesmo alvo com **zero cliques nas unidades**.
+> Portanto, as interações do 5D.8J não demonstraram que o clique
+> causou o ataque; o combate automático é suficiente no cenário
+> investigado. Consulte [5D.8N](LOTE_5D_8N.md).
+
+
 ## Descoberta que resolveu 5D.8I
 
 A decompilação do SWF original em FFDec 26.3.0 encontrou:
