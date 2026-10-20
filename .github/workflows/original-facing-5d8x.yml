@@ -1,0 +1,123 @@
+name: Original Facing and Projectile Marker 5D.8X
+on:
+  push:
+    paths:
+      - '.github/workflows/original-facing-5d8x.yml'
+      - 'tools/projectile_markers_5d8x.py'
+      - 'rebuild/combat/src/originalDirection.ts'
+      - 'rebuild/combat/src/index.ts'
+      - 'rebuild/combat/src/scene.ts'
+      - 'rebuild/combat/demo/originalVisuals.js'
+      - 'rebuild/combat/demo/arena.js'
+      - 'rebuild/combat/demo/arena.html'
+      - 'rebuild/combat/serve.mjs'
+      - 'rebuild/combat/test/originalDirection.test.mjs'
+      - 'rebuild/combat/test/originalDirection.browser.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  swf-markers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate marker scanner
+        run: python3 -m py_compile tools/projectile_markers_5d8x.py
+      - name: Download canonical original archive
+        run: |
+          mkdir -p runtime
+          curl --fail -L --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = 492630085
+      - name: Recover direct and nested projectilePoint instance names
+        run: |
+          python3 tools/projectile_markers_5d8x.py \
+            --archive runtime/original.zip \
+            --out dist/projectile-markers-5d8x.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('dist/projectile-markers-5d8x.json').read_text())
+          assert not d['originalSwfModified']
+          assert set(d['units'])=={'bushwacker','reaperDrone'}
+          for key,item in d['units'].items():
+              assert item['rootSpriteCount']>0
+              print('SOURCE_MARKERS',key,item['markerEventTotal'],item['uniqueRelevantNames'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: original-projectile-markers-5d8x
+          path: dist/projectile-markers-5d8x.json
+          retention-days: 30
+          if-no-files-found: error
+  facing-arena:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore 5D.8W read-only atlas PNGs, not original SWFs
+        uses: actions/download-artifact@v4
+        with:
+          name: socialwars-reaper-directional-5d8w
+          run-id: 39446986958
+          github-token: ${{ github.token }}
+          path: runtime/previous
+      - name: Restore original 13 visual atlases to independent arena
+        run: |
+          mkdir -p rebuild/combat/original-visual
+          cp -a runtime/previous/rebuild/combat/original-visual/. rebuild/combat/original-visual/
+          test -f rebuild/combat/original-visual/manifest.json
+          test "$(find rebuild/combat/original-visual -name '*.png' | wc -l)" -eq 13
+      - name: Install independent TypeScript and Playwright
+        working-directory: rebuild/combat
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install chromium
+      - name: Run source-derived eight-direction and projectile-point tests
+        working-directory: rebuild/combat
+        run: |
+          npm test
+          node --check demo/originalVisuals.js
+          node --check demo/arena.js
+      - name: Browser verify source-facing, manual pose and combat outcomes
+        working-directory: rebuild/combat
+        shell: bash
+        run: |
+          set -euo pipefail
+          node serve.mjs >/tmp/sw5d8x.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 35); do
+            if curl -fsS http://127.0.0.1:5179/arena -o /tmp/sw5d8x.html; then break; fi
+            sleep 1
+          done
+          node test/originalDirection.browser.mjs
+      - name: Save runnable no-Flash arena, source and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-auto-facing-5d8x
+          path: |
+            rebuild/combat/demo/
+            rebuild/combat/src/
+            rebuild/combat/dist/
+            rebuild/combat/original-visual/
+            rebuild/combat/test/*.test.mjs
+            rebuild/combat/test/*browser.mjs
+            rebuild/combat/test/screenshots/5d8x-*.png
+            rebuild/combat/serve.mjs
+            rebuild/combat/package.json
+            rebuild/combat/tsconfig.json
+            rebuild/combat/README.md
+          retention-days: 30
+          if-no-files-found: warn
