@@ -1,0 +1,250 @@
+{
+  "lot": "5D.8P",
+  "status": "original_aggro_boundary_tested_and_source_decoded",
+  "date": "2026-10-20",
+  "original_client": {
+    "swf": "assets/flash/Basesec_1.5.4.swf",
+    "sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+    "modified": false
+  },
+  "environment": "Original Social Wars 0.02a in Chromium/Ruffle and AcidCaos Flask server, isolated loopback saves",
+  "evidence": {
+    "verified_all_jobs_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39409756959",
+    "north_first_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39409336030",
+    "east_first_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39409336030",
+    "aggro_class_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39409756959/artifacts/12258752179",
+    "original_north_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39409756959/artifacts/12258747905",
+    "original_east_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39409756959/artifacts/12259700246"
+  },
+  "static_source_facts": {
+    "config_AGGRO_RANGE": {
+      "value": 10,
+      "type": "uint",
+      "class": "core.Config",
+      "line": 116,
+      "decompiled_declaration": "public static const AGGRO_RANGE:uint = 10"
+    },
+    "getNearestTarget": "core.isoengine.IsoEngine uses bucleNearestUnits with integer-truncated Euclidean distance; sorts candidate elements by score and sort; validates target eligibility before returning.",
+    "acquireNewTarget_default": "core.isoengine.IsoFightingElement uses max(Config.AGGRO_RANGE, iAttackRange) if its radius arg is -1",
+    "some_specific_callsite": "core.isoengine.IsoUnit includes acquireNewTarget(tx,ty,iAttackRange+2), but contextual conditions are not proven to apply to the tested battle",
+    "priority": "getElementScore favors units (+150), town hall (+100), collectable (+75), other armed buildings (+50); no-attack and no-collect building candidates may get score -1",
+    "original_unit_catalog_attack_range": {
+      "Bushwacker_1358": 10,
+      "Reaper_Drone_1376": 11
+    },
+    "caution": "A constant of 10 is not a globally proved autonomous acquisition radius; runtime distance 17 positive conflicts with assuming only this default path determines engagement."
+  },
+  "fixture": {
+    "friendly_unit": {
+      "item_id": 1358,
+      "player_id": 1,
+      "map_index": 41,
+      "tile": [
+        55,
+        45
+      ]
+    },
+    "hostile_unit": {
+      "item_id": 1376,
+      "player_id": 2,
+      "map_index": 42
+    },
+    "original_village_items": 40,
+    "controls": {
+      "unit_clicks": 0,
+      "synthetic_attacks": 0,
+      "swf_modifications": 0,
+      "save_reused": false
+    },
+    "north_positions": [
+      [
+        55,
+        29
+      ],
+      [
+        55,
+        28
+      ],
+      [
+        55,
+        27
+      ],
+      [
+        55,
+        26
+      ]
+    ],
+    "east_positions": [
+      [
+        71,
+        45
+      ],
+      [
+        72,
+        45
+      ],
+      [
+        73,
+        45
+      ],
+      [
+        74,
+        45
+      ]
+    ]
+  },
+  "primary_results": [
+    {
+      "scenario": "north_16",
+      "distance": 16,
+      "axis": "north",
+      "native_kill": true,
+      "target_removed": true,
+      "attacker_end_tile": [
+        54,
+        42
+      ],
+      "native_move": true,
+      "kill_at_ms_from_start": 38266
+    },
+    {
+      "scenario": "north_17",
+      "distance": 17,
+      "axis": "north",
+      "native_kill": true,
+      "target_removed": true,
+      "attacker_end_tile": [
+        53,
+        42
+      ],
+      "native_move": true,
+      "kill_at_ms_from_start": 40297
+    },
+    {
+      "scenario": "north_18",
+      "distance": 18,
+      "axis": "north",
+      "native_kill": false,
+      "target_removed": false,
+      "attacker_end_tile": [
+        55,
+        45
+      ],
+      "native_move": false,
+      "control_window_ms": 23000
+    },
+    {
+      "scenario": "north_19",
+      "distance": 19,
+      "axis": "north",
+      "native_kill": false,
+      "target_removed": false,
+      "attacker_end_tile": [
+        55,
+        45
+      ],
+      "native_move": false,
+      "control_window_ms": 23289
+    },
+    {
+      "scenario": "east_16",
+      "distance": 16,
+      "axis": "east",
+      "native_kill": false,
+      "target_removed": false,
+      "attacker_end_tile": [
+        55,
+        45
+      ],
+      "native_move": false,
+      "control_window_ms": 23294
+    },
+    {
+      "scenario": "east_17",
+      "distance": 17,
+      "axis": "east",
+      "native_kill": false,
+      "target_removed": false,
+      "attacker_end_tile": [
+        55,
+        45
+      ],
+      "native_move": false,
+      "control_window_ms": 23247
+    },
+    {
+      "scenario": "east_18",
+      "distance": 18,
+      "axis": "east",
+      "native_kill": false,
+      "target_removed": false,
+      "attacker_end_tile": [
+        55,
+        45
+      ],
+      "native_move": false,
+      "control_window_ms": 23233
+    },
+    {
+      "scenario": "east_19",
+      "distance": 19,
+      "axis": "east",
+      "native_kill": false,
+      "target_removed": false,
+      "attacker_end_tile": [
+        55,
+        45
+      ],
+      "native_move": false,
+      "control_window_ms": 23181
+    }
+  ],
+  "replication": {
+    "test_runs": 2,
+    "north_16": {
+      "both_native_kill": true,
+      "attacker_movement_end_tiles": [
+        [
+          53,
+          42
+        ],
+        [
+          54,
+          42
+        ]
+      ]
+    },
+    "north_17": {
+      "both_native_kill": true,
+      "attacker_movement_end_tiles": [
+        [
+          53,
+          42
+        ],
+        [
+          53,
+          42
+        ]
+      ]
+    },
+    "north_18": {
+      "both_no_native_kill": true
+    },
+    "north_19": {
+      "both_no_native_kill": true
+    },
+    "east_16_19": {
+      "both_no_native_kill": true
+    }
+  },
+  "negative_evidence_limits": [
+    "No kill during a 23-second observation window does not exclude delayed aggro or damage.",
+    "An off-screen enemy may not be active/rendered in the same way as visible units.",
+    "Different terrain, pathing, scripted missions, player-owner rules or initial camera can affect the results.",
+    "Distance in a north/east axis equals Euclidean distance for center tiles, but obstacles and geometry are not controlled.",
+    "Browser commands do not expose every hit; a kill is strong evidence of elimination, but no kill is weaker negative evidence.",
+    "Original Flash UI is not a rebuilt stand-alone client."
+  ],
+  "additional_east_short_distance_controls_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39410457546",
+  "next": "Use short east controls to determine if direction-dependent activation arises from camera/map; test active regions and AI initiation separately."
+}
