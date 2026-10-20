@@ -17,7 +17,7 @@ export interface UnitCatalogEntry {
   readonly bestAgainstMultiplier:number;
   readonly source:'AcidCaos-active-unit-patch';
 }
-export const UNIT_CATALOG:ReadOnly<Record<'bushwacker'|'reaperDrone',UnitCatalogEntry>>=Object.freeze({
+export const UNIT_CATALOG:Readonly<Record<'bushwacker'|'reaperDrone',UnitCatalogEntry>>=Object.freeze({
   bushwacker:Object.freeze({
     id:1358,name:'Bushwacker',assetName:'1358_bushwacker',type:'ROBOT',
     maxLife:6500,attack:138,defense:1,attackRange:10,velocity:7,attackInterval:35,
