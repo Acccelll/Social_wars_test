@@ -1,5 +1,5 @@
 import {UNIT_CATALOG,createScene,setSceneRunning,setSceneAutoFire,stepScene,fireSceneWeapon,healthBarView,seededRng} from '/dist/index.js';
-import {initOriginalVisuals,visualInfo,setVisualMode,nextVisualTick,nextReaperFacing,resetReaperFacing,drawOriginalUnit,drawOriginalShot,drawOriginalImpact} from '/demo/originalVisuals.js';
+import {initOriginalVisuals,visualInfo,setVisualMode,nextVisualTick,nextReaperFacing,resetReaperFacing,drawOriginalUnit,drawOriginalShot,drawOriginalImpact,approximateVisualShotOrigin} from '/demo/originalVisuals.js';
 const canvas=document.querySelector('#battle'), ctx=canvas.getContext('2d');
 const $=id=>document.getElementById(id), units=['bushwacker','reaperDrone'];
 const fmt=n=>new Intl.NumberFormat('pt-BR').format(n);
@@ -101,15 +101,17 @@ function drone(u){
 function shots(){
  for(const s of state.projectiles){
   const a=pos({x:s.x0,y:s.y0}),b=pos({x:s.x1,y:s.y1});
-  const t=1-s.remaining/s.duration,x=a.x+(b.x-a.x)*t,y=a.y-27+(b.y-a.y)*t;
+  const t=1-s.remaining/s.duration;
+  const origin=approximateVisualShotOrigin(s,a),end={x:b.x,y:b.y-26};
+  const x=origin.x+(end.x-origin.x)*t,y=origin.y+(end.y-origin.y)*t;
   if(drawOriginalShot(ctx,s,t,a,b))continue;
   ctx.save();ctx.shadowBlur=18;
   if(s.effect==='bullet'){
    ctx.shadowColor='#ffdf8c';ellipse(x,y,8,4,'#fff0aa');
    line(x-24*Math.sign(b.x-a.x),y+3,x,y,'#f8a638',3);
   } else {
-   ctx.shadowColor='#89f2ff';line(a.x,a.y-27,x,y,'#5fd2fdaa',8);
-   line(a.x,a.y-27,x,y,'#e6ffff',2);ellipse(x,y,6,6,'#b8efff');
+   ctx.shadowColor='#89f2ff';line(origin.x,origin.y,x,y,'#5fd2fdaa',8);
+   line(origin.x,origin.y,x,y,'#e6ffff',2);ellipse(x,y,6,6,'#b8efff');
   }
   ctx.restore();
  }
