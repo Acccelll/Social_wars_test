@@ -51,9 +51,9 @@ a{color:#b6e4e4}.legend{display:flex;gap:11px;flex-wrap:wrap;color:#91aabc;font-
 <button id="r-fire">Reaper: disparar</button>
 <button id="step">+ 1 frame</button>
 <button id="reset">↻ Reiniciar</button>
-<button id="auto">IA: ligada</button>
+<button id="auto">IA: ligada</button><button id="visual-mode">Estilo: original</button>
 </div>
-<div class="statrow">
+<p id="visual-status" class="tiny" aria-live="polite">Carregando visuais originais…</p><div class="statrow">
 <div class="stat"><span>Frames simulados</span><strong id="frame">0</strong></div>
 <div class="stat"><span>Projéteis ativos</span><strong id="projectiles">0</strong></div>
 <div class="stat"><span>Estado</span><strong id="status">Pronto</strong></div>
@@ -72,6 +72,6 @@ a{color:#b6e4e4}.legend{display:flex;gap:11px;flex-wrap:wrap;color:#91aabc;font-
 <section class="card"><h2>Registro do combate</h2><pre class="log" id="events">Inicializando cena...</pre></section>
 </aside></div>
 <div class="foot">
-<strong>Proveniência:</strong> vida, ataque, defesa, alcance, velocidade e intervalo constam do <em>unit_patch</em> ativo no servidor comunitário AcidCaos; não são comprovadamente os valores históricos dos servidores da Social Point. O traçado vetorial dos personagens, trajetória de projéteis e temporização em frames são aproximações próprias desta demonstração. Não inclui sprites SWF originais, IA completa, terreno, pathfinding ou missões.
+<strong>Proveniência:</strong> vida, ataque, defesa, alcance, velocidade e intervalo constam do <em>unit_patch</em> ativo no servidor comunitário AcidCaos; não são comprovadamente os valores históricos dos servidores da Social Point. Quando o pacote opcional está presente, a arena usa quadros exportados dos SWFs originais. As animações são amostras parciais de sub-timelines FFDec; posicionamento e velocidade de projéteis são aproximações. A versão vetorial continua disponível para comparação. Não inclui sprites SWF originais, IA completa, terreno, pathfinding ou missões.
 </div>
 </main><script type="module" src="/demo/arena.js"></script></body></html>
