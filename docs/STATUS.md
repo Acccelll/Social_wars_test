@@ -309,3 +309,15 @@ foi reconstruída por este procedimento.
 - Testes CI verdes demonstram execução do experimento, **não** sucesso de ataque.
 - [Relatório 5D.8I](LOTE_5D_8I.md) · [dados de evidência](../data/visual/native_combat_observation_5d8i.json).
 - **Próximo: 5D.8J:** estudar UI/estado de batalha e ativação de ataque a partir de ActionScript e cenas, antes de novos testes de clique.
+
+
+## Lote 5D.8J — Combate nativo e eliminação confirmados
+
+- Corrigida a confusão do 5D.8I: no **SWF original**, `PLAYER_ENEMY=2` e `PLAYER_NEUTRAL=3`. Os experimentos anteriores haviam tratado um Reaper Drone **neutro** como inimigo.
+- Decompiladas **15 classes originais** relacionadas a clique, UI, IA e dano (FFDec 26.3.0; binário SHA-256 validado): [CI 39352875836](https://github.com/Acccelll/Social_wars_test/actions/runs/39352875836).
+- Confirmada rota original `IsoInteractiveElement.clickItem → Base.startMovements → IsoUnit.setMove → updateAttack → attackNormal → recibirAtaque`.
+- Cenário corrigido: Bushwacker **1358/41/PlayerID=1** × Reaper Drone **1376/42/PlayerID=2**.
+- [CI de combate 39353157986](https://github.com/Acccelll/Social_wars_test/actions/runs/39353157986) comprovou **`kill` nativo do objeto 42**, remoção do save original e efeitos visuais de disparo/experiência. **SWF não modificado; sem POSTs artificiais.**
+- O teste é da distribuição original no Ruffle, **não** do cliente AS3 recompilado.
+- [Relatório detalhado](LOTE_5D_8J.md) · [Dados persistentes](../data/visual/original_combat_proof_5d8j.json) · [Vídeo e capturas](https://github.com/Acccelll/Social_wars_test/actions/runs/39353157986/artifacts/12233034780).
+- **Próximo: 5D.8K**, correlacionar estados/frames de tiro com os SWFs de Bushwacker e Reaper Drone.
