@@ -1,7 +1,7 @@
 /** 5D.8V original FFDec sprite/FX atlases. Optional; keep Canvas placeholders.
  * GIF sources are limited nested-timeline subframes, not every original frame.
  */
-import {originalFacingFrame} from '/dist/originalDirection.js';
+import {originalFacingFrame,originalProjectileStart} from '/dist/originalDirection.js';
 const UNIT_KEYS={bushwacker:'bushwacker',reaperDrone:'reaper_drone'};
 const imageCache=new Map();
 let manifest=null,mode='original',status='loading',error=null,tick=0;
@@ -72,12 +72,24 @@ export function drawOriginalUnit(ctx,key,u,p){
  return paintFrame(ctx,rec,p.x,p.y-(key==='bushwacker'?92:64),
    height*rec.frameWidth/rec.frameHeight,height,frame,0,flip);
 }
+/** Reaper asset has zero named projectilePoint placement records.
+ * The original fallback is y - bmd.height*0.6. Here 161 is the DEMO's
+ * scaled Reaper display height, not a proven original bmd.height.
+ * Bushwacker markers exist but their nested world transforms remain unknown.
+ */
+export function approximateVisualShotOrigin(shot,from){
+ if(shot.from==='reaperDrone')
+  return originalProjectileStart({worldPosition:from,displayHeight:161});
+ return {x:from.x,y:from.y-27}; // provisional Bushwacker muzzle anchor
+}
 export function drawOriginalShot(ctx,shot,progress,from,to){
  if(mode!=='original'||status!=='ready')return false;
  const rec=manifest.effects[shot.effect==='bullet'?'bullet':'laser'];
  if(!rec)return false;
- const x=from.x+(to.x-from.x)*progress,y=from.y-26+(to.y-from.y)*progress;
- const angle=Math.atan2(to.y-from.y,to.x-from.x);
+ const start=approximateVisualShotOrigin(shot,from);
+ const finish={x:to.x,y:to.y-26}; // target graphical hitpoint not yet proven
+ const x=start.x+(finish.x-start.x)*progress,y=start.y+(finish.y-start.y)*progress;
+ const angle=Math.atan2(finish.y-start.y,finish.x-start.x);
  return paintFrame(ctx,rec,x,y,shot.effect==='bullet'?74:105,
    shot.effect==='bullet'?24:12,Math.floor(tick*rec.fps/30),angle);
 }
