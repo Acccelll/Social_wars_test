@@ -82,3 +82,8 @@ Além disso, o scanner `tools/projectile_markers_5d8x.py` encontrou **26 eventos
 A versão 5D.8X foi aprovada no [CI com **35/35 testes**](https://github.com/Acccelll/Social_wars_test/actions/runs/39462605558), dois jobs de verificação e Chromium real com 13 imagens e zero erros.
 
 **Próximo 5D.8Y:** calcular os pivôs/markers do Bushwacker a partir da hierarquia de matrizes dos sprites SWF e validar o alinhamento de FX antes de automatizar caminho isométrico.
+
+
+## Lote 5D.8Y — Inspetor original dos cinco pontos de disparo do Bushwacker
+
+Extraímos os **cinco caminhos de matriz únicos** `DefineSprite1092 → (643/675/716/752/786) → projectilePoint`. `src/bushMuzzle.ts` fornece offsets **locais da timeline original**, sem assumir posição de mundo ou zoom. O novo **http://127.0.0.1:5179/muzzle** mostra os cinco pontos, os oito sentidos e o espelhamento; a arena `/arena` contém um link para ele. As coordenadas só podem ser aplicadas a um tiro com a origem e escala do root sprite medidas; essa calibração é a próxima etapa. [Relatório 5D.8Y](../../docs/LOTE_5D_8Y.md) · [CI 40/40 testes](https://github.com/Acccelll/Social_wars_test/actions/runs/39472749217).
