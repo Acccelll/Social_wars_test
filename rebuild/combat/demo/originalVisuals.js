@@ -27,7 +27,7 @@ export async function initOriginalVisuals(){
   const response=await fetch('/original-visual/manifest.json',{cache:'no-store'});
   if(!response.ok)throw Error('Opcional sprite pack indisponível ('+response.status+')');
   const m=await response.json();
-  if(m.lot!=='5D.8V'||m.originalSWFModified!==false)throw Error('Manifest incompatible');
+  if(!['5D.8V','5D.8W'].includes(m.lot)||m.originalSWFModified!==false)throw Error('Manifest incompatible');
   const urls=[];
   for(const key of Object.values(UNIT_KEYS)){
    const u=m.units?.[key];
