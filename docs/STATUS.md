@@ -375,3 +375,15 @@ foi reconstruída por este procedimento.
 - `IsoFightingElement.acquireNewTarget` usa por padrão o máximo entre `Config.AGGRO_RANGE` e `iAttackRange`; a aquisição de alvo e a distância de ataque não devem ser tratadas como iguais.
 - [Documento](LOTE_5D_8O.md), [dados](../data/visual/auto_aggro_distances_5d8o.json), [artefato](https://github.com/Acccelll/Social_wars_test/actions/runs/39363784245/artifacts/12237824433).
 - **Próximo 5D.8P:** explorar distâncias 16–19, eixo alternativo e regras de aquisição em AVM2.
+
+
+## Lote 5D.8P — 11 cenários e constante original de aggro
+
+- [CI principal 39409756959](https://github.com/Acccelll/Social_wars_test/actions/runs/39409756959): **3 jobs aprovados**. Extraído `core.Config.AGGRO_RANGE:uint = 10` de SWF original e testadas distâncias **16, 17, 18, 19** nos eixos norte e leste em cliente Ruffle/Flask.
+- **Norte:** nativo `kill(42)` e movimento do Bushwacker a **16 e 17**; nenhum `kill` ou movimento persistido a **18 e 19** no período medido. Padrão repetido em duas execuções independentes; caminho exato do Bushwacker varia.
+- **Leste:** nenhuma eliminação ou movimentação persistida a **16–19**, durante cerca de **23 segundos de amostragem** após os modais.
+- [CI de controle leste 39410457546](https://github.com/Acccelll/Social_wars_test/actions/runs/39410457546): **5 e 10 tiles eliminados**, **15 tiles sem kill/movimento** no intervalo de observação. No norte, a 15 houve eliminação no 5D.8O.
+- **Cautela:** `AGGRO_RANGE=10` é a constante original, não uma distância universal de detecção; `acquireNewTarget` pode receber raio explícito, e `getNearestTarget` classifica candidatos por elegibilidade/pontuação. As diferenças norte/leste podem decorrer de região/câmera, terreno, IA ou scripts.
+- Original 0.02a preservado, saves isolados, zero cliques nas unidades ou POSTs artificiais. Comandos, gravações e comparativos estão nos artefatos de Actions.
+- [Relatório 5D.8P](LOTE_5D_8P.md) · [dados](../data/visual/aggro_boundary_5d8p.json).
+- **Próximo 5D.8Q:** isolar ativação de região/câmera, visibilidade/obstáculos e regras de aquisição de alvos do jogo original.
