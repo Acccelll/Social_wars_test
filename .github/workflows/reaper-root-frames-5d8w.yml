@@ -56,7 +56,8 @@ jobs:
       - name: Replace only Reaper visual sheets and update provenance
         run: |
           test -f runtime/previous/original-visual/manifest.json
-          cp -r runtime/previous/original-visual rebuild/combat/original-visual
+          mkdir -p rebuild/combat/original-visual
+          cp -a runtime/previous/original-visual/. rebuild/combat/original-visual/
           python tools/merge_reaper_root_frames_5d8w.py \
             --baseline runtime/previous/original-visual \
             --root25 runtime/reaper-root-5d8w \
