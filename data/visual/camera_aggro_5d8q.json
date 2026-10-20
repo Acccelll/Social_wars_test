@@ -1,0 +1,117 @@
+{
+  "lot": "5D.8Q",
+  "date": "2026-10-20",
+  "status": "camera_pan_control_complete",
+  "repo": "Acccelll/Social_wars_test",
+  "original_client_swf_sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+  "original_swf_untouched": true,
+  "workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39411986093",
+  "artifacts": [
+    "https://github.com/Acccelll/Social_wars_test/actions/runs/39411986093/artifacts/12259612902",
+    "https://github.com/Acccelll/Social_wars_test/actions/runs/39411986093/artifacts/12260010994",
+    "https://github.com/Acccelll/Social_wars_test/actions/runs/39411986093/artifacts/12260535389"
+  ],
+  "setup": {
+    "friendly": {
+      "id": 1358,
+      "PlayerID": 1,
+      "object_index": 41,
+      "tile": [
+        55,
+        45
+      ]
+    },
+    "hostile": {
+      "id": 1376,
+      "PlayerID": 2,
+      "object_index": 42,
+      "tile": [
+        70,
+        45
+      ]
+    },
+    "tile_distance": 15,
+    "map_axis": "east",
+    "saved_game": "isolated disposable clone",
+    "unit_clicks": 0,
+    "synthetic_game_actions": 0
+  },
+  "mechanism": "Base.UpdateGame1 maps held ArrowLeft to moveMap(+50,0) and ArrowRight to moveMap(-50,0); Base.moveMap shifts graphics; these are camera-only inputs and not click-to-attack.",
+  "results": [
+    {
+      "camera": "none",
+      "pan_requested": false,
+      "kill": false,
+      "enemy_removed": false,
+      "attacker_final_tile": [
+        55,
+        45
+      ],
+      "enemy_final_tile": [
+        70,
+        45
+      ],
+      "control_window_ms": 23024,
+      "errors": []
+    },
+    {
+      "camera": "right",
+      "pan_requested": true,
+      "pan_key": "ArrowRight",
+      "pan_hold_ms": 280,
+      "world_moved_visually": true,
+      "kill": false,
+      "enemy_removed": false,
+      "attacker_final_tile": [
+        55,
+        45
+      ],
+      "enemy_final_tile": [
+        70,
+        45
+      ],
+      "control_window_ms": 21440,
+      "errors": []
+    },
+    {
+      "camera": "left",
+      "pan_requested": true,
+      "pan_key": "ArrowLeft",
+      "pan_hold_ms": 280,
+      "world_moved_visually": true,
+      "kill": false,
+      "enemy_removed": false,
+      "attacker_final_tile": [
+        55,
+        45
+      ],
+      "enemy_final_tile": [
+        70,
+        45
+      ],
+      "control_window_ms": 21619,
+      "errors": []
+    }
+  ],
+  "static_source": {
+    "core.Base.startMapDrag": "supports camera movement with mouse drag, independent from intentional unit selection",
+    "core.Base.UpdateGame1": "ArrowLeft/Right trigger Base.moveMap",
+    "core.Base.moveMap": "updates topX/topY and moves object displays; triggers no direct attack request",
+    "core.isoengine.IsoEngine.getNearestTarget": "uses unit arrays, tile-coordinate distance and eligibility; does not read viewport position directly within target-scoring helper",
+    "core.Config.AGGRO_RANGE": 10,
+    "source_caveat": "Static target-scoring method alone cannot rule out viewport-dependent object activation elsewhere in the engine."
+  },
+  "scope_confirmed": [
+    "Three CI jobs completed successfully with zero page errors",
+    "Left and right camera inputs visibly move map rendered content",
+    "No native kill, no persisted attacker movement in any of the 3 experiments",
+    "Enemy remains saved at (70,45)"
+  ],
+  "scope_not_confirmed": [
+    "Enemy target actually entered visible map viewport after horizontal pan",
+    "No shots or nonlethal effects occurred between save snapshots",
+    "Viewport can never affect AI activation",
+    "Terrain/passability as causal factor in north/east asymmetry"
+  ],
+  "next": "5D.8R: design map-coordinate/camera centering intervention where enemy is demonstrably visible, plus paired unit relocation at identical distance to separate terrain/active region from direction"
+}
