@@ -198,7 +198,7 @@ try{
  const attackObserved=combatActions.some(c=>['kill','sell','end_attack'].includes(c.action));
  const report={
   lot:'5D.8N-no-unit-input-control',scenario:fixture.scenario,
-  control_no_unit_clicks:true,manual_unit_click_count:0,,original_swf_untouched:true,
+  control_no_unit_clicks:true,manual_unit_click_count:0,original_swf_untouched:true,
   no_synthetic_combat_posts:true,source:'Original SWF input only; PlayerID 2 real enemy (3 was neutral)',
   fixture_seeded_units:expected,modal_ok_clicks:2,
   original_stage:{x:Math.round(b.x),y:Math.round(b.y),width:Math.round(b.width),height:Math.round(b.height)},
