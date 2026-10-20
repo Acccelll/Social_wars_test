@@ -1,0 +1,34 @@
+name: Snapshot Handoff Social Wars 5D.8Z
+on:
+  push:
+    paths:
+      - '.github/workflows/handoff-snapshot-5d8z.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Pack exact tracked repository source, documentation and workflows
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          sha="$(git rev-parse HEAD)"
+          git archive --format=tar HEAD | gzip -n -9 > dist/social_wars_test_source_main.tar.gz
+          printf '%s\n' "$sha" > dist/HEAD_SHA.txt
+          sha256sum dist/social_wars_test_source_main.tar.gz > dist/source_archive_sha256.txt
+          tar tzf dist/social_wars_test_source_main.tar.gz | grep -Fx 'rebuild/combat/src/sourceRegistration.ts'
+          tar tzf dist/social_wars_test_source_main.tar.gz | grep -Fx 'tools/bush_attack_registration_5d8z.py'
+          tar tzf dist/social_wars_test_source_main.tar.gz | grep -Fx 'docs/LOTE_5D_8Z.md'
+          printf 'SNAPSHOT_REPO_5D8Z sha=%s\n' "$sha"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: socialwars-full-source-handoff-5d8z
+          path: dist/
+          retention-days: 30
+          if-no-files-found: error
