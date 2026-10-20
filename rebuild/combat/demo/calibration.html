@@ -1,0 +1,34 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Wars — Calibração gráfica do Bushwacker 5D.8Z</title>
+<style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#091520;color:#e0edf4;font:14px system-ui,Segoe UI,sans-serif;padding:20px}
+main{max-width:1210px;margin:auto}h1{font-size:28px;margin:9px 0}.eyebrow{color:#91c9a9;letter-spacing:.13em;font-size:11px;font-weight:700}
+p{line-height:1.65;color:#9ab3bf}.layout{display:grid;grid-template-columns:minmax(0,1fr) 308px;gap:16px;margin-top:16px}
+.panel{background:#102637;border:1px solid #355368;border-radius:11px;padding:15px;min-width:0}
+canvas{display:block;width:100%;height:auto;max-height:580px;object-fit:contain;background:#1e303d;border-radius:6px;cursor:crosshair}
+.controls{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}button{border-radius:8px;background:#213e4d;border:1px solid #54707e;color:#e3eaea;padding:9px 12px;cursor:pointer}
+button.active{background:#a6d9c1;color:#11342d;font-weight:700}
+.s{color:#97bac5;font-size:12px}label{display:block;margin:15px 0 6px;color:#adccd7}input{background:#172e40;color:#f2f6f7;border:1px solid #547288;border-radius:6px;font-size:16px;padding:7px;width:100%}
+b{color:#b4e2c9}.stat{font:600 13px ui-monospace,monospace;white-space:pre-wrap;background:#0a1c29;padding:12px;border-radius:8px;line-height:1.8}
+a{color:#ade5df}.foot{font-size:12px;margin-top:18px;border-top:1px solid #2a485d;padding-top:13px}
+@media(max-width:790px){.layout{grid-template-columns:1fr}body{padding:11px}}
+</style></head><body><main>
+<div class="eyebrow">SOCIAL WARS 0.02a · REGISTRO GRÁFICO 5D.8Z</div>
+<h1>Calibrar ponto de disparo do Bushwacker</h1>
+<p>Exportação direta dos <b>cinco quadros raiz ATAQUE (11–15)</b> do SWF original. Cada quadro mantém o tamanho e o recorte de imagem retornados pelo FFDec. O ponto raiz do sprite <b>ainda não foi determinado no PNG</b>. Clique na imagem para propor uma origem experimental e visualizar o marcador calculado; não altera o combate da arena.</p>
+<div class="controls" id="poses">
+<button data-pose="1">Pose 1</button><button data-pose="2">Pose 2</button>
+<button data-pose="3" class="active">Pose 3</button><button data-pose="4">Pose 4</button><button data-pose="5">Pose 5</button>
+</div>
+<div class="layout"><section class="panel">
+<canvas id="root-frame" width="640" height="560" aria-label="Quadro raiz original com caixa de pixels e marcador ajustável"></canvas>
+<p class="s">Contorno ciano: limites reais dos pixels visíveis (alpha bounds) no PNG original. Cruz verde: origem selecionada manualmente. Marcador amarelo: ponto `projectilePoint` transformado. A calibração é experimental até ter registro confirmado no runtime Flash.</p>
+</section><aside class="panel"><h2 style="margin-top:3px">Medição e diagnóstico</h2>
+<p id="calibration-status" class="s">Origem ainda não selecionada</p>
+<label for="root-x">Origem do sprite na imagem FFDec — X</label><input id="root-x" type="number" step="0.1" placeholder="Clique no quadro">
+<label for="root-y">Origem do sprite na imagem FFDec — Y</label><input id="root-y" type="number" step="0.1" placeholder="Clique no quadro">
+<label for="scale-ratio">Pixels FFDec / pixel local original</label><input id="scale-ratio" type="number" min="0.01" step="0.05" value="1">
+<div class="controls"><button id="reset-cal">Limpar ajuste</button></div>
+<div class="stat" id="readout">Aguardando exportação original…</div>
+<p class="s">A escala inicial de 1 é <b>um parâmetro experimental</b>, não uma escala recuperada do AVM2. Os resultados não são enviados ao jogo até que haja calibração validada por evidências externas.</p></aside></div>
+<p class="foot"><a href="/muzzle">Inspetor de matrizes locais</a> · <a href="/arena">Voltar à arena</a> · <a href="https://github.com/Acccelll/Social_wars_test/blob/main/docs/LOTE_5D_8Z.md">Relatório técnico</a></p></main>
+<script type="module" src="/demo/calibration.js"></script></body></html>
