@@ -62,8 +62,20 @@ function parsed(r){
 async function currentSave(){
  const entries=(await fs.readdir(saveDir)).filter(n=>n.endsWith(".save.json"));
  if(entries.length!==1)throw Error("Expected exactly one disposable save; got "+entries.length);
- const bytes=await fs.readFile(path.join(saveDir,entries[0]));
- const data=JSON.parse(bytes.toString("utf8")), items=data.maps?.[0]?.items;
+ let bytes,data;
+ for(let attempt=0;attempt<10;attempt++){
+  bytes=await fs.readFile(path.join(saveDir,entries[0]));
+  try {
+   data=JSON.parse(bytes.toString("utf8"));
+   break;
+  }catch(e){
+   if(!(e instanceof SyntaxError) || attempt===9)throw e;
+   // Flask save persistence may temporarily be mid-write. Only retry the
+   // read; do not change any game state or fabricate command responses.
+   await new Promise(resolve=>setTimeout(resolve,90));
+  }
+ }
+ const items=data.maps?.[0]?.items;
  if(!items)throw Error("Invalid original save");
  for(const s of expected){
   const u=items[String(s.index)];
