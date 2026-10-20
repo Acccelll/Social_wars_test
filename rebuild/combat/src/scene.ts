@@ -4,6 +4,7 @@
  * NOT extracted original movement/FX/sprite behavior.
  */
 import {UNIT_CATALOG,type UnitKey} from './unitCatalog.js';
+import {originalDirectionToward,type OriginalDirection} from './originalDirection.js';
 import {
  createCombatant,receiveAttack,advanceFrames,finishDamageParticle,
  type CombatantState,type RandomSource
@@ -12,7 +13,7 @@ import {
 export interface SceneUnit {
  readonly key:UnitKey;readonly x:number;readonly y:number;
  readonly hp:CombatantState;readonly cooldown:number;readonly poseFrames:number;
- readonly shotsFired:number;
+ readonly shotsFired:number;readonly facing:OriginalDirection;
 }
 export interface SceneProjectile {
  readonly id:number;readonly from:UnitKey;readonly to:UnitKey;
@@ -42,7 +43,7 @@ export function createScene():SceneState {
  const mk=(key:UnitKey,x:number):SceneUnit=>({
   key,x,y:5,hp:createCombatant({
    id:key,maxLife:UNIT_CATALOG[key].maxLife,defense:UNIT_CATALOG[key].defense
-  }),cooldown:0,poseFrames:0,shotsFired:0
+  }),cooldown:0,poseFrames:0,shotsFired:0,facing:key==='bushwacker'?3:7
  });
  return {frame:0,running:false,autoFire:true,nextId:1,
   units:{bushwacker:mk('bushwacker',3),reaperDrone:mk('reaperDrone',12)},
@@ -70,7 +71,13 @@ export function fireSceneWeapon(s:SceneState,from:UnitKey):SceneState {
   x1:t.x,y1:t.y,remaining:duration,duration,
   effect:from==='bushwacker'?'bullet':'beam'
  };
- const u2={...u,cooldown:cfg.attackInterval,poseFrames:8,shotsFired:u.shotsFired+1};
+ // Original IsoUnit.updateDirection() faces the target before attack.
+ // This 2D demo uses its screen-space tile axes as an affine projection;
+ // orientation rules are source-derived, but isometric tile conversion is pending.
+ const facing=originalDirectionToward(
+   {x:u.x,y:u.y},{x:t.x,y:t.y},u.facing);
+ const u2={...u,cooldown:cfg.attackInterval,poseFrames:8,
+   shotsFired:u.shotsFired+1,facing};
  return append({...s,nextId:s.nextId+1,
   units:{...s.units,[from]:u2},
   projectiles:[...s.projectiles,shot]},`${label(from)} disparou (frame ${s.frame}).`);
