@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Wars — Sistema de combate 5D.8T</title><style>
+*{box-sizing:border-box}body{font:15px system-ui;background:#101923;color:#eaf2fa;max-width:860px;padding:24px;margin:auto}
+h1{font-size:1.8rem}.muted,small{color:#a1b8cb;line-height:1.6}.units{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.unit{border:1px solid #496074;background:#1a2a3c;padding:16px;border-radius:12px}
+.unit strong{display:block;margin-bottom:10px}.track{height:16px;background:#a0a0a0;border:1px solid black;margin:12px 0}
+.fill{height:100%;background:#00ff00;transition:width .2s}.buttons{display:flex;gap:10px;margin:18px 0;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:11px 14px;background:#98cefa;font-weight:700;cursor:pointer}button:disabled{opacity:.4}
+pre{background:#030b14;border-radius:10px;max-height:350px;overflow:auto;padding:15px;white-space:pre-wrap}
+footer{border-top:1px solid #375064;padding-top:12px;margin-top:25px}@media(max-width:550px){.units{grid-template-columns:1fr}}
+</style></head><body><small>LOTE 5D.8T · MÓDULO INDEPENDENTE · SEM FLASH</small>
+<h1>Social Wars — protótipo de combate</h1><p class="muted">Dano, defesa, críticos, HP e cores da barra derivados das rotinas originais. Interface demonstrativa independente dos sprites e do motor Flash.</p>
+<div class="units">
+<section class="unit"><strong>🟩 Bushwacker 1358</strong><span id="b-stat"></span><div class="track"><div class="fill" id="b-fill"></div></div><small id="b-bar"></small></section>
+<section class="unit"><strong>🟥 Reaper Drone 1376</strong><span id="r-stat"></span><div class="track"><div class="fill" id="r-fill"></div></div><small id="r-bar"></small></section>
+</div>
+<div class="buttons"><button id="b-attack">Bushwacker ataca</button><button id="r-attack">Reaper contra-ataca</button><button id="auto">5 rodadas</button><button id="reset">Reiniciar (seed 1358)</button></div>
+<h2>Eventos reproduzíveis</h2><pre id="events" aria-live="polite"></pre>
+<footer><small>Demo parcial: HP 200/220, ataques 32/23 e defesas 5/7 são valores ilustrativos, não estatísticas originais verificadas. Não inclui IA, efeitos SWF, tempo real de armas, projéteis ou movimentação.</small></footer>
+<script type="module" src="/demo/main.js"></script></body></html>
