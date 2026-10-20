@@ -1,0 +1,92 @@
+name: Source-verified Combat Units 5D.8U
+on:
+  push:
+    paths:
+      - '.github/workflows/combat-units-5d8u.yml'
+      - 'tools/extract_unit_stats_5d8u.py'
+      - 'rebuild/combat/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check source extraction script
+        run: python -m py_compile tools/extract_unit_stats_5d8u.py
+      - name: Clone read-only community server configuration
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/AcidCaos/socialwarriors.git runtime/original-server
+          git -C runtime/original-server sparse-checkout set config tools
+          test -s runtime/original-server/config/main.json
+          test -s runtime/original-server/config/patch/unit_patch.json
+      - name: Extract and validate canonical active unit patch
+        run: |
+          python tools/extract_unit_stats_5d8u.py \
+            --base runtime/original-server/config/main.json \
+            --patch runtime/original-server/config/patch/unit_patch.json \
+            --csv runtime/original-server/tools/sw_unit_patch.csv \
+            --patch_list runtime/original-server/config/patch/patches.txt \
+            --out dist/unit-stats-5d8u.json
+          python - <<'PY'
+          import json
+          o=json.load(open('dist/unit-stats-5d8u.json'))
+          assert set(o['units'])=={'1358','1376'}
+          assert o['units']['1358']['attack_range']==10
+          assert o['units']['1376']['attack_range']==11
+          assert 'community' in o['historical_authenticity'].lower() or 'historical' in o['historical_authenticity'].lower()
+          print('CANONICAL_UNITS_VERIFIED_5D8U')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: socialwars-unit-stats-5d8u
+          path: dist/unit-stats-5d8u.json
+          retention-days: 30
+          if-no-files-found: error
+
+  independent-scene:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: rebuild/combat
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install build and browser dependencies
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Compile and run model and scene deterministic tests
+        run: npm test
+      - name: Run self-contained local demo browser smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          node serve.mjs >/tmp/sw-5d8u-browser.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:5179/ >/tmp/scene5d8u.html; then break; fi
+            sleep 1
+          done
+          node test/scene.browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: socialwars-independent-scene-5d8u
+          path: |
+            rebuild/combat/dist/
+            rebuild/combat/demo/
+            rebuild/combat/serve.mjs
+            rebuild/combat/test/screenshots/
+          retention-days: 30
+          if-no-files-found: warn
