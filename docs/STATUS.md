@@ -286,3 +286,15 @@ foi reconstruída por este procedimento.
 - Não foram feitos POSTs de movimento pelo teste; capturados somente campos minimizados da requisição.
 - [Relatório permanente](../data/visual/original_client_move_5d8g.json) · [Doc e limites](LOTE_5D_8G.md) · [Vídeo e capturas](https://github.com/Acccelll/Social_wars_test/actions/runs/39329666474/artifacts/12224430675).
 - **Próximo: 5D.8H**, isolamento e identificação inequívoca da entidade animada por índice de mapa antes do estado de ataque.
+
+
+## Lote 5D.8H — Identidade das três unidades e movimento original isolado
+
+- [CI 39347814190](https://github.com/Acccelll/Social_wars_test/actions/runs/39347814190) concluído com sucesso; três cenários descartáveis com **uma única unidade adicional cada**, usando o SWF original não modificado.
+- Bushwacker **1358**, objeto **41**: `(55,45)` → `(54,35)`, **2 movimentos nativos**.
+- Reaper Drone **1376**, objeto **41**: `(55,45)` → `(58,40)`, **1 movimento nativo**.
+- Splinter Mech **1313**, objeto **41**: `(55,45)` → `(55,39)`, **2 movimentos nativos**.
+- Os nomes **BUSHWACKER**, **REAPER DRONE** e **SPLINTER MECH** coincidem com os painéis da interface em capturas isoladas, corrigindo a ambiguidade do 5D.8G.
+- Correspondência entre ação do cliente original, índice, item e save confirmada nos três casos. **DefineSprite SWF e frames de animação ainda não identificados**.
+- [Relatório](LOTE_5D_8H.md) · [Dados](../data/visual/isolated_original_units_5d8h.json) · [Evidências/vídeos](https://github.com/Acccelll/Social_wars_test/actions/runs/39347814190/artifacts/12232061894).
+- **Próximo lote 5D.8I:** começar a investigar ataques e dano por eventos emitidos pelo próprio cliente.
