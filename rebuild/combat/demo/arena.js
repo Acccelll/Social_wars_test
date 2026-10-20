@@ -1,4 +1,5 @@
 import {UNIT_CATALOG,createScene,setSceneRunning,setSceneAutoFire,stepScene,fireSceneWeapon,healthBarView,seededRng} from '/dist/index.js';
+import {initOriginalVisuals,visualInfo,setVisualMode,nextVisualTick,drawOriginalUnit,drawOriginalShot,drawOriginalImpact} from '/demo/originalVisuals.js';
 const canvas=document.querySelector('#battle'), ctx=canvas.getContext('2d');
 const $=id=>document.getElementById(id), units=['bushwacker','reaperDrone'];
 const fmt=n=>new Intl.NumberFormat('pt-BR').format(n);
@@ -55,7 +56,10 @@ function bar(u,p){
  for(let i=1;i<v.divisions;i++)line(x+i*w/v.divisions,y,x+i*w/v.divisions,y+7,'#17222a',1);
 }
 function bush(u){
- const p=pos(u);ctx.save();ctx.translate(p.x,p.y);
+ const p=pos(u);
+ if(drawOriginalUnit(ctx,'bushwacker',u,p)){
+  text('BUSHWACKER · 1358',p.x,p.y-137,11,'#cbf1dd');bar(u,p);return;
+ }ctx.save();ctx.translate(p.x,p.y);
  ellipse(0,40,61,14,'#081018a0');
  if(u.hp.dead){ctx.globalAlpha=.25;ctx.translate(0,25);ctx.rotate(.23);}
  for(const x of [-22,20]){
@@ -74,7 +78,10 @@ function bush(u){
  ctx.restore();text('BUSHWACKER · 1358',p.x,p.y-107,11,'#cbf1dd');bar(u,p);
 }
 function drone(u){
- const p=pos(u);ctx.save();ctx.translate(p.x,p.y-16);
+ const p=pos(u);
+ if(drawOriginalUnit(ctx,'reaperDrone',u,p)){
+  text('REAPER DRONE · 1376',p.x,p.y-143,11,'#c3e8ff');bar(u,p);return;
+ }ctx.save();ctx.translate(p.x,p.y-16);
  ellipse(0,55,61,15,'#050f1caa');
  ctx.translate(0,u.hp.dead?28:Math.sin(state.frame/10)*4);
  if(u.hp.dead)ctx.globalAlpha=.2;
@@ -95,6 +102,7 @@ function shots(){
  for(const s of state.projectiles){
   const a=pos({x:s.x0,y:s.y0}),b=pos({x:s.x1,y:s.y1});
   const t=1-s.remaining/s.duration,x=a.x+(b.x-a.x)*t,y=a.y-27+(b.y-a.y)*t;
+  if(drawOriginalShot(ctx,s,t,a,b))continue;
   ctx.save();ctx.shadowBlur=18;
   if(s.effect==='bullet'){
    ctx.shadowColor='#ffdf8c';ellipse(x,y,8,4,'#fff0aa');
@@ -110,6 +118,7 @@ function impacts(){
  for(const v of state.impacts){
   const p=pos(v),max=v.kind==='number'?28:v.kind==='death'?34:15;
   const t=1-v.remaining/max;
+  if(drawOriginalImpact(ctx,v,p))continue;
   ctx.save();ctx.globalAlpha=clamp(1-t,0,1);
   if(v.kind==='number')text(String(v.amount),p.x+(v.id%3-1)*10,p.y-72-t*28,v.critical?25:19,v.critical?'#ffe290':'#ffac87');
   else if(v.kind==='hit'){
@@ -119,7 +128,7 @@ function impacts(){
  }
 }
 function draw(){
- ground();bush(state.units.bushwacker);drone(state.units.reaperDrone);shots();impacts();
+ nextVisualTick();ground();bush(state.units.bushwacker);drone(state.units.reaperDrone);shots();impacts();
  if(state.winner){
   round(324,35,312,65,9,'#0c222ce8','#88c5b8');
   text('VITÓRIA · '+UNIT_CATALOG[state.winner].name.toUpperCase(),480,75,18,'#cefce5');
@@ -141,11 +150,15 @@ function hud(){
  $('b-fire').disabled=state.units.bushwacker.hp.dead||state.units.reaperDrone.hp.dead;
  $('r-fire').disabled=state.units.bushwacker.hp.dead||state.units.reaperDrone.hp.dead;
  $('step').disabled=Boolean(state.winner);
+ const vi=visualInfo();
+ $('visual-mode').textContent=vi.mode==='original'?'Estilo: original':'Estilo: vetorial';
+ $('visual-status').textContent=vi.ready?'Sprites FFDec carregados (amostras limitadas)':vi.status==='loading'?'Carregando visuais…':'Pacote original não encontrado; desenhos vetoriais ativos';
 }
 function repaint(){draw();hud();}
 function fire(which){state=fireSceneWeapon(state,which);repaint();}
 function reset(){state=createScene();rng=seededRng(1358);accumulator=0;repaint();}
 $('reset').onclick=reset;
+$('visual-mode').onclick=()=>{const vi=visualInfo();setVisualMode(vi.mode==='original'?'vector':'original');repaint();};
 $('run').onclick=()=>{state=setSceneRunning(state,!state.running);repaint();};
 $('auto').onclick=()=>{state=setSceneAutoFire(state,!state.autoFire);repaint();};
 $('step').onclick=()=>{state=stepScene(state,rng,1);repaint();};
@@ -169,8 +182,9 @@ function tick(now){
  repaint();requestAnimationFrame(tick);
 }
 reset();
+initOriginalVisuals().then(()=>repaint());
 window.__swArenaDebug={getState:()=>({
- frame:state.frame,winner:state.winner,projectiles:state.projectiles.length,
+ frame:state.frame,winner:state.winner,projectiles:state.projectiles.length,visual:visualInfo(),
  units:Object.fromEntries(units.map(key=>[key,{
   id:UNIT_CATALOG[key].id,health:state.units[key].hp.health,
   maxLife:state.units[key].hp.maxLife,shotsFired:state.units[key].shotsFired
