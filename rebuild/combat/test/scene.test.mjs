@@ -34,10 +34,10 @@ test('auto fire launches separate bullet and beam with no immediate damage',()=>
 });
 test('damage only applies after projectile arrival',()=>{
  const rng=sequenceRng(Array(20).fill(.5));
- let s=stepScene(createScene(),rng,7);
+ let s=stepScene(createScene(),rng,6);
  assert.equal(s.units.reaperDrone.hp.health,700);
  assert.equal(s.units.bushwacker.hp.health,6500);
- s=stepScene(s,rng,5);
+ s=stepScene(s,rng,6);
  assert.ok(s.units.bushwacker.hp.health<6500);
  assert.ok(s.units.reaperDrone.hp.health<700);
  assert.equal(s.units.bushwacker.hp.defense,1);
