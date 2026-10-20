@@ -321,3 +321,14 @@ foi reconstruída por este procedimento.
 - O teste é da distribuição original no Ruffle, **não** do cliente AS3 recompilado.
 - [Relatório detalhado](LOTE_5D_8J.md) · [Dados persistentes](../data/visual/original_combat_proof_5d8j.json) · [Vídeo e capturas](https://github.com/Acccelll/Social_wars_test/actions/runs/39353157986/artifacts/12233034780).
 - **Próximo: 5D.8K**, correlacionar estados/frames de tiro com os SWFs de Bushwacker e Reaper Drone.
+
+
+## Lote 5D.8K — GIFs e estados originais de combate (Bushwacker / Reaper Drone)
+
+- [CI de inventário 39355691232](https://github.com/Acccelll/Social_wars_test/actions/runs/39355691232): identificados sem ambiguidade `assets/sprites/1358_bushwacker.swf` (258 símbolos internos) e `assets/sprites/1376_reaperDrone.swf` (554 símbolos), com hashes originais verificados.
+- **Bushwacker:** timeline principal `DefineSprite=1092`; **Reaper Drone:** `DefineSprite=1654`. Ambos com `FrameLabel` originais `QUIETO` frame 1, `ANDAR` frame 6, `ATAQUE` frame 11 e `MUERTE` frame 16.
+- **Ataques direcionais Bushwacker:** frame 11→sprite `643` (`E_attack`), 12→`675` (`TE_attack`), 13→`716` (`P_attack`), 14→`752` (`T_attack`), 15→`786` (`F_attack`).
+- [CI de estados 39355945927](https://github.com/Acccelll/Social_wars_test/actions/runs/39355945927): **9 GIFs** das timelines rotuladas exportados e disponíveis em [artefato](https://github.com/Acccelll/Social_wars_test/actions/runs/39355945927/artifacts/12235636024).
+- Limites: os GIFs `QUIETO/ANDAR/ATAQUE` do Reaper ficaram idênticos nesta exportação; não foi comprovada a identidade do projétil, impacto ou quadros específicos da captura runtime.
+- [Relatório 5D.8K](LOTE_5D_8K.md) · [metadados versionados](../data/visual/combat_animations_5d8k.json).
+- **Próximo 5D.8L:** detalhar os cinco ataques direcionais e correlacionar efeitos visuais à execução original do Ruffle, sem editar SWFs.
