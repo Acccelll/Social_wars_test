@@ -246,5 +246,63 @@
     "Original Flash UI is not a rebuilt stand-alone client."
   ],
   "additional_east_short_distance_controls_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39410457546",
-  "next": "Use short east controls to determine if direction-dependent activation arises from camera/map; test active regions and AI initiation separately."
+  "next": "Use short east controls to determine if direction-dependent activation arises from camera/map; test active regions and AI initiation separately.",
+  "additional_east_short_distance_controls": {
+    "run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39410457546",
+    "artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39410457546/artifacts/12258858595",
+    "items": [
+      {
+        "scenario": "east_05",
+        "distance": 5,
+        "enemy_tile": [
+          60,
+          45
+        ],
+        "native_kill": true,
+        "target_removed": true,
+        "attacker_end_tile": [
+          55,
+          45
+        ],
+        "control_window_ms": 3106,
+        "kill_at_ms_from_start": 41508
+      },
+      {
+        "scenario": "east_10",
+        "distance": 10,
+        "enemy_tile": [
+          65,
+          45
+        ],
+        "native_kill": true,
+        "target_removed": true,
+        "attacker_end_tile": [
+          55,
+          45
+        ],
+        "control_window_ms": 3145,
+        "kill_at_ms_from_start": 45285
+      },
+      {
+        "scenario": "east_15",
+        "distance": 15,
+        "enemy_tile": [
+          70,
+          45
+        ],
+        "native_kill": false,
+        "target_removed": false,
+        "attacker_end_tile": [
+          55,
+          45
+        ],
+        "control_window_ms": 23180
+      }
+    ],
+    "interpretation": "East combat works at 5 and 10 tiles. No east 15 kill/movement during 23-second sampling; north 15 previously killed. Difference cannot yet distinguish terrain/camera/activation from orientation effects."
+  },
+  "verified_workflows_all_jobs_green": [
+    "https://github.com/Acccelll/Social_wars_test/actions/runs/39409756959",
+    "https://github.com/Acccelll/Social_wars_test/actions/runs/39410457546"
+  ]
 }
