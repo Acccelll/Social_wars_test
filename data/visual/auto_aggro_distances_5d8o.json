@@ -1,0 +1,148 @@
+{
+  "lot": "5D.8O",
+  "date": "2026-10-20",
+  "status": "distance_sweep_completed_4_scenarios",
+  "original_client": "Social Wars 0.02a SWF under Ruffle + original Flask server",
+  "swf_sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+  "original_swf_modified": false,
+  "synthetic_combat_posts": false,
+  "manual_unit_clicks": 0,
+  "workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39363784245",
+  "artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39363784245/artifacts/12237824433",
+  "fixture": {
+    "bushwacker": {
+      "item_id": 1358,
+      "object_index": 41,
+      "player_id": 1,
+      "tile": [
+        55,
+        45
+      ]
+    },
+    "reaper_drone": {
+      "item_id": 1376,
+      "object_index": 42,
+      "player_id": 2,
+      "tested_y_tiles": [
+        40,
+        35,
+        30,
+        25
+      ]
+    },
+    "village_original_items": 40,
+    "seeded_enemy_per_run": 1,
+    "map_terrain_changed": false,
+    "save_reused_between_runs": false,
+    "original_template_sha256": "3e64da21ed9a002369ca006212b65f83454b7de5c208f0e735db47a55bcd1206"
+  },
+  "scenarios": [
+    {
+      "scenario": "north_05",
+      "initial_manhattan_distance_tiles": 5,
+      "initial_target_tile": [
+        55,
+        40
+      ],
+      "kill_original_client": true,
+      "kill_at_ms_from_page_start": 40658,
+      "target_removed_from_save": true,
+      "attacker_tile_after": [
+        55,
+        45
+      ],
+      "persisted_attacker_movement_observed": false,
+      "browser_errors": 0,
+      "state_samples": 2,
+      "sample_time_window_ms": 2855
+    },
+    {
+      "scenario": "north_10",
+      "initial_manhattan_distance_tiles": 10,
+      "initial_target_tile": [
+        55,
+        35
+      ],
+      "kill_original_client": true,
+      "kill_at_ms_from_page_start": 27518,
+      "target_removed_from_save": true,
+      "attacker_tile_after": [
+        55,
+        45
+      ],
+      "persisted_attacker_movement_observed": false,
+      "browser_errors": 0,
+      "state_samples": 2,
+      "sample_time_window_ms": 2838
+    },
+    {
+      "scenario": "north_15",
+      "initial_manhattan_distance_tiles": 15,
+      "initial_target_tile": [
+        55,
+        30
+      ],
+      "kill_original_client": true,
+      "kill_at_ms_from_page_start": 38099,
+      "target_removed_from_save": true,
+      "attacker_tile_after": [
+        55,
+        40
+      ],
+      "persisted_attacker_movement_observed": true,
+      "moved_manhattan_tiles": 5,
+      "browser_errors": 0,
+      "state_samples": 2,
+      "sample_time_window_ms": 2791
+    },
+    {
+      "scenario": "north_20",
+      "initial_manhattan_distance_tiles": 20,
+      "initial_target_tile": [
+        55,
+        25
+      ],
+      "kill_original_client": false,
+      "kill_at_ms_from_page_start": null,
+      "target_removed_from_save": false,
+      "attacker_tile_after": [
+        55,
+        45
+      ],
+      "persisted_attacker_movement_observed": false,
+      "target_tile_after": [
+        55,
+        25
+      ],
+      "persisted_target_movement_observed": false,
+      "browser_errors": 0,
+      "state_samples": 17,
+      "sample_time_window_ms": 25339
+    }
+  ],
+  "static_source_clue": "IsoFightingElement.acquireNewTarget defaults to max(Config.AGGRO_RANGE, iAttackRange). This is distinct from confirmed runtime aggro radius. IsoUnit.IA_Attack moves towards target when distance > iAttackRange.",
+  "evidence_quality": {
+    "server_save_verification": "confirmed",
+    "native_client_kill_requests": "confirmed in 3 of 4",
+    "no_manual_clicks": "confirmed",
+    "visible_target_and_unit_on_same_camera_in_far_scenario": false,
+    "per_hit_damage_telemetry": "not available",
+    "exact_aggro_radius": "not established",
+    "cross_position_replicates": 0
+  },
+  "conclusions": [
+    "In this fixed north-vector scenario, automatic kill persisted at starting distances 5, 10 and 15.",
+    "At 15 tiles, the attacker moved five map tiles persistently before the enemy disappeared.",
+    "At 20 tiles, no native kill and no persisted movement were observed for 25.339 s of post-modal control sampling.",
+    "This is consistent with an acquisition/engagement boundary somewhere between 15 and 20 for the selected layout, but it is not a measured global threshold."
+  ],
+  "uncertainties": [
+    "For killed scenarios, enemy was already removed before the first of the two control samples, so time-to-first-attack was not isolated.",
+    "At 20 tiles the enemy was outside the captured camera frame, so visual inaction cannot be independently confirmed from screenshot.",
+    "Distance is tile Manhattan distance only, not pathfinding distance or obstacle-aware line-of-sight.",
+    "No response within 25.339 s is not proof enemy cannot ever be reached or targeted.",
+    "The original client's terrain/visibility and scripted encounter rules may affect target acquisition.",
+    "No independently recompiled client has been demonstrated."
+  ],
+  "next_lot": "5D.8P — bracket distances 16,17,18,19 with both north and east directions, capture initial attack and navigation while keeping units visible."
+}
