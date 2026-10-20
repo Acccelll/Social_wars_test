@@ -1,5 +1,5 @@
 import {UNIT_CATALOG,createScene,setSceneRunning,setSceneAutoFire,stepScene,fireSceneWeapon,healthBarView,seededRng} from '/dist/index.js';
-import {initOriginalVisuals,visualInfo,setVisualMode,nextVisualTick,drawOriginalUnit,drawOriginalShot,drawOriginalImpact} from '/demo/originalVisuals.js';
+import {initOriginalVisuals,visualInfo,setVisualMode,nextVisualTick,nextReaperFacing,drawOriginalUnit,drawOriginalShot,drawOriginalImpact} from '/demo/originalVisuals.js';
 const canvas=document.querySelector('#battle'), ctx=canvas.getContext('2d');
 const $=id=>document.getElementById(id), units=['bushwacker','reaperDrone'];
 const fmt=n=>new Intl.NumberFormat('pt-BR').format(n);
@@ -152,12 +152,14 @@ function hud(){
  $('step').disabled=Boolean(state.winner);
  const vi=visualInfo();
  $('visual-mode').textContent=vi.mode==='original'?'Estilo: original':'Estilo: vetorial';
+ $('reaper-facing').textContent='Reaper: direção '+(vi.reaperFacingIndex+1)+'/5';
  $('visual-status').textContent=vi.ready?'Sprites FFDec carregados (amostras limitadas)':vi.status==='loading'?'Carregando visuais…':'Pacote original não encontrado; desenhos vetoriais ativos';
 }
 function repaint(){draw();hud();}
 function fire(which){state=fireSceneWeapon(state,which);repaint();}
 function reset(){state=createScene();rng=seededRng(1358);accumulator=0;repaint();}
 $('reset').onclick=reset;
+$('reaper-facing').onclick=()=>{nextReaperFacing();repaint();};
 $('visual-mode').onclick=()=>{const vi=visualInfo();setVisualMode(vi.mode==='original'?'vector':'original');repaint();};
 $('run').onclick=()=>{state=setSceneRunning(state,!state.running);repaint();};
 $('auto').onclick=()=>{state=setSceneAutoFire(state,!state.autoFire);repaint();};
