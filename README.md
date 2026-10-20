@@ -219,3 +219,17 @@ Para executar: `cd rebuild/combat && npm install && npm test && npm run demo` e 
 [GitHub Actions 5D.8T aprovado](https://github.com/Acccelll/Social_wars_test/actions/runs/39425028520): compilação estrita TypeScript, 16 testes e verificação do servidor demo.
 
 **Distinção importante:** isto é o **início da implementação própria das mecânicas**, não uma recompilação completa do original. A IA, projéteis, animações, atributos exatos dos dois personagens e o jogo completo continuam pendentes; o cliente original em Ruffle permanece a referência.
+
+
+## Arena 2D independente — 5D.8U
+
+O [lote 5D.8U](docs/LOTE_5D_8U.md) inclui uma **arena 2D própria**, com Bushwacker 1358 e Reaper Drone 1376, disparos, danos calculados, barras de vida, ataques manuais/automáticos e eliminação. É executável **sem Flash**, usando Node.js 22+:
+
+```bash
+cd rebuild/combat
+npm install
+npm test
+npm run demo
+```
+
+Abra **http://127.0.0.1:5179/arena**. Os números de vida/ataque/alcance vieram do **patch ativo do servidor comunitário** (verificação e hashes em [dados auditáveis](data/rebuild/unit_stats_5d8u.json)); não há confirmação independente dos atributos históricos de produção. Os mechas vetoriais são desenhos provisórios, com integração dos sprites originais planejada para 5D.8V.
