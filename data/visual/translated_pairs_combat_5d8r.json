@@ -1,0 +1,162 @@
+{
+  "lot": "5D.8R",
+  "date": "2026-10-20",
+  "status": "completed_with_runtime_nonlethal_combat_discovery",
+  "repo": "Acccelll/Social_wars_test",
+  "official_original_swf_sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+  "client_type": "original Flash SWF running in Ruffle/Chromium (not rebuilt client)",
+  "unchanged_original_swf": true,
+  "no_synthetic_combat_commands": true,
+  "no_unit_clicks": true,
+  "saves_disposable": true,
+  "workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925",
+  "translated_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925/artifacts/12261080426",
+  "focus_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925/artifacts/12260198346",
+  "distance_metric": "Manhattan tile separation, exactly 15 in every test (orthogonal axes)",
+  "unit_type": {
+    "friendly": "Bushwacker",
+    "friendly_item_id": 1358,
+    "friendly_player_id": 1,
+    "friendly_map_index": 41,
+    "hostile": "Reaper Drone",
+    "hostile_item_id": 1376,
+    "hostile_player_id": 2,
+    "hostile_map_index": 42
+  },
+  "scenario_results": [
+    {
+      "scenario": "east_original",
+      "attacker": [
+        55,
+        45
+      ],
+      "enemy": [
+        70,
+        45
+      ],
+      "native_kill": false,
+      "persisted_move": false,
+      "target_removed": false,
+      "visual_attack_verified": false,
+      "screenshot_target_visible_verified": false,
+      "sample_window_ms": 23022
+    },
+    {
+      "scenario": "north_original",
+      "attacker": [
+        55,
+        45
+      ],
+      "enemy": [
+        55,
+        30
+      ],
+      "native_kill": true,
+      "persisted_move": true,
+      "persisted_move_destination": [
+        55,
+        40
+      ],
+      "target_removed": true,
+      "kill_at_ms": 39026,
+      "sample_window_ms": 3317
+    },
+    {
+      "scenario": "east_westshift",
+      "attacker": [
+        40,
+        45
+      ],
+      "enemy": [
+        55,
+        45
+      ],
+      "native_kill": false,
+      "persisted_move": false,
+      "target_removed": false,
+      "sample_window_ms": 23228,
+      "visual_note": "Enemy visible on startup screenshot; attacker position outside/near edge of captured map view."
+    },
+    {
+      "scenario": "east_northshift",
+      "attacker": [
+        55,
+        35
+      ],
+      "enemy": [
+        70,
+        35
+      ],
+      "native_kill": false,
+      "persisted_move": false,
+      "target_removed": false,
+      "sample_window_ms": 23256,
+      "visual_note": "Attacker visible on screen, target outside capture."
+    },
+    {
+      "scenario": "east_midshift",
+      "attacker": [
+        45,
+        43
+      ],
+      "enemy": [
+        60,
+        43
+      ],
+      "native_kill": false,
+      "persisted_move": false,
+      "target_removed": false,
+      "sample_window_ms": 22812,
+      "visual_attack_verified": true,
+      "visual_bidirectional_damage_verified": true,
+      "observed_damage_number_samples": [
+        32,
+        28,
+        36
+      ],
+      "visual_note": "Both units appear on screen. Bushwacker fires continuously at the drone. Red/orange damage numbers 32, 28 above drone and 36 above Bushwacker are visible across original Ruffle screenshots. Both units remain alive in persisted save. This proves combat despite no kill command."
+    }
+  ],
+  "camera_focus": {
+    "scenario": "east_original",
+    "attacker": [
+      55,
+      45
+    ],
+    "enemy": [
+      70,
+      45
+    ],
+    "keyboard_steps": 13,
+    "sequence": [
+      "ArrowRight repeated 8x",
+      "ArrowDown repeated 5x"
+    ],
+    "hold_ms_per_step": 170,
+    "stage_changed_visually": true,
+    "visual_enemy_in_view_verified": false,
+    "visual_observation": "Camera moves from the original village to shoreline/forest/castle; enemy not located in sampled viewport.",
+    "native_kill": false,
+    "target_removed": false,
+    "persisted_move": false,
+    "sample_window_ms": 22820,
+    "errors": 0
+  },
+  "as3_static_inspection": {
+    "core.isoengine.IsoEngine.addElement": "Registers existing IsoFightingElements into global ally/enemy arrays by PlayerID; no direct viewport comparison in registration method.",
+    "core.isoengine.IsoEngine.getNearestTarget": "Selects candidates from arrays by PlayerID; invokes bucleNearestUnits then filters and sorts eligible candidates.",
+    "core.isoengine.IsoEngine.bucleNearestUnits": "Reads buildingReference.tx/ty and computes integer Euclidean tile distance to candidates.",
+    "core.Config.AGGRO_RANGE": 10,
+    "source_caveat": "No viewport reference in this helper is not proof there are no region/camera activation gates elsewhere in SWF."
+  },
+  "key_correction": "A missing kill or persisted movement is not evidence that no attack occurred. In east_midshift, both units shoot and take visible damage without any kill command during ~22.8s sampling. Previous 5D.8P and 5D.8Q statements using no kill as no combat are too strong.",
+  "limitations": [
+    "Damage values are visual observations from selected screenshots, not recovered exact health deltas or logged server attack events.",
+    "Visual attack status of the other nonkill scenarios was not exhaustively assessed frame-by-frame, so they must be described only as no kill/no persistent move.",
+    "Camera focus run did not visibly frame the enemy and cannot isolate viewport activation by itself.",
+    "All fixture positions avoid original 40 object centers but were not proven collision-free terrain/pathfinding routes.",
+    "Exact acquisition radius cannot be inferred; unit survival can mask ongoing combat.",
+    "Original Flash runtime reproduction is not a separately rebuilt client."
+  ],
+  "next_lot": "5D.8S: capture visual shots/damage and approximate HP/health bars across north/east distances with matched on-screen pair placements; distinguish nonlethal attacks, hit events, movement, and kill while controlling viewport."
+}
