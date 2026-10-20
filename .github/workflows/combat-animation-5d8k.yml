@@ -1,0 +1,90 @@
+name: Original Combat Animation 5D.8K
+
+on:
+  push:
+    paths:
+      - ".github/workflows/combat-animation-5d8k.yml"
+      - "tools/combat_animation_probe_5d8k.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: combat-animation-5d8k
+  cancel-in-progress: false
+
+jobs:
+  extract-animation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Check original timeline parser and extraction code
+        run: |
+          python3 -m py_compile tools/combat_animation_probe_5d8k.py tools/visual_timelines.py
+          python3 tools/visual_timelines_test.py
+      - name: Download unchanged original Social Wars 0.02a
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = '492630085'
+      - name: Download JPEXS FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+      - name: Extract static SWF timeline and bounded candidate animations
+        run: |
+          python3 tools/combat_animation_probe_5d8k.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/combat-animation-5d8k
+          python3 - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          d=Path('dist/combat-animation-5d8k')
+          m=json.loads((d/'summary.json').read_text())
+          assert m['original_swf_unchanged'] is True
+          assert set(m['items'])=={'bushwacker','reaper_drone'}
+          for name,expected_id in [('bushwacker',1358),('reaper_drone',1376)]:
+             x=m['items'][name]
+             assert x['item_id']==expected_id
+             assert x['fps']==30.0
+             assert x['sprite_count']>100
+             assert x['sha256'] and len(x['sha256'])==64
+             assert x['parse_warnings']==0, x
+             with gzip.open(d/name/'timeline.json.gz','rt') as f:
+                 timeline=json.load(f)
+             assert timeline['timeline']['sprite_count']==x['sprite_count']
+             assert x['rendered_candidates']
+             assert x['export']['status'] in ('EXPORTED','TIMEOUT','FFDEC_ERROR')
+             print('ORIGINAL_ANIMATION_5D8K',json.dumps({
+                 'name':name,'sha256':x['sha256'],'sprites':x['sprite_count'],
+                 'declared_frames':x['declared_sprite_frames'],
+                 'named_symbols':x['named_symbols'],
+                 'frame_labels':x['frame_label_count'],
+                 'render_export':x['export']['status'],
+                 'rendered_count':len(x['export'].get('files',[]))
+             }))
+          PY
+      - name: Upload timeline metadata and sample sprites separately
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-combat-animation-5d8k
+          path: |
+            dist/combat-animation-5d8k/
+          retention-days: 14
+          if-no-files-found: warn
