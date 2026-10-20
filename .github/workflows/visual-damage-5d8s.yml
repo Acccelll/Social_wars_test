@@ -1,0 +1,204 @@
+name: Original Visual Damage and Health Lifecycle 5D.8S
+
+on:
+  push:
+    paths:
+      - '.github/workflows/visual-damage-5d8s.yml'
+      - 'tools/seed_translated_pairs_5d8r.py'
+      - 'tools/original_combat_health_5d8s.py'
+      - 'tests/original/client_visual_damage_5d8s.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Check original lifecycle exporter
+        run: python3 -m py_compile tools/original_combat_health_5d8s.py
+      - name: Obtain original SWF and FFDec 26.3.0
+        run: |
+          mkdir -p runtime/ffdec
+          curl --fail -L --retry 3 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = 492630085
+          curl --fail -L --retry 3 \
+            'https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip' -o runtime/ffdec.zip
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+      - name: Inspect native HealthBar and damage pipeline
+        run: |
+          python3 tools/original_combat_health_5d8s.py \
+             --archive runtime/release.zip --ffdec "$FFDEC_JAR" --out dist/native-life-5d8s
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('dist/native-life-5d8s/life_cycle_index.json').read_text())
+          assert not data['original_swf_modified']
+          names={m['name'] for m in data['methods']['core.isoengine.IsoFightingElement']}
+          assert {'recibirAtaque','doProjectileDamage','calculateDamage','updateVida','die'}<=names
+          assert data['methods']['battle.HealthBar']
+          print('ORIGINAL_HP_PIPELINE_VERIFIED_5D8S',sorted(names))
+          PY
+      - name: Retain bounded source and index
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-damage-health-as3-5d8s
+          path: dist/native-life-5d8s/
+          retention-days: 14
+          if-no-files-found: warn
+
+  pan-treatment:
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [nonlethal, lethal]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GROUP: "${{ matrix.group }}"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate fixture and recorder syntax
+        run: |
+          python3 -m py_compile tools/seed_translated_pairs_5d8r.py
+          node --check tests/original/client_visual_damage_5d8s.mjs
+          python tools/seed_original_units_5d8c_test.py
+      - name: Install Ruffle and Playwright browser
+        run: |
+          npm install --prefix tests/ruffle --no-audit --no-fund
+          npx --prefix tests/ruffle playwright install chromium
+          node tests/original/test.mjs
+      - name: Download unchanged original SWF and Flask source
+        run: |
+          mkdir -p runtime/release
+          curl --fail -L --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = 492630085
+          unzip -q runtime/release.zip -d runtime/release
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          echo "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77  $asset_file" | sha256sum -c
+          asset_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          git clone --depth 1 --filter=blob:none --sparse \
+            'https://github.com/AcidCaos/socialwarriors.git' runtime/source
+          git -C runtime/source sparse-checkout set config villages templates stub mods
+          ln -s "$asset_dir" runtime/source/assets
+          test -f runtime/source/server.py
+          mkdir -p runtime/source/saves
+          test -z "$(find runtime/source/saves -maxdepth 1 -name '*.save.json' -print -quit)"
+          cp runtime/source/villages/initial.json runtime/initial-pristine.json
+          echo "SW_SERVER_DIR=$(realpath runtime/source)" >> "$GITHUB_ENV"
+      - name: Install original Flask dependencies
+        run: python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+      - name: Capture sampled original hit visuals and save outcomes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "dist/visual-damage-5d8s/$GROUP"
+          if [ "$GROUP" = "lethal" ]; then
+            scenarios="north_original"
+            pan="none"
+          else
+            scenarios="east_midshift"
+            pan="none"
+          fi
+          for scenario in $scenarios; do
+            echo "TRANSLATED_PAIR_SCENARIO_5D8R $scenario pan=$pan"
+            test -z "$(find "$SW_SERVER_DIR/saves" -maxdepth 1 -name '*.save.json' -print -quit)"
+            python tools/seed_translated_pairs_5d8r.py \
+              --pristine runtime/initial-pristine.json \
+              --out "$SW_SERVER_DIR/villages/initial.json" \
+              --scenario "$scenario" \
+              --manifest "runtime/fixture-$scenario.json"
+            pushd "$SW_SERVER_DIR" >/dev/null
+            python -u server.py --host 127.0.0.1 --port 5055 > "$GITHUB_WORKSPACE/runtime/server-$scenario-private.log" 2>&1 &
+            server_pid=$!
+            popd >/dev/null
+            ready=0
+            for i in $(seq 1 60); do
+              if curl --fail -s 'http://127.0.0.1:5055/health' >/dev/null; then ready=1; break; fi
+              sleep 1
+            done
+            if [ "$ready" -ne 1 ]; then kill "$server_pid" || true; exit 1; fi
+            node tests/original/client_visual_damage_5d8s.mjs \
+              --server http://127.0.0.1:5055 \
+              --save-dir "$SW_SERVER_DIR/saves" \
+              --fixture "runtime/fixture-$scenario.json" \
+              --pan "$pan" \
+              --out "dist/visual-damage-5d8s/$GROUP/$scenario"
+            kill "$server_pid" || true
+            wait "$server_pid" || true
+            find "$SW_SERVER_DIR/saves" -maxdepth 1 -name '*.save.json' -type f -delete
+          done
+      - name: Validate paired positions and attack evidence
+        run: |
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          group=os.environ['GROUP']
+          scenarios=['north_original'] if group=='lethal' else ['east_midshift']
+          root=Path('dist/visual-damage-5d8s')/group
+          results=[]
+          for scenario in scenarios:
+              p=root/scenario
+              r=json.loads((p/'report.json').read_text())
+              assert r['lot']=='5D.8S-visual-damage'
+              assert r['scenario']==scenario
+              assert r['manhattan_distance_tiles']==15
+              assert r['camera_treatment']=='none'
+              assert r['manual_unit_click_count']==0 and r['no_synthetic_combat_posts']
+              assert r['original_swf_untouched'] and r['errors']==[]
+              assert len(r['state_samples'])>=2
+              assert (p/'session.webm').stat().st_size>1000
+              kills=[req['at_ms'] for req in r['requests']
+                  if any(c['action']=='kill' and c.get('object_reference')==42
+                      for c in req['commands'])]
+              if kills:assert r['target_removed_from_save']
+              expected=r['fixture_seeded_units']
+              a=expected[0]['tile'];b=expected[1]['tile']
+              assert abs(a[0]-b[0])+abs(a[1]-b[1])==15
+              result={'scenario':scenario,'camera':r['camera_treatment'],
+                  'initial_attacker_tile':a,'initial_enemy_tile':b,
+                  'kill_observed':bool(kills),'kill_at_ms':kills,
+                  'target_removed_from_save':r['target_removed_from_save'],
+                  'attacker_end_tile':r['unit_summaries'][0]['after'].get('tile'),
+                  'native_move_commands':r['native_move_commands'],
+                  'pan_key_events':len(r['camera_actions']),
+                  'sample_window_ms':r['state_samples'][-1]['at_ms']-r['state_samples'][0]['at_ms']}
+              results.append(result)
+              print('VISUAL_DAMAGE_REPORT_5D8S',json.dumps(result))
+          assert len(results)==len(scenarios)
+          (root/'group_summary.json').write_text(json.dumps({
+              'lot':'5D.8S','group':group,'cases':results,
+              'limit':'Do not infer camera visibility or universal aggro from absence of a kill.'
+          },indent=2)+'\n')
+          PY
+      - name: Archive original translated-pair evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-visual-damage-5d8s-${{ matrix.group }}
+          path: |
+            dist/visual-damage-5d8s/
+            runtime/fixture-*.json
+          retention-days: 14
+          if-no-files-found: warn
