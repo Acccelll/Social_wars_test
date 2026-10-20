@@ -27,14 +27,14 @@ TERMS=["MOUSE_DOWN","MOUSE_UP","CLICK","mouseDown","mouseUp","attack",
        "STEP_CLICK_ENEMY","STEP_WAIT_BATTLE","IsoFightingElement",
        "PLAYER_ENEMY","PLAYER_SELF","beginBattle","onMouseDown",
        "onMouseUp","addEventListener","onClick","ATTACK"]
-METHOD=re.compile(r"\\b(?:public|private|protected|internal)?\\s*(?:override\\s+|static\\s+|final\\s+)*function\\s+([A-Za-z_$][\\w$]*)\\s*\\(",re.M)
-CLASS_RE=re.compile(r"^([A-Za-z_$][\\w$]*(?:\\.[A-Za-z_$][\\w$]*)*)\\s+\\d+\\s*$",re.M)
+METHOD=re.compile(r"\b(?:public|private|protected|internal)?\s*(?:override\s+|static\s+|final\s+)*function\s+([A-Za-z_$][\w$]*)\s*\(",re.M)
+CLASS_RE=re.compile(r"^([A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*)\s+\d+\s*$",re.M)
 
 def run(jar,args,log,timeout=170):
     try:
         r=subprocess.run(["java","-Xmx3g","-Djava.awt.headless=true","-jar",str(jar),
                           "-cli",*args],capture_output=True,text=True,errors="replace",timeout=timeout)
-        log.write_text((r.stdout+"\\n"+r.stderr)[-1200000:],encoding="utf-8")
+        log.write_text((r.stdout+"\n"+r.stderr)[-1200000:],encoding="utf-8")
         return dict(code=r.returncode,timeout=False,stdout=r.stdout)
     except subprocess.TimeoutExpired as e:
         s=e.stdout or b""
@@ -80,11 +80,11 @@ def main():
                 for term in TERMS:
                     for match in list(re.finditer(re.escape(term),source,re.I))[:35]:
                         # Small windows only, never raw full SWF bytes as metadata.
-                        lo=max(0,source.rfind("\\n",0,max(0,match.start()-220)))
-                        hi=source.find("\\n",min(len(source),match.end()+220))
+                        lo=max(0,source.rfind("\n",0,max(0,match.start()-220)))
+                        hi=source.find("\n",min(len(source),match.end()+220))
                         if hi<0:hi=min(len(source),match.end()+220)
-                        snippet=source[lo:hi].strip().replace("\\r","")[:530]
-                        found.append({"term":term,"line":source.count("\\n",0,match.start())+1,"excerpt":snippet})
+                        snippet=source[lo:hi].strip().replace("\r","")[:530]
+                        found.append({"term":term,"line":source.count("\n",0,match.start())+1,"excerpt":snippet})
                 entries.append({
                    "file":f.relative_to(out).as_posix(),
                    "format":fmt,
@@ -103,7 +103,7 @@ def main():
             "combat_runtime_verified":False,
             "warning":"Static class/callsite analysis does not prove an event executed. An original UI combat test is still required."
         }
-        (out/"battle_state_index.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\\n")
+        (out/"battle_state_index.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n")
         print("ORIGINAL_BATTLE_5D8J",json.dumps({
            "selected_classes":selected,
            "exported":{k:sum(x["format"]==k for x in entries) for k in ("as","pcode")},
