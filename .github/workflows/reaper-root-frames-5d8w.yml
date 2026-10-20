@@ -77,6 +77,9 @@ jobs:
               assert u[name]['frames']==5 and u[name]['distinctRenderedFrames']>=2,(name,u[name])
           for name in ('muerte','picar'):
               assert u[name]['frames']==5
+          root=json.loads(Path('runtime/reaper-root-5d8w/reaper_root25_manifest.json').read_text())
+          assert all(root['idleWalkAttackMatchingPoseAtEachIndex'].values()), 'Expected identical directional poses across QUIETO, ANDAR and ATAQUE'
+          print('REAPER_DIRECTIONAL_POSES_EQUAL_ACROSS_STATES_5D8W')
           print('REAPER_ROOT_FRAMES_VERIFIED_5D8W')
           PY
       - name: Compile original-independent TypeScript and install browser
