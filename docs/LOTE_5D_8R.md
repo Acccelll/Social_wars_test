@@ -1,5 +1,7 @@
 # Social Wars — Lote 5D.8R: região ativa, câmera e combate não letal
 
+> **Atualização posterior — 5D.8S:** o cenário `east_midshift`, que aqui permaneceu vivo durante o período monitorado, **terminou com `kill(42)` numa nova execução**. Veja [5D.8S](LOTE_5D_8S.md). Logo, a prova deste lote é a possibilidade de **dano antes da morte e ataque sem comando `kill` imediato**; não afirmar que este cenário seja definitivamente não letal.
+
 **Estado: concluído.** Execução original no Chromium/Ruffle, 2 jobs de GitHub Actions aprovados. O principal achado é que **pode haver disparos e danos entre as unidades mesmo que não seja emitido o comando persistido `kill`.**
 
 Este lote corrige uma interpretação dos controles negativos dos lotes [5D.8P](LOTE_5D_8P.md) e [5D.8Q](LOTE_5D_8Q.md): **sem `kill` não significa automaticamente sem combate**.
