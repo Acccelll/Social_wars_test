@@ -1,5 +1,7 @@
 # Social Wars — 5D.8Q: influência da câmera no combate automático
 
+> **Correção interpretativa posterior (5D.8R):** a ausência de comando persistido `kill` ou `move` **não comprova ausência de disparos, aquisição de alvo ou dano não letal**. O cenário `east_midshift` do [lote 5D.8R](LOTE_5D_8R.md) mostrou visualmente os dois mechas trocando tiros e exibindo números de dano, mesmo sem `kill` no período de observação. As observações de ausência de eliminação e movimentação persistida registradas neste relatório continuam válidas, mas não devem ser interpretadas como ausência geral de combate.
+
 **Estado: teste controlado concluído, três jobs de CI aprovados.**
 
 Objetivo: investigar por que, na vila original, o Bushwacker (item **1358**, `PlayerID=1`) eliminou automaticamente o Reaper Drone (item **1376**, `PlayerID=2`) a **15 tiles ao norte**, mas não o eliminou a **15 tiles a leste** nas janelas observadas anteriormente.
