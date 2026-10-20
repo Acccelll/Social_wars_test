@@ -421,3 +421,14 @@ foi reconstruída por este procedimento.
 - **Correção do 5D.8R:** o mesmo cenário `east_midshift` ficou vivo durante uma rodada anterior, mas **foi eliminado nesta repetição**. Ausência de `kill` num período não significa que o encontro seja permanentemente não letal.
 - [Relatório 5D.8S](LOTE_5D_8S.md) · [dados versionados](../data/visual/combat_damage_lifecycle_5d8s.json). SWF e saves originais preservados.
 - **Próximo lote 5D.8T:** implementar protótipo próprio de motor de HP/dano/crit/barra de vida em TypeScript com testes determinísticos, comparando com o Flash original e sem confundir isso com recompilação completa.
+
+
+## Lote 5D.8T — Primeiro núcleo de combate reconstruído sem Flash
+
+- O módulo independente está em [`rebuild/combat/`](../rebuild/combat/README.md), com TypeScript ESM, dependência de desenvolvimento TypeScript `5.8.3`, fonte aleatória injetável, demonstração local e servidor HTTP em `127.0.0.1:5179`.
+- [GitHub Actions #39425028520](https://github.com/Acccelll/Social_wars_test/actions/runs/39425028520) **aprovado**: compilação em modo estrito, **16 testes passando**, demonstração e JS compilado com **HTTP 200**.
+- Regras recuperadas de `IsoFightingElement.calculateDamage/recibirAtaque`: **10%** crítico, **1,5×**, variância de **8**, defesa, mínimo 1, HP, `nearDeath` 10%, invencibilidade, morte e fila visual de dano com intervalo **15 frames**.
+- Modelo `battle.HealthBar`: segmentos de **4 px** (4/8/12/16/20) e paleta interpolada original. As cores e estados de vida são calculados pelo próprio módulo, sem carregar SWFs.
+- **Limites:** apenas subconjunto isolado de combate; ainda não inclui IA, projeção isométrica, projéteis, movimentos, multiplicadores específicos, missões ou estatísticas reais dos itens 1358/1376. A demo usa números ilustrativos, explicitamente rotulados. Não é recompilação completa do original.
+- [Documentação do lote](LOTE_5D_8T.md) · [evidência estruturada](../data/rebuild/independent_combat_5d8t.json) · [compiled JS e demo CI](https://github.com/Acccelll/Social_wars_test/actions/runs/39425028520/artifacts/12265073518).
+- **Próximo lote 5D.8U:** recuperar estatísticas reais de Bushwacker/Reaper Drone, acoplar combate ao primeiro mapa 2D próprio e validar visual de HP/ataque.
