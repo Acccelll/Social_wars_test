@@ -364,3 +364,14 @@ foi reconstruída por este procedimento.
 - Cliente SWF e servidor originais executados em saves isolados, sem comandos sintéticos de combate e sem alterar dados de usuário.
 - [Relatório 5D.8N](LOTE_5D_8N.md) · [metadados](../data/visual/runtime_fx_autocombat_5d8n.json).
 - **Próximo 5D.8O:** determinar o alcance e as condições de aggro automático com distância/posição distintas, sempre com controle sem cliques.
+
+
+## Lote 5D.8O — Distâncias do combate automático original
+
+- [CI 39363784245](https://github.com/Acccelll/Social_wars_test/actions/runs/39363784245): 4 cenários aprovados, sempre sem cliques nas unidades e com saves temporários isolados.
+- Bushwacker (55,45) e Reaper Drone hostil colocados a **5, 10, 15, 20 tiles** no eixo norte; cliente original elimina o alvo nas distâncias **5, 10 e 15**, com `kill(42)` persistido.
+- A **15 tiles**, Bushwacker moveu-se de **(55,45)** para **(55,40)** antes da eliminação. A **20 tiles**, nem `kill` nem movimento persistido surgiram durante **25,339 segundos** de amostragem.
+- **Não é um raio exato de aggro:** 16–19 não testados, distância é Manhattan, a câmera não mostra o alvo a 20 tiles, e ausência de evento no período é apenas observação negativa temporal.
+- `IsoFightingElement.acquireNewTarget` usa por padrão o máximo entre `Config.AGGRO_RANGE` e `iAttackRange`; a aquisição de alvo e a distância de ataque não devem ser tratadas como iguais.
+- [Documento](LOTE_5D_8O.md), [dados](../data/visual/auto_aggro_distances_5d8o.json), [artefato](https://github.com/Acccelll/Social_wars_test/actions/runs/39363784245/artifacts/12237824433).
+- **Próximo 5D.8P:** explorar distâncias 16–19, eixo alternativo e regras de aquisição em AVM2.
