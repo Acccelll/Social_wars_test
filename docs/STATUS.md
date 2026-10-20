@@ -343,3 +343,12 @@ foi reconstruída por este procedimento.
 - [Atlas, GIFs e estrutura detalhada](https://github.com/Acccelll/Social_wars_test/actions/runs/39357276115/artifacts/12235179182).
 - [Documento técnico](LOTE_5D_8L.md) · [Inventário JSON](../data/visual/directional_attack_5d8l.json).
 - **Próximo 5D.8M:** encontrar definições de projéteis e partículas no ActionScript original, validar os efeitos contra a gravação do 5D.8J.
+
+
+## Lote 5D.8M — Efeitos de combate originais
+
+- Identificados os projéteis normais e impactos de Bushwacker (1358) e Reaper Drone (1376), a partir de DelegatesManager e ProjectileDefinition originais.
+- Bushwacker: p.bulletAirBig e b.bazookaSmall. Reaper Drone: p.laserMassiveDrone e b.laserBlue.
+- Quatro SWFs de assets/fx extraídos com sucesso; FX a 24 FPS. Os IDs internos dos símbolos são locais a cada SWF.
+- [Relatório](LOTE_5D_8M.md) e [dados](../data/visual/projectile_fx_mapping_5d8m.json).
+- Próximo 5D.8N: observar carregamento dos efeitos e cronologia dos ataques no Ruffle.
