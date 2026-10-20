@@ -409,3 +409,15 @@ foi reconstruída por este procedimento.
 - `IsoEngine.addElement/getNearestTarget` registram elementos em arrays por time e selecionam por distância/score/validade, sem verificação de viewport nesses helpers. Isso não descarta culling em outros pontos do motor.
 - [Relatório](LOTE_5D_8R.md) · [dados](../data/visual/translated_pairs_combat_5d8r.json) · [evidências de translação](https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925/artifacts/12261080426) · [evidências de câmera](https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925/artifacts/12260198346).
 - **Próximo 5D.8S:** medir ataque, dano visual, HP e eliminação **como eventos distintos** em cenários onde ambos os mechas estejam visíveis, inclusive quando não há comando `kill`.
+
+
+## Lote 5D.8S — HP e dano original recuperados; sequência até kill registrada
+
+- [CI 39416511124](https://github.com/Acccelll/Social_wars_test/actions/runs/39416511124): **3 jobs aprovados** (decompilação, luta leste e luta norte).
+- [`battle.HealthBar` e `IsoFightingElement` originais](https://github.com/Acccelll/Social_wars_test/actions/runs/39416511124/artifacts/12261472743): barra de vida com 4–20 divisões de 4 px; cor interpolada vermelho escuro → vermelho → amarelo → verde → verde escuro conforme `iHealth/maxLife`. `updateVida()` controla a barra conforme a unidade esteja danificada, viva e visível.
+- `calculateDamage()`: chance base de crítico 10%, multiplicador 1,5, variância de 8 e defesa; `recibirAtaque()` reduz HP, gera partículas e chama `die()` se chegar a zero; `_damageToDisplay` pode acumular valores, logo **um número exibido não equivale necessariamente a um hit**.
+- **Leste `east_midshift`:** Bushwacker (45,43) vs. Reaper (60,43); disparos e números de dano confirmados nas capturas, barra do inimigo de amarelo para vermelho, **`kill(42)` aos 48,983 s** desde abertura da sessão, alvo removido do save.
+- **Norte `north_original`:** `move(41,55,40)` e **`kill(42)` aos 42,174 s**, persistidos. A morte ocorreu antes das amostras de combate mais densas.
+- **Correção do 5D.8R:** o mesmo cenário `east_midshift` ficou vivo durante uma rodada anterior, mas **foi eliminado nesta repetição**. Ausência de `kill` num período não significa que o encontro seja permanentemente não letal.
+- [Relatório 5D.8S](LOTE_5D_8S.md) · [dados versionados](../data/visual/combat_damage_lifecycle_5d8s.json). SWF e saves originais preservados.
+- **Próximo lote 5D.8T:** implementar protótipo próprio de motor de HP/dano/crit/barra de vida em TypeScript com testes determinísticos, comparando com o Flash original e sem confundir isso com recompilação completa.
