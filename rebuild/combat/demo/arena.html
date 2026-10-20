@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Social Wars Rebuild · Arena 2D independente</title>
+<style>
+:root{color-scheme:dark;--ink:#d9e6ea;--muted:#899caa;--panel:#111f2c;--accent:#9bd9c5;--line:#2c4655}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#09121c;color:var(--ink);font:14px system-ui,Segoe UI,sans-serif}
+body{background:radial-gradient(ellipse 90% 60% at 48% -20%,#244257 0%,transparent 88%),#09121c}
+.frame{max-width:1180px;margin:0 auto;padding:21px 22px 38px}.top{display:flex;gap:15px;align-items:center;justify-content:space-between;padding-bottom:18px}
+.tag{display:inline-block;color:var(--accent);font-weight:700;font-size:11px;letter-spacing:.15em}
+h1{font-size:clamp(22px,3vw,33px);line-height:1.12;letter-spacing:-.035em;margin:7px 0 8px}h2{font-size:15px;margin:0 0 13px;letter-spacing:.03em}
+p{color:var(--muted);line-height:1.55;margin:0}.top p{max-width:650px}
+.pill{border:1px solid #355866;border-radius:99px;padding:7px 11px;font-size:11px;color:#b7cccb;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:17px}.main{min-width:0}
+.arena{border:1px solid #375366;border-radius:14px;overflow:hidden;background:#121f2a;position:relative;box-shadow:0 14px 50px #0004}
+canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;cursor:crosshair;touch-action:manipulation}
+.corner{position:absolute;top:13px;left:15px;color:#b4c9c9;background:#122635bd;padding:6px 9px;border-radius:6px;font-size:10px;letter-spacing:.12em;pointer-events:none}
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 0 7px}
+button{font:600 12px system-ui,Segoe UI,sans-serif;cursor:pointer;border:1px solid #496378;background:#1a3041;color:#e0ebf2;padding:10px 12px;border-radius:9px;min-height:39px}
+button.primary{background:#acdbc8;color:#112328;border-color:#acdbc8}button:hover:not(:disabled){filter:brightness(1.15)}button:disabled{opacity:.43;cursor:default}
+.statrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0}
+.stat{padding:10px 12px;background:#112331;border:1px solid var(--line);border-radius:9px}
+.stat strong{display:block;color:#def6ed;font-size:18px;margin:4px 0 1px}.stat span{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.09em}
+.side{display:flex;flex-direction:column;gap:13px}.card{background:linear-gradient(135deg,#142738,#101b29);border:1px solid var(--line);border-radius:12px;padding:14px}
+.unit-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.unit-title strong{font-size:13px}.ico{font-size:10px;color:var(--muted)}
+.hp-track{width:100%;height:9px;background:#293b42;border:1px solid #435361;overflow:hidden;border-radius:3px}
+.hp-fill{height:100%;width:100%;background:#008000;transition:width .16s linear}
+.hp-number{font-variant-numeric:tabular-nums;color:#dcebec;font-size:21px;font-weight:750;margin-top:7px;letter-spacing:-.02em}
+.spec{font-size:11px;color:var(--muted);display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:12px}
+.spec strong{font-size:11px;color:#bdd3d9;font-weight:600}
+.log{height:155px;overflow:auto;background:#091621;border:1px solid #274252;border-radius:7px;font:11px/1.55 ui-monospace,Consolas,monospace;padding:9px;margin:0;white-space:pre-wrap;color:#a9d3c8}
+.tiny{font-size:11px;color:#90a2ad;line-height:1.55}.foot{margin-top:17px;padding:13px;border-top:1px solid #203d4c;color:#839aa6;font-size:11px;line-height:1.55}
+a{color:#b6e4e4}.legend{display:flex;gap:11px;flex-wrap:wrap;color:#91aabc;font-size:10px;padding:6px 0}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+@media(max-width:880px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}.side .card:last-child{grid-column:1/-1}}
+@media(max-width:560px){.frame{padding:13px 11px 20px}.side{display:flex}.top{align-items:flex-start}.pill{display:none}.statrow{grid-template-columns:1fr 1fr 1fr}.stat strong{font-size:15px}.stat{padding:8px}.controls button{flex:1}h1{font-size:24px}}
+</style>
+</head>
+<body><main class="frame">
+<header class="top"><div><span class="tag">SOCIAL WARS / REBUILD EXPERIMENTAL</span>
+<h1>Arena de combate · 5D.8U</h1>
+<p>Primeira cena 2D independente: Bushwacker versus Reaper Drone, com atributos do catálogo ativo do servidor comunitário e regras de dano/HP recuperadas do Flash.</p>
+</div><span class="pill">NÚCLEO INDEPENDENTE · SEM SWF</span></header>
+<div class="layout"><div class="main">
+<div class="arena"><div class="corner">SECTOR 05 · TEST FIELD</div>
+<canvas id="battle" width="960" height="540" aria-label="Cena 2D de combate com Bushwacker à esquerda e Reaper Drone à direita" role="img"></canvas></div>
+<div class="controls">
+<button class="primary" id="run">▶ Iniciar combate</button>
+<button id="b-fire">Bushwacker: disparar</button>
+<button id="r-fire">Reaper: disparar</button>
+<button id="step">+ 1 frame</button>
+<button id="reset">↻ Reiniciar</button>
+<button id="auto">IA: ligada</button>
+</div>
+<div class="statrow">
+<div class="stat"><span>Frames simulados</span><strong id="frame">0</strong></div>
+<div class="stat"><span>Projéteis ativos</span><strong id="projectiles">0</strong></div>
+<div class="stat"><span>Estado</span><strong id="status">Pronto</strong></div>
+</div>
+<div class="legend"><span><i class="dot" style="background:#a2daaf"></i>Robô terrestre 1358</span><span><i class="dot" style="background:#83c6ed"></i>Drone aéreo 1376</span><span>Toque nos mechas para disparar manualmente</span></div>
+</div>
+<aside class="side">
+<section class="card"><div class="unit-title"><strong>01 / Bushwacker</strong><span class="ico">ID 1358</span></div>
+<div class="hp-track"><div class="hp-fill" id="b-fill"></div></div>
+<div class="hp-number" id="b-health">6.500 / 6.500</div>
+<div class="spec"><span>ATAQUE</span><strong id="b-attack"></strong><span>DEFESA</span><strong id="b-defense"></strong><span>ALCANCE</span><strong id="b-range"></strong><span>INTERVALO</span><strong id="b-interval"></strong></div></section>
+<section class="card"><div class="unit-title"><strong>02 / Reaper Drone</strong><span class="ico">ID 1376</span></div>
+<div class="hp-track"><div class="hp-fill" id="r-fill"></div></div>
+<div class="hp-number" id="r-health">700 / 700</div>
+<div class="spec"><span>ATAQUE</span><strong id="r-attack"></strong><span>DEFESA</span><strong id="r-defense"></strong><span>ALCANCE</span><strong id="r-range"></strong><span>INTERVALO</span><strong id="r-interval"></strong></div></section>
+<section class="card"><h2>Registro do combate</h2><pre class="log" id="events">Inicializando cena...</pre></section>
+</aside></div>
+<div class="foot">
+<strong>Proveniência:</strong> vida, ataque, defesa, alcance, velocidade e intervalo constam do <em>unit_patch</em> ativo no servidor comunitário AcidCaos; não são comprovadamente os valores históricos dos servidores da Social Point. O traçado vetorial dos personagens, trajetória de projéteis e temporização em frames são aproximações próprias desta demonstração. Não inclui sprites SWF originais, IA completa, terreno, pathfinding ou missões.
+</div>
+</main><script type="module" src="/demo/arena.js"></script></body></html>
