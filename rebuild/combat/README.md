@@ -13,14 +13,20 @@ npm test
 npm run demo
 ```
 
-Abra [http://127.0.0.1:5179](http://127.0.0.1:5179) no navegador. O servidor é limitado a loopback e serve apenas os arquivos da demo e o JavaScript compilado. Para apenas gerar os módulos `dist/*.js` e declarações `.d.ts`, use `npm run build`.
+Abra **http://127.0.0.1:5179/arena** para a primeira arena 2D com unidades desenhadas no Canvas, projéteis, dano e HP. A rota **http://127.0.0.1:5179/** mantém a demonstração simples anterior. O servidor é limitado a loopback e serve apenas os arquivos da demo e o JavaScript compilado. Para apenas gerar os módulos `dist/*.js` e declarações `.d.ts`, use `npm run build`.
+
+## Arena 2D e estatísticas comunitárias
+
+O [5D.8U](../../docs/LOTE_5D_8U.md) recuperou no patch ativo do servidor comunitário AcidCaos as estatísticas de Bushwacker 1358 (6500 HP, ataque 138, defesa 1, alcance 10, intervalo 35, velocidade 7) e Reaper Drone 1376 (700 HP, ataque 36, defesa 1, alcance 11, intervalo 30, velocidade 8). **Não foram confirmadas como valores históricos da Social Point.**
+
+A nova `demo/arena.html`, `demo/arena.js`, `src/scene.ts` e `src/unitCatalog.ts` implementam uma pequena cena própria com mechas vetoriais (placeholders), tiros, contra-ataques, barra e morte calculados por `receiveAttack()`. Também incluem testes determinísticos de modelo e Playwright/Chromium que captura três momentos da arena. `attack_interval` é interpretado como frames **somente nesta demo**, ainda sem paridade do tempo do Flash.
 
 ## Conteúdo
 
 - `src/model.ts`: `calculateDamage()`, `receiveAttack()`, `createCombatant()`, `advanceFrames()`, `finishDamageParticle()`, eventos de dano, HP, nearDeath e morte.
 - `src/healthBar.ts`: `healthBarDivisions()`, `originalHealthColor()`, `healthBarView()`: propriedades e geometria da barra original, sem reutilizar os arquivos gráficos SWF.
 - `src/rng.ts`: `seededRng()` e `sequenceRng()` para testes reproduzíveis. O original usa `Math.random()`; o algoritmo **xorshift32 aqui é próprio do protótipo**.
-- `test/combat.test.mjs`: **16 testes automáticos** com Node Test Runner; TypeScript estrito verificado em compilação.
+- `test/combat.test.mjs`: **25 testes automáticos** com Node Test Runner; TypeScript estrito verificado em compilação.
 - `demo/` e `serve.mjs`: pequena demonstração no navegador, alimentada pelo módulo próprio.
 - `tsconfig.json` e `package.json`: build ESM tipado, sem dependências de runtime, compilador `typescript@5.8.3` em devDependency.
 
@@ -44,4 +50,4 @@ Os valores da demo (HP 200/220, ataque 32/23, defesa 5/7) são **ilustrativos** 
 
 [GitHub Actions 5D.8T — compilação, 16 testes e smoke HTTP](https://github.com/Acccelll/Social_wars_test/actions/workflows/independent-combat-5d8t.yml).
 
-Próximo lote 5D.8U: importar parâmetros reais das unidades 1358/1376 e integrar o módulo ao primeiro runtime 2D com atualização de HP em tela, **sem** afirmar que há equivalência geral com a aplicação Flash.
+O lote 5D.8U entregou os dois parâmetros do servidor e a primeira arena 2D independente. Próximo 5D.8V: integrar sprites e efeitos originais extraídos aos estados de ataque/HP, sem confundir placeholder e efeitos confirmados no SWF.
