@@ -432,3 +432,14 @@ foi reconstruída por este procedimento.
 - **Limites:** apenas subconjunto isolado de combate; ainda não inclui IA, projeção isométrica, projéteis, movimentos, multiplicadores específicos, missões ou estatísticas reais dos itens 1358/1376. A demo usa números ilustrativos, explicitamente rotulados. Não é recompilação completa do original.
 - [Documentação do lote](LOTE_5D_8T.md) · [evidência estruturada](../data/rebuild/independent_combat_5d8t.json) · [compiled JS e demo CI](https://github.com/Acccelll/Social_wars_test/actions/runs/39425028520/artifacts/12265073518).
 - **Próximo lote 5D.8U:** recuperar estatísticas reais de Bushwacker/Reaper Drone, acoplar combate ao primeiro mapa 2D próprio e validar visual de HP/ataque.
+
+
+## Lote 5D.8U — Arena 2D TypeScript com stats auditadas de duas unidades
+
+- **Valores efetivos do servidor comunitário** AcidCaos: Bushwacker `1358` = **HP 6.500 / ATK 138 / DEF 1 / alcance 10 / velocidade 7 / intervalo 35**; Reaper Drone `1376` = **HP 700 / ATK 36 / DEF 1 / alcance 11 / velocidade 8 / intervalo 30**. Extraídos do `unit_patch` ativo em `config/patch/patches.txt`, checados contra CSV.
+- **Proveniência decisiva:** os IDs 1358 e 1376 **não constam do `config/main.json` sem o patch**. Portanto os valores são confirmados na reconstrução comunitária, **não como atributos históricos originais**.
+- **Motor próprio:** `rebuild/combat/src/{unitCatalog,scene}.ts`, novo Canvas em **http://127.0.0.1:5179/arena**, disparos manuais e automáticos, projéteis representados graficamente, impacto resolvido pelo `receiveAttack()`, barras de HP, morte e tela de vitória. Os desenhos e o tempo de voo são placeholders próprios; intervalos de ataque são interpretados como frames somente na demo.
+- [CI principal 5D.8U](https://github.com/Acccelll/Social_wars_test/actions/runs/39428441819): verificou fontes, **25 testes Node aprovados**, executou arena no Chromium sem erros de JavaScript, testou impacto manual e vitória automática, gravou `arena-ready.png`, `arena-hit-manual.png` e `arena-victory.png`.
+- `tools/extract_unit_stats_5d8u.py` verifica o patch ativo, o CSV e SHA256. A workflow posterior [`combat-units-5d8u.yml`](../.github/workflows/combat-units-5d8u.yml) também compara os valores do catálogo compilado com o JSON de extração e disponibiliza um pacote de fontes + compilado.
+- [Relatório](LOTE_5D_8U.md) · [dados auditáveis](../data/rebuild/unit_stats_5d8u.json) · [código da arena](../rebuild/combat/README.md).
+- **Próximo lote 5D.8V:** substituir placeholders vetoriais por recursos visuais originais recuperados, validar offsets das timelines QUIETO/ATAQUE/MUERTE e incorporar FX do cliente Flash no runtime independente.
