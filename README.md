@@ -254,3 +254,10 @@ O [lote 5D.8W](docs/LOTE_5D_8W.md) corrigiu a exportação do Reaper Drone: recu
 ## Inspetor de marcadores originais do Bushwacker (5D.8Y)
 
 O [lote 5D.8Y](docs/LOTE_5D_8Y.md) recuperou e compôs as matrizes dos **cinco `projectilePoint`** originais do Bushwacker. O novo **inspetor gráfico em `/muzzle`** permite comparar os offsets medidos para as oito direções, inclusive espelhamento, sem confundi-los com posições absolutas do Canvas. Para executar a partir do pacote: `cd rebuild/combat && node serve.mjs` e abra **http://127.0.0.1:5179/muzzle**. [40 testes aprovados](https://github.com/Acccelll/Social_wars_test/actions/runs/39472749217). Os disparos na arena principal permanecem provisórios enquanto o registro gráfico não for calibrado.
+
+
+## Registro gráfico original do Bushwacker — 5D.8Z
+
+O [lote 5D.8Z](docs/LOTE_5D_8Z.md) reexportou os **cinco quadros raiz de ataque** do Bushwacker (11–15) do SWF original, sem recorte, com limites de alfa medidos. Há uma nova tela de diagnóstico em **http://127.0.0.1:5179/calibration**, incluída no pacote executável. `cd rebuild/combat && node serve.mjs` inicia o servidor com Node.js 22+.
+
+A calibração desenha o `projectilePoint` somente após fornecer um pivô experimental e uma escala. **Ainda não comprovamos o registro Flash**, portanto não aplicamos essas coordenadas à origem do tiro na arena principal. A implementação está coberta por [45 testes aprovados](https://github.com/Acccelll/Social_wars_test/actions/runs/39475880764).
