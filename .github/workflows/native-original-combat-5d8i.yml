@@ -1,0 +1,137 @@
+name: Native Original Combat Observation 5D.8I
+
+on:
+  push:
+    paths:
+      - '.github/workflows/native-original-combat-5d8i.yml'
+      - 'tests/original/native_combat_5d8i.mjs'
+      - 'tools/seed_original_combat_5d8i.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: isolated-original-unit-5d8h
+  cancel-in-progress: false
+
+jobs:
+  original-client-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate original fixture and recorder syntax
+        run: |
+          python tools/seed_original_units_5d8c_test.py
+          node --check tests/original/native_combat_5d8i.mjs
+          python -m py_compile tools/seed_original_combat_5d8i.py
+      - name: Install Playwright and Ruffle
+        run: |
+          npm install --prefix tests/ruffle --no-audit --no-fund
+          npx --prefix tests/ruffle playwright install chromium
+          node tests/original/test.mjs
+      - name: Download original Social Wars distribution and Flask source
+        run: |
+          mkdir -p runtime/release
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = '492630085'
+          unzip -q runtime/release.zip -d runtime/release
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          asset_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          git clone --depth 1 --filter=blob:none --sparse \
+            'https://github.com/AcidCaos/socialwarriors.git' runtime/source
+          git -C runtime/source sparse-checkout set config villages templates stub mods
+          ln -s "$asset_dir" runtime/source/assets
+          test -f runtime/source/server.py
+          mkdir -p runtime/source/saves
+          test -z "$(find runtime/source/saves -name '*.save.json' -print -quit)"
+          echo "SW_SERVER_DIR=$(realpath runtime/source)" >> "$GITHUB_ENV"
+      - name: Verify original unit IDs and retain clean template
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          patch=json.loads(Path('runtime/source/config/patch/unit_patch.json').read_text())
+          catalog={int(row['value']['id']):row['value'] for row in patch
+                   if isinstance(row,dict) and isinstance(row.get('value'),dict)
+                   and 'id' in row['value']}
+          for key in (1313,1358,1376):
+              assert catalog[key]['type']=='u'
+              print('ORIGINAL_UNIT_VERIFIED',key,catalog[key]['name'])
+          PY
+          cp "$SW_SERVER_DIR/villages/initial.json" runtime/initial-pristine.json
+      - name: Install original Flask requirements
+        run: python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+      - name: Test combat via original SWF mouse input only
+        shell: bash
+        run: |
+          set -euo pipefail
+          for scenario in near_east; do
+            echo "SCENARIO_NATIVE_COMBAT: $scenario"
+            test -z "$(find "$SW_SERVER_DIR/saves" -maxdepth 1 -name '*.save.json' -print -quit)"
+            python tools/seed_original_combat_5d8i.py \
+              --pristine runtime/initial-pristine.json \
+              --out "$SW_SERVER_DIR/villages/initial.json" \
+              --scenario "$scenario" \
+              --manifest "runtime/combat-fixture-${scenario}.json"
+            pushd "$SW_SERVER_DIR" >/dev/null
+            python -u server.py --host 127.0.0.1 --port 5055 > "$GITHUB_WORKSPACE/runtime/server-${scenario}-private.log" 2>&1 &
+            server_pid=$!
+            popd >/dev/null
+            ready=0
+            for i in $(seq 1 60); do
+              if curl --fail --silent 'http://127.0.0.1:5055/health' >/dev/null; then ready=1; break; fi
+              sleep 1
+            done
+            if [ "$ready" -ne 1 ]; then kill "$server_pid" || true; exit 1; fi
+            node tests/original/native_combat_5d8i.mjs \
+              --server 'http://127.0.0.1:5055' \
+              --save-dir "$SW_SERVER_DIR/saves" \
+              --fixture "runtime/combat-fixture-${scenario}.json" \
+              --out "dist/native-combat-5d8i/${scenario}"
+            kill "$server_pid" || true
+            wait "$server_pid" || true
+            python - "$scenario" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          scenario=sys.argv[1]
+          d=Path('dist/native-combat-5d8i')/scenario
+          r=json.loads((d/'report.json').read_text())
+          assert r['original_swf_untouched'] and r['no_synthetic_combat_posts']
+          assert r['scenario']==scenario and len(r['fixture_seeded_units'])==2
+          assert r['attempts']>0 and len(r['unit_summaries'])==2
+          assert (d/'session.webm').stat().st_size>1000
+          print('OBSERVED_NATIVE_COMBAT_5D8I',json.dumps({
+            'scenario':scenario,'attempts':r['attempts'],
+            'combat_actions':r['combat_actions'],
+            'command_names':r['command_names'],
+            'target_changed':r['target_object_changed'],
+            'target_removed':r['target_removed_from_save'],
+            'save_changed':r['save_changed'],
+            'errors':r['errors'],
+            'visual_attack_confirmed':r['visual_attack_confirmed']
+          }))
+          PY
+            find "$SW_SERVER_DIR/saves" -maxdepth 1 -type f -name '*.save.json' -delete
+          done
+      - name: Upload sanitized combat trace, screenshots and video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: isolated-original-unit-5d8h
+          path: |
+            dist/native-combat-5d8i/
+            runtime/combat-fixture-*.json
+          retention-days: 14
+          if-no-files-found: warn
