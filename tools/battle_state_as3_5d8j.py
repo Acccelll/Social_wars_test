@@ -19,7 +19,9 @@ TARGET=[
  "core.isoengine.IsoUnit", "core.isoengine.IsoElement",
  "battle.IAAttack", "battle.Battle", "core.MapInitializer",
  "core.isoengine.IsoMap", "core.isoengine.IsoEngine",
- "core.isoengine.IsoUnitDelegate", "core.isoengine.delegates.AbstractUnitDelegate"
+ "core.isoengine.IsoUnitDelegate", "core.isoengine.delegates.AbstractUnitDelegate",
+ "core.Scene","core.Base","core.isoengine.IsoInteractiveElement",
+ "battle.Assault","battle.IA","popups.PopUpBattleOptions","core.Constants"
 ]
 TERMS=["MOUSE_DOWN","MOUSE_UP","CLICK","mouseDown","mouseUp","attack",
        "IAAttack","startBattle","recibirAtaque","calculateDamage",
