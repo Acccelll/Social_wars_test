@@ -332,3 +332,14 @@ foi reconstruída por este procedimento.
 - Limites: os GIFs `QUIETO/ANDAR/ATAQUE` do Reaper ficaram idênticos nesta exportação; não foi comprovada a identidade do projétil, impacto ou quadros específicos da captura runtime.
 - [Relatório 5D.8K](LOTE_5D_8K.md) · [metadados versionados](../data/visual/combat_animations_5d8k.json).
 - **Próximo 5D.8L:** detalhar os cinco ataques direcionais e correlacionar efeitos visuais à execução original do Ruffle, sem editar SWFs.
+
+
+## Lote 5D.8L — Cinco ataques direcionais originais exportados
+
+- [CI 39357276115](https://github.com/Acccelll/Social_wars_test/actions/runs/39357276115) **success**; FFDec 26.3.0 exportou **5 GIFs de 60 frames** do SWF original Bushwacker, com hash SHA-256 conferido e sem alterar originais.
+- `DefineSprite` 1092, estado `ATAQUE` frames 11–15: `E=643`, `TE=675`, `P=716`, `T=752`, `F=786`. Esses símbolos tinham 60 frames declarados cada.
+- **Importante:** 60 quadros exportados não significam 60 imagens únicas. O FFDec produziu somente **3, 5, 3, 3, 10** imagens pixel-distintas por direção; várias prévias repetiram um ciclo de 18 frames.
+- Quatro símbolos de filho compartilhados entre as cinco variantes: `3,611,621,642`; nenhum foi identificado como projétil/impacto com evidência suficiente.
+- [Atlas, GIFs e estrutura detalhada](https://github.com/Acccelll/Social_wars_test/actions/runs/39357276115/artifacts/12235179182).
+- [Documento técnico](LOTE_5D_8L.md) · [Inventário JSON](../data/visual/directional_attack_5d8l.json).
+- **Próximo 5D.8M:** encontrar definições de projéteis e partículas no ActionScript original, validar os efeitos contra a gravação do 5D.8J.
