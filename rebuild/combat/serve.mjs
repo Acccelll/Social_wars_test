@@ -10,7 +10,7 @@ const allow=new Map([
  ['/','demo/index.html'],['/arena','demo/arena.html'],['/demo/main.js','demo/main.js'],['/demo/arena.js','demo/arena.js'],['/demo/originalVisuals.js','demo/originalVisuals.js'],
  ['/dist/index.js','dist/index.js'],['/dist/model.js','dist/model.js'],
  ['/dist/healthBar.js','dist/healthBar.js'],['/dist/rng.js','dist/rng.js'],
- ['/dist/scene.js','dist/scene.js'],['/dist/unitCatalog.js','dist/unitCatalog.js']
+ ['/dist/scene.js','dist/scene.js'],['/dist/unitCatalog.js','dist/unitCatalog.js'],['/dist/originalDirection.js','dist/originalDirection.js']
 ]);
 http.createServer(async(req,res)=>{
  const urlPath=new URL(req.url??'/',`http://${host}:${port}`).pathname;
