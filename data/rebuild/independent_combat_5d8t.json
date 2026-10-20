@@ -1,0 +1,58 @@
+{
+  "lot": "5D.8T",
+  "date": "2026-10-20",
+  "result": "independent_TypeScript_combat_model_built_and_ci_passed",
+  "original_swf_unchanged": true,
+  "original_swf_sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+  "original_reference_lot": "5D.8S",
+  "code_root": "rebuild/combat",
+  "sources": [
+    "rebuild/combat/src/model.ts",
+    "rebuild/combat/src/healthBar.ts",
+    "rebuild/combat/src/rng.ts",
+    "rebuild/combat/src/index.ts"
+  ],
+  "compilation": {
+    "language": "TypeScript",
+    "version": "5.8.3",
+    "module": "NodeNext/ESM",
+    "strict": true,
+    "node_minimum": "22"
+  },
+  "capabilities": [
+    "critical roll 10% before variance roll; 1.5 crit multiplier",
+    "damage variance Math.random()*8-4, abs only on critical",
+    "subtract defense then round; min 1 damage",
+    "shield:int coercion before external attackMultiplier",
+    "per-combatant life/nearDeath/death/invincibility/canDie states",
+    "damage-number queue and 15-frame visual throttle with completion callback",
+    "original segmented health bar 4-20 divisions, 4px each",
+    "health bar piecewise 5-stop gradient, status and zoom correction",
+    "RNG dependency injection with deterministic xorshift32 test helper",
+    "standalone browser demo without original SWF"
+  ],
+  "exclusions": [
+    "not the original client recompiled; not sprite gameplay",
+    "best_against, XP, siege and tutorial damage modifiers not integrated",
+    "projectile trajectories/attack cadence not integrated",
+    "unit targeting/movement/map/pathfinding/quests/save synchronization pending",
+    "demo unit HP and attacks are illustrative, not original catalogue stats",
+    "not verified frame-perfect or damage-perfect against Flash actual fight"
+  ],
+  "unit_test_count": 16,
+  "ci": {
+    "first_passing_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39425028520",
+    "compiled_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39425028520/artifacts/12265073518",
+    "compile": "success",
+    "tests": "16/16",
+    "http_demo_smoke": "200 OK"
+  },
+  "run_commands": [
+    "cd rebuild/combat",
+    "npm install",
+    "npm test",
+    "npm run demo"
+  ],
+  "demo_url": "http://127.0.0.1:5179",
+  "next_lot": "5D.8U: recover actual Bushwacker/Reaper Drone combat stats from original unit data; wire independent combat module to an interactive 2D stage and real attacks with source-versus-demo labels."
+}
