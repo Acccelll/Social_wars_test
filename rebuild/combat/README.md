@@ -51,3 +51,14 @@ Os valores da demo (HP 200/220, ataque 32/23, defesa 5/7) são **ilustrativos** 
 [GitHub Actions 5D.8T — compilação, 16 testes e smoke HTTP](https://github.com/Acccelll/Social_wars_test/actions/workflows/independent-combat-5d8t.yml).
 
 O lote 5D.8U entregou os dois parâmetros do servidor e a primeira arena 2D independente. Próximo 5D.8V: integrar sprites e efeitos originais extraídos aos estados de ataque/HP, sem confundir placeholder e efeitos confirmados no SWF.
+
+
+## Lote 5D.8V — Imagens originais como pacote visual opcional
+
+A rota **http://127.0.0.1:5179/arena** agora aceita sprites e FX PNG extraídos por FFDec dos SWFs originais (Bushwacker 1358, Reaper Drone 1376, bala, laser e impactos). O motor de combate **continua sendo independente do Flash**. Se a pasta opcional `original-visual/` faltar, o navegador mostra automaticamente os desenhos vetoriais e o botão **Estilo** permite comparar os dois modos.
+
+O pacote completo entregue no [lote 5D.8V](../../docs/LOTE_5D_8V.md) já vem com `original-visual/manifest.json` e 12 atlas PNG. Para reconstruir a partir dos GIFs comprovados de 5D.8K e 5D.8M, use `tools/prepare_original_visuals_5d8v.py` com Pillow e as opções `--states`, `--fx`, `--out rebuild/combat/original-visual`. Os GIFs derivam da distribuição original 0.02a; nenhuma cópia de SWF é comitada ao Git.
+
+**Limite:** os quadros FFDec são amostras de sub-timelines, não a execução AVM2 da animação completa. O Bushwacker apresenta variação de quadros de ataque, mas as quatro amostras do Reaper Drone contêm somente uma pose renderizada por estado; a velocidade de ataque da demo, offsets de projeção, movimento de projéteis e sincronização ainda não foram validados como originais. O sprite interno visível do `p.laserMassiveDrone` é selecionado em vez do wrapper público transparente.
+
+Validação: [workflow 5D.8V](https://github.com/Acccelll/Social_wars_test/actions/workflows/original-sprite-arena-5d8v.yml) executa o jogo próprio com 12 atlas, verifica dano, alternância de visual, efeitos, eliminação, 25 testes e screenshots de Chromium. Os artefatos expiram; após isso, os GIFs devem ser reexportados dos SWFs com os utilitários FFDec versionados em `tools/`.
