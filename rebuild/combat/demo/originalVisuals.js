@@ -1,22 +1,26 @@
 /** 5D.8V original FFDec sprite/FX atlases. Optional; keep Canvas placeholders.
  * GIF sources are limited nested-timeline subframes, not every original frame.
  */
+import {originalFacingFrame} from '/dist/originalDirection.js';
 const UNIT_KEYS={bushwacker:'bushwacker',reaperDrone:'reaper_drone'};
 const imageCache=new Map();
 let manifest=null,mode='original',status='loading',error=null,tick=0;
-let reaperFacingIndex=0; // Root frames are directional poses, not elapsed-time animation.
+let reaperFacingIndex=0; // Optional manual pose override, retained from 5D.8W.
+let manualReaperPose=null; // null = source-derived automatic 8-direction facing.
 const deadAt=new Map();
-function paintFrame(ctx,rec,x,y,w,h,frame,angle=0){
+function paintFrame(ctx,rec,x,y,w,h,frame,angle=0,flipX=false){
  const img=imageCache.get(rec?.url);
  if(!img||!rec?.frames||!rec.frameWidth||!rec.frameHeight)return false;
  const f=((Math.floor(frame)%rec.frames)+rec.frames)%rec.frames;
- ctx.save();ctx.translate(x,y);ctx.rotate(angle);
+ ctx.save();ctx.translate(x,y);ctx.rotate(angle);if(flipX)ctx.scale(-1,1);
  ctx.drawImage(img,(f%rec.columns)*rec.frameWidth,Math.floor(f/rec.columns)*rec.frameHeight,
    rec.frameWidth,rec.frameHeight,-w/2,-h/2,w,h);
  ctx.restore();return true;
 }
-export function visualInfo(){return {mode,status,error,loaded:imageCache.size,ready:status==='ready',reaperFacingIndex};}
-export function nextReaperFacing(){reaperFacingIndex=(reaperFacingIndex+1)%5;return reaperFacingIndex;}
+export function visualInfo(){return {mode,status,error,loaded:imageCache.size,ready:status==='ready',
+ reaperFacingIndex,manualReaperPose,autoFacingEnabled:manualReaperPose===null};}
+export function resetReaperFacing(){manualReaperPose=null;}
+export function nextReaperFacing(){reaperFacingIndex=(reaperFacingIndex+1)%5;manualReaperPose=reaperFacingIndex;return reaperFacingIndex;}
 export function setVisualMode(next){
  if(!['original','vector'].includes(next))throw Error('Invalid visual mode');
  mode=next;
@@ -55,13 +59,18 @@ export function drawOriginalUnit(ctx,key,u,p){
  else if(!deadAt.has(key))deadAt.set(key,tick);
  // The 25 Reaper root frames include 5 different orientation poses in
  // QUIETO/ANDAR/ATAQUE; they must not be cycled as a temporal animation.
+ const autoDirection=originalFacingFrame(u.facing??(key==='reaperDrone'?7:3));
  const frame=key==='reaperDrone'
-   ? (u.hp.dead?0:Math.min(rec.frames-1,reaperFacingIndex))
+   ? (u.hp.dead?0:Math.min(rec.frames-1,
+       manualReaperPose===null?autoDirection.poseIndex:manualReaperPose))
    : (u.hp.dead?Math.min(rec.frames-1,Math.floor((tick-deadAt.get(key))/3))
      :u.poseFrames>0?(8-u.poseFrames)*2:Math.floor(tick/2));
+ // Flash ghostBuilding.scaleX mirrors about its registration point.
+ // Canvas export anchoring is provisional and not claimed pixel-perfect.
+ const flip=key==='reaperDrone'&&manualReaperPose===null&&autoDirection.mirrored;
  const height=key==='bushwacker'?238:161;
  return paintFrame(ctx,rec,p.x,p.y-(key==='bushwacker'?92:64),
-   height*rec.frameWidth/rec.frameHeight,height,frame);
+   height*rec.frameWidth/rec.frameHeight,height,frame,0,flip);
 }
 export function drawOriginalShot(ctx,shot,progress,from,to){
  if(mode!=='original'||status!=='ready')return false;
