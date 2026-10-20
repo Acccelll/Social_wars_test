@@ -1,0 +1,41 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Wars — Bushwacker ProjectilePoint Inspector 5D.8Y</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:28px;font:14px system-ui,sans-serif;background:#0b1725;color:#e7f0f5}
+main{max-width:1040px;margin:auto}h1{font-size:27px;margin:10px 0 8px}
+a{color:#b9e6e3}.muted{color:#97afbc;line-height:1.6}
+.head{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.small{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#82c9ae;font-weight:700}
+.controls{display:flex;align-items:center;gap:9px;margin:19px 0;flex-wrap:wrap}
+button{background:#193347;color:#e4f8f4;border:1px solid #52737f;border-radius:8px;font-weight:600;padding:10px;cursor:pointer}
+button.active{background:#b4e2d0;color:#13252d}
+.grid{display:grid;grid-template-columns:1fr 310px;gap:18px}
+.panel{border:1px solid #365466;background:#102434;border-radius:13px;padding:17px}
+svg{background:#142b3a;width:100%;height:auto;border-radius:9px}
+.gridline{stroke:#4d6f7d;stroke-width:.75;opacity:.5}
+.axis{stroke:#cadde6;stroke-width:1.6;opacity:.8}
+.marker{fill:#fcd18b;stroke:#e2f7f3;stroke-width:2}
+.legend{color:#a5bdca;font-size:12px;line-height:1.6}
+.mval{font-size:24px;font-weight:750;color:#b2e8ca;font-variant-numeric:tabular-nums}
+table{border-collapse:collapse;width:100%;font-size:12px}
+td,th{text-align:left;padding:9px 6px;border-bottom:1px solid #304a57}
+tr.selected{background:#1c414b}
+.foot{margin-top:20px;padding:13px 0;border-top:1px solid #29465c;line-height:1.7;color:#96abba;font-size:12px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}body{padding:14px}}
+</style></head><body><main><div class="head"><div>
+<div class="small">Social Wars · Recuperação 5D.8Y</div><h1>Origem real dos disparos · Bushwacker</h1>
+<p class="muted">Coordenadas calculadas a partir das matrizes originais <code>PlaceObject</code> — em pixels locais do <code>DefineSprite 1092</code>.</p></div>
+<a href="/arena">Voltar à arena</a></div>
+<div class="controls" id="directions"><button data-direction="1">↑ Cima</button><button data-direction="2">↗ Cima-direita</button><button data-direction="3" class="active">→ Direita</button><button data-direction="4">↘ Baixo-direita</button><button data-direction="5">↓ Baixo</button><button data-direction="6">↖ Cima-esquerda</button><button data-direction="7">← Esquerda</button><button data-direction="8">↙ Baixo-esquerda</button></div>
+<div class="grid">
+<section class="panel"><h2>Marcador no espaço local do sprite</h2>
+<svg id="marker-map" viewBox="0 0 630 490" role="img" aria-label="Gráfico de cinco pontos originais do Bushwacker e do ponto selecionado">
+<g id="gridlines"></g><g id="marker-points"></g>
+</svg><p class="legend">O centro do gráfico representa o registro do sprite raiz. Os pontos são coordenadas locais, não posições finais do mapa. Direções espelhadas usam a mesma pose invertida.</p></section>
+<aside class="panel"><h2>Pose selecionada</h2>
+<div class="small" id="pose-label">Pose 3</div><div class="mval" id="coordinate">186,55 / −182,50 px</div>
+<p class="legend" id="matrix-info"></p><hr style="border:0;border-top:1px solid #365063;margin:19px 0">
+<h2>Cinco marcadores confirmados</h2><table><thead><tr><th>Pose</th><th>Sprite</th><th>X</th><th>Y</th></tr></thead><tbody id="pose-table"></tbody></table></aside>
+</div>
+<p class="foot"><strong>Limitação de paridade:</strong> ainda falta medir a origem do sprite 1092 e a escala real dentro do Canvas. O inspetor não transforma essas coordenadas em posição de disparo na arena, porque isso exigiria assumir um pivô não verificado. Os valores de transformação foram derivados diretamente do SWF original 0.02a e conferidos por teste automatizado.<br><a href="https://github.com/Acccelll/Social_wars_test/blob/main/docs/LOTE_5D_8Y.md">Relatório e evidências do lote</a></p>
+</main><script type="module" src="/demo/muzzle.js"></script></body></html>
