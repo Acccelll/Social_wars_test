@@ -16,6 +16,17 @@ try{
  assert.equal(state.visual.autoFacingEnabled,true);
  assert.equal(state.units.reaperDrone.facing,7,'Reaper looks LEFT at Bushwacker');
  assert.equal(state.units.bushwacker.facing,3,'Bushwacker looks RIGHT at Reaper');
+ const origins=await page.evaluate(async()=>{
+   const v=await import('/demo/originalVisuals.js');
+   const from={x:752,y:340};
+   return {
+     drone:v.approximateVisualShotOrigin({from:'reaperDrone'},from),
+     bush:v.approximateVisualShotOrigin({from:'bushwacker'},from)
+   };
+ });
+ assert.equal(origins.drone.x,752);
+ assert.ok(Math.abs(origins.drone.y-(340-161*.6))<1e-9);
+ assert.deepEqual(origins.bush,{x:752,y:313});
  await page.screenshot({path:'test/screenshots/5d8x-source-auto-reaper-left.png',fullPage:true});
  // Exactly same drawable canvas, but different directional frame after manual override.
  await page.click('#reaper-facing');
