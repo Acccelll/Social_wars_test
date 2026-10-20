@@ -479,3 +479,15 @@ foi reconstruída por este procedimento.
 - [CI 39462605558](https://github.com/Acccelll/Social_wars_test/actions/runs/39462605558) **2 jobs aprovados**: **35/35 testes**, 13 atlas no Chromium, orientação Reaper 7/esquerda (pose 3 espelhada), Bushwacker 3/direita, alternância manual/automática, dano/HP, vitória e zero erros JavaScript.
 - [Relatório do lote](LOTE_5D_8X.md) · [dados originais + cautelas](../data/rebuild/original_facing_projectile_5d8x.json) · [scanner de PlaceObject](../tools/projectile_markers_5d8x.py).
 - **Próximo lote 5D.8Y:** calcular a cadeia completa de matrizes dos `projectilePoint` do Bushwacker até o espaço do mapa e validar pivôs visuais/temporização em relação ao cliente Flash.
+
+
+## Lote 5D.8Y — Matrizes exatas dos cinco marcadores de tiro do Bushwacker
+
+- **SWF original intocado:** `assets/sprites/1358_bushwacker.swf` SHA256 `e9db23f98dcaa5cf81cbcdac85154fcb1da92a205b7d9047a5d420fb9d068c5e`. Análise de 258 sprites, sem erros de parsing.
+- O sprite raiz **1092** contém nos frames de ataque **11–15** exatamente os sprites **643, 675, 716, 752, 786** (um por frame, profundidade 1), cada um com um `projectilePoint`. A matriz do filho tem `scaleX=-1`; o caminho da raiz ao marcador é **único em cada frame**, portanto a composição local é não ambígua.
+- **Cinco coordenadas originais no espaço local do sprite 1092**, em pixels: pose 1 `(116.15,-371.70)`, pose 2 `(254.55,-299.20)`, pose 3 `(186.55,-182.50)`, pose 4 `(89.70,-78.25)`, pose 5 `(-93.90,-109.70)`. São offsets **locais**, não posições absolutas de tiro na tela.
+- `rebuild/combat/src/bushMuzzle.ts`: API imutável de matrizes, composição, translação 20 twips/pixel, direção 8→5+mirror e conversão para Canvas **somente com pivô e escala explicitamente medidos**.
+- Novo inspetor **http://127.0.0.1:5179/muzzle** mostra os pontos em um gráfico de coordenadas locais para oito direções e apresenta o sprite/quadro correspondente. A arena `/arena` ganhou link, mantendo os tiros anteriores intactos até calibração.
+- [CI fonte 39471783965](https://github.com/Acccelll/Social_wars_test/actions/runs/39471783965) e [CI aplicação 39472749217](https://github.com/Acccelll/Social_wars_test/actions/runs/39472749217) aprovados: **40/40 testes**, comparação de todos os cinco valores TypeScript vs. SWF, inspetor no Chromium com espelhamento, regressão da arena/combate, 13 recursos e zero erros JS.
+- [Relatório](LOTE_5D_8Y.md) · [dados recuperados](../data/rebuild/bushwacker_marker_geometry_5d8y.json) · [ferramenta read-only](../tools/bushwacker_marker_matrices_5d8y.py).
+- **Próximo 5D.8Z:** medir o registro e zoom/cropping efetivos das imagens originais 11–15 no Canvas; só após validação usar os pontos reais como origem do disparo.
