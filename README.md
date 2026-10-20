@@ -208,3 +208,14 @@ primeira interação no cliente automatizado. Após dispensá-lo, o
 
 [Ver vídeo e capturas do jogo original](https://github.com/Acccelll/Social_wars_test/actions/runs/39321595058/artifacts/12220326999).
 A validação de ações reais de movimento/ataque no cliente será feita no 5D.8G.
+
+
+## Reconstrução independente iniciada — 5D.8T (TypeScript)
+
+A partir do [lote 5D.8T](docs/LOTE_5D_8T.md), além de pesquisar o Flash original, temos **um módulo de combate independente do SWF**, com cálculo de dano, crítico, vida, morte, barra de HP e eventos de dano agrupado. Está em [`rebuild/combat/`](rebuild/combat/README.md) e inclui uma pequena demo interativa para navegador, sem Ruffle.
+
+Para executar: `cd rebuild/combat && npm install && npm test && npm run demo` e abrir **http://127.0.0.1:5179**.
+
+[GitHub Actions 5D.8T aprovado](https://github.com/Acccelll/Social_wars_test/actions/runs/39425028520): compilação estrita TypeScript, 16 testes e verificação do servidor demo.
+
+**Distinção importante:** isto é o **início da implementação própria das mecânicas**, não uma recompilação completa do original. A IA, projéteis, animações, atributos exatos dos dois personagens e o jogo completo continuam pendentes; o cliente original em Ruffle permanece a referência.
