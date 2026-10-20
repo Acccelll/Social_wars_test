@@ -1,0 +1,83 @@
+name: Original FX Assets 5D.8M
+
+on:
+  push:
+    paths:
+      - ".github/workflows/original-fx-assets-5d8m.yml"
+      - "tools/original_fx_assets_5d8m.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: original-fx-assets-5d8m
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Validate read-only FX mapper
+        run: |
+          python3 -m py_compile tools/original_fx_assets_5d8m.py
+          python3 tools/visual_timelines_test.py
+      - name: Obtain original 0.02a distribution
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = '492630085'
+      - name: Download FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            'https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip' \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+      - name: Verify exact normal projectile FX and export bounded graphics
+        run: |
+          python3 tools/original_fx_assets_5d8m.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/original-fx-5d8m
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('dist/original-fx-5d8m/summary.json').read_text())
+          assert d['original_swf_modified'] is False
+          assert len(d['original_fx_assets'])==4
+          assert [x['effect_name'] for x in d['original_fx_assets']]==[
+             'p.bulletAirBig','b.bazookaSmall','p.laserMassiveDrone','b.laserBlue'
+          ]
+          for x in d['original_fx_assets']:
+              assert x['sha256'] and len(x['sha256'])==64
+              assert x['bytes']>30
+              assert x['static_tag_parser_warnings']==0
+              assert x['ffdec']['status'] not in ('FFDEC_ERROR','TIMEOUT'),x
+              print('VERIFIED_FX_5D8M',json.dumps({
+                'name':x['effect_name'],'bytes':x['bytes'],
+                'sha256':x['sha256'],'frames':x['main_frames'],
+                'sprites':x['sprite_count'],
+                'export':x['ffdec']['status'],
+                'files':x['ffdec'].get('file_count',0)
+              }))
+          PY
+      - name: Upload original FX graphics and manifests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-projectiles-and-impacts-5d8m
+          path: dist/original-fx-5d8m/
+          retention-days: 14
+          if-no-files-found: warn
