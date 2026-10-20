@@ -491,3 +491,14 @@ foi reconstruída por este procedimento.
 - [CI fonte 39471783965](https://github.com/Acccelll/Social_wars_test/actions/runs/39471783965) e [CI aplicação 39472749217](https://github.com/Acccelll/Social_wars_test/actions/runs/39472749217) aprovados: **40/40 testes**, comparação de todos os cinco valores TypeScript vs. SWF, inspetor no Chromium com espelhamento, regressão da arena/combate, 13 recursos e zero erros JS.
 - [Relatório](LOTE_5D_8Y.md) · [dados recuperados](../data/rebuild/bushwacker_marker_geometry_5d8y.json) · [ferramenta read-only](../tools/bushwacker_marker_matrices_5d8y.py).
 - **Próximo 5D.8Z:** medir o registro e zoom/cropping efetivos das imagens originais 11–15 no Canvas; só após validação usar os pontos reais como origem do disparo.
+
+
+## Lote 5D.8Z — Quadros raiz originais sem recorte e calibração de origem controlada
+
+- Exportados os **cinco quadros raiz reais de ataque (11–15)** do Bushwacker `DefineSprite 1092` por FFDec 26.3.0, sem crop por pose. Cada PNG mede **1255×1140 px**. Caixas visíveis: pose1 `[485,436,771,814]`, pose2 `[497,409,856,813]`, pose3 `[525,429,790,817]`, pose4 `[497,418,826,813]`, pose5 `[490,443,780,814]`. São cinco imagens distintas.
+- `tools/bush_attack_registration_5d8z.py` verifica SHA256 do SWF original e preserva a origem (0,0) do PNG FFDec no atlas `bush_attack_root_11_15.png`, além de registrar os limites de alfa de cada pose. Nenhum SWF foi alterado ou commitado.
+- `rebuild/combat/src/sourceRegistration.ts` implementa a conversão do `projectilePoint` local original (5D.8Y) para pixels do PNG e retângulo Canvas **com origem e escala medidas obrigatórias**, sem inferir registro a partir da bounding box ou do centro.
+- Nova tela **http://127.0.0.1:5179/calibration** exibe os cinco quadros nativos, seus pixels visíveis e um ajuste de pivô experimental por clique/escala, com marcador sobreposto. **Não muda** os tiros da arena; o ponto de registro real do `ghostBuilding` e o zoom precisam ser comprovados.
+- [CI #39475880764](https://github.com/Acccelll/Social_wars_test/actions/runs/39475880764) **sucesso**: **45/45 testes** e Chromium comprovando cinco quadros, calibração opcional, limpeza e regressão de arena/inspetor anterior com 13 recursos, **zero erros JS**.
+- [Relatório](LOTE_5D_8Z.md) · [extrator](../tools/bush_attack_registration_5d8z.py) · [teste de navegador](../rebuild/combat/test/sourceRegistration.browser.mjs).
+- **Próximo 5D.9A:** medir o registro nativo de `DefineSprite 1092` em execução real e confrontar com o PNG FFDec para integrar com segurança a origem de disparo do Bushwacker no Canvas.
