@@ -5,15 +5,18 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 const root=path.dirname(fileURLToPath(import.meta.url));
 const host='127.0.0.1',port=Number(process.env.PORT||5179);
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png'};
 const allow=new Map([
- ['/','demo/index.html'],['/arena','demo/arena.html'],['/demo/main.js','demo/main.js'],['/demo/arena.js','demo/arena.js'],
+ ['/','demo/index.html'],['/arena','demo/arena.html'],['/demo/main.js','demo/main.js'],['/demo/arena.js','demo/arena.js'],['/demo/originalVisuals.js','demo/originalVisuals.js'],
  ['/dist/index.js','dist/index.js'],['/dist/model.js','dist/model.js'],
  ['/dist/healthBar.js','dist/healthBar.js'],['/dist/rng.js','dist/rng.js'],
  ['/dist/scene.js','dist/scene.js'],['/dist/unitCatalog.js','dist/unitCatalog.js']
 ]);
 http.createServer(async(req,res)=>{
- const file=allow.get(new URL(req.url??'/',`http://${host}:${port}`).pathname);
+ const urlPath=new URL(req.url??'/',`http://${host}:${port}`).pathname;
+ let file=allow.get(urlPath);
+ // Closed list of optional original visual files. No directory traversal.
+ if(!file&&/^\/original-visual\/(manifest\.json|(?:units\/(?:bushwacker|reaper_drone)\/(?:quieto|andar|ataque|muerte)|fx\/(?:bullet|bazooka|laser|laserBlue))\.png)$/.test(urlPath))file=urlPath.slice(1);
  if(!file){res.writeHead(404);res.end('not found');return;}
  try{
   const data=await readFile(path.join(root,file));
