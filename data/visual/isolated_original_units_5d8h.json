@@ -1,0 +1,101 @@
+{
+  "lot": "5D.8H",
+  "date": "2026-10-19",
+  "status": "completed",
+  "workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39347814190",
+  "artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39347814190/artifacts/12232061894",
+  "client": "original Basesec_1.5.4.swf via Ruffle + Chromium",
+  "original_swf_modified": false,
+  "isolated_server": "127.0.0.1:5055",
+  "fixture": "fresh original initial village with one added unit per scenario, index 41 at tile 55,45",
+  "native_mouse_actions": true,
+  "manual_post_commands": false,
+  "scenarios": [
+    {
+      "name": "Bushwacker",
+      "key": "bushwacker",
+      "item_id": 1358,
+      "index": 41,
+      "click_pairs": 2,
+      "original_browser_move_count": 2,
+      "starting_tile": [
+        55,
+        45
+      ],
+      "destinations": [
+        [
+          55,
+          43
+        ],
+        [
+          54,
+          35
+        ]
+      ],
+      "final_saved_tile": [
+        54,
+        35
+      ],
+      "network_save_match": true,
+      "visible_ui_name_matches_fixture": true
+    },
+    {
+      "name": "Reaper Drone",
+      "key": "reaper",
+      "item_id": 1376,
+      "index": 41,
+      "click_pairs": 6,
+      "original_browser_move_count": 1,
+      "starting_tile": [
+        55,
+        45
+      ],
+      "destinations": [
+        [
+          58,
+          40
+        ]
+      ],
+      "final_saved_tile": [
+        58,
+        40
+      ],
+      "network_save_match": true,
+      "visible_ui_name_matches_fixture": true
+    },
+    {
+      "name": "Splinter Mech",
+      "key": "splinter",
+      "item_id": 1313,
+      "index": 41,
+      "click_pairs": 5,
+      "original_browser_move_count": 2,
+      "starting_tile": [
+        55,
+        45
+      ],
+      "destinations": [
+        [
+          54,
+          40
+        ],
+        [
+          55,
+          39
+        ]
+      ],
+      "final_saved_tile": [
+        55,
+        39
+      ],
+      "network_save_match": true,
+      "visible_ui_name_matches_fixture": true
+    }
+  ],
+  "browser_page_errors": 0,
+  "animation_sequence_defined": false,
+  "swf_define_sprite_ids": null,
+  "visual_evidence": "final.png bottom panel matches model name in each of three isolated scenes",
+  "limitations": "Internal SWF sprite character IDs and exact animation frames remain unknown; UI/item/map index correlation was verified per scenario.",
+  "next_lot": "5D.8I: trace native attack/damage from the original UI in an isolated scenario"
+}
