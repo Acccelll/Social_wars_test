@@ -1,0 +1,152 @@
+{
+  "lot": "5D.8X",
+  "date": "2026-10-20",
+  "source": "Social Wars 0.02a original AS3 + unit SWF PlaceObject tags",
+  "originalSWFModified": false,
+  "as3": {
+    "classes": [
+      "core.Constants",
+      "core.isoengine.IsoUnit",
+      "core.isoengine.IsoFightingElement"
+    ],
+    "exactLogicalDirections": {
+      "UP": 1,
+      "UP_RIGHT": 2,
+      "RIGHT": 3,
+      "DOWN_RIGHT": 4,
+      "DOWN": 5,
+      "UP_LEFT": 6,
+      "LEFT": 7,
+      "DOWN_LEFT": 8
+    },
+    "animationIndexes": {
+      "IDLE": 0,
+      "WALKING": 1,
+      "ATTACKING": 2,
+      "DYING": 3,
+      "HARVESTING": 4
+    },
+    "updateAnimation": "When currentDirection > 5, frameDirection -= 4; newScale=-1. frame=iAnimation*5+frameDirection",
+    "directionDetection": "Select by signs of targetPixelX-x and targetPixelY-y, preserving current direction when both deltas under tile pixel dimensions /3",
+    "attackDirectionFlow": "IsoUnit.updateDirection() calls updateUnitDirectionTile(target tx/ty) for active attacking target",
+    "projectileStart": "Try bmd.getChildAt(0).getChildByName(clipName), transform localToGlobal then parent.globalToLocal; else start=(x, y-bmd.height*0.6) or (x,y) if bmd null.",
+    "projectileHit": "Try ghostBuilding direct child marker; otherwise use ghostBuilding.getBounds(this) adjusted by ProjectileDefinition.verticalOffset."
+  },
+  "facingTable": [
+    {
+      "logic": 1,
+      "name": "UP",
+      "rootPose": 1,
+      "scaleX": 1
+    },
+    {
+      "logic": 2,
+      "name": "UP_RIGHT",
+      "rootPose": 2,
+      "scaleX": 1
+    },
+    {
+      "logic": 3,
+      "name": "RIGHT",
+      "rootPose": 3,
+      "scaleX": 1
+    },
+    {
+      "logic": 4,
+      "name": "DOWN_RIGHT",
+      "rootPose": 4,
+      "scaleX": 1
+    },
+    {
+      "logic": 5,
+      "name": "DOWN",
+      "rootPose": 5,
+      "scaleX": 1
+    },
+    {
+      "logic": 6,
+      "name": "UP_LEFT",
+      "rootPose": 2,
+      "scaleX": -1
+    },
+    {
+      "logic": 7,
+      "name": "LEFT",
+      "rootPose": 3,
+      "scaleX": -1
+    },
+    {
+      "logic": 8,
+      "name": "DOWN_LEFT",
+      "rootPose": 4,
+      "scaleX": -1
+    }
+  ],
+  "assetInspector": {
+    "scanner": "tools/projectile_markers_5d8x.py",
+    "sourceRun": "https://github.com/Acccelll/Social_wars_test/actions/runs/39462223812",
+    "bushwacker": {
+      "swf": "assets/sprites/1358_bushwacker.swf",
+      "sha256": "e9db23f98dcaa5cf81cbcdac85154fcb1da92a205b7d9047a5d420fb9d068c5e",
+      "namedPlacementEvents": 26,
+      "distinctInstanceNames": 17,
+      "primaryMarker": "projectilePoint",
+      "directionalPrimaryMarkers": [
+        {
+          "spriteId": 643,
+          "frame": 11,
+          "x_twips": -2150,
+          "y_twips": -7903
+        },
+        {
+          "spriteId": 675,
+          "frame": 11,
+          "x_twips": -3943,
+          "y_twips": -6910
+        },
+        {
+          "spriteId": 716,
+          "frame": 11,
+          "x_twips": -2551,
+          "y_twips": -4658
+        },
+        {
+          "spriteId": 752,
+          "frame": 11,
+          "x_twips": -650,
+          "y_twips": -2469
+        },
+        {
+          "spriteId": 786,
+          "frame": 11,
+          "x_twips": 2197,
+          "y_twips": -2610
+        }
+      ],
+      "extraNames": "projectilePoint01..projectilePoint16 occur in nested timelines",
+      "caution": "These are nested timeline placement coordinates in twips, not stage/world muzzle coordinates. Parent matrix chain and bmd.getChildAt(0) need verification."
+    },
+    "reaperDrone": {
+      "swf": "assets/sprites/1376_reaperDrone.swf",
+      "sha256": "c26e398f5f2209eb9ba8fc3ef84ed243b1032240c3e2f543a879330e77b64b83",
+      "namedPlacementEvents": 0,
+      "primaryMarkerFound": false,
+      "caution": "No named PlaceObject marker found in the SWF. Runtime script-created children or other conditions are not proven absent; original getter's fallback would apply if no named child."
+    }
+  },
+  "implementation": {
+    "sourceModule": "rebuild/combat/src/originalDirection.ts",
+    "sceneFacing": "scene.ts stores facing per unit, recomputes signed screen-space direction on attack",
+    "renderFacing": "Reaper Drone pose automatically chooses one of five SWF root frames and horizontal Canvas mirroring",
+    "preservedManualOverride": true,
+    "visualProjectileOrigin": "Reaper fallback y - displayHeight*0.6 applied with demo scaled 161px height. This demo height is NOT native bmd.height. Bushwacker muzzle remains provisional pending nested transform chain.",
+    "sceneStatus": "independent Canvas+TypeScript; no original SWF run in browser",
+    "pending": [
+      "Original isometric Utils.TileToPixel full mapping to arbitrary offsets",
+      "Original parent-coordinate marker transforms for Bushwacker",
+      "Native bmd.height for Reaper at actual runtime zoom",
+      "Original projectile arrival timing and Reaper beam renderer"
+    ]
+  },
+  "sourceArt": "https://github.com/Acccelll/Social_wars_test/actions/runs/39462223812/artifacts/12283137586"
+}
