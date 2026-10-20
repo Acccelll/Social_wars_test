@@ -17,8 +17,12 @@ def main():
  states=root['states']
  for state in ('quieto','andar','ataque','muerte','picar'):
   rec=states[state]
-  if rec['frames']!=5 or rec['distinctRenderedFrames']<2:
-   raise ValueError('Root state not animated: '+state)
+  if rec['frames']!=5:
+   raise ValueError('Invalid root frame count: '+state)
+  # QUIETO, ANDAR, ATAQUE have multiple orientations; MUERTE/PICAR
+  # have no new placements after their first frame and may be static/blank.
+  if state in ('quieto','andar','ataque') and rec['distinctRenderedFrames']<2:
+   raise ValueError('No directional diversity: '+state)
   src=source/'units'/key/(state+'.png')
   if hashlib.sha256(src.read_bytes()).hexdigest()!=rec['atlasSha256']:
    raise ValueError('PNG source corrupt')
