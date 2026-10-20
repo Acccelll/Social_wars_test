@@ -76,7 +76,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for scenario in near_east; do
+          for scenario in near_north near_west; do
             echo "SCENARIO_NATIVE_COMBAT: $scenario"
             test -z "$(find "$SW_SERVER_DIR/saves" -maxdepth 1 -name '*.save.json' -print -quit)"
             python tools/seed_original_combat_5d8i.py \
@@ -129,7 +129,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: isolated-original-unit-5d8h
+          name: native-original-combat-5d8i
           path: |
             dist/native-combat-5d8i/
             runtime/combat-fixture-*.json
