@@ -352,3 +352,15 @@ foi reconstruída por este procedimento.
 - Quatro SWFs de assets/fx extraídos com sucesso; FX a 24 FPS. Os IDs internos dos símbolos são locais a cada SWF.
 - [Relatório](LOTE_5D_8M.md) e [dados](../data/visual/projectile_fx_mapping_5d8m.json).
 - Próximo 5D.8N: observar carregamento dos efeitos e cronologia dos ataques no Ruffle.
+
+
+## Lote 5D.8N — FX pré-carregados; combate automático sem clique confirmado
+
+- [CI FX 39361613405](https://github.com/Acccelll/Social_wars_test/actions/runs/39361613405): 14 SWFs de `/static/socialwars/fx/` solicitados durante o boot, todos HTTP 200; incluindo os **quatro efeitos específicos** de Bushwacker e Reaper Drone mapeados em 5D.8M.
+- Nessa captura, o cliente emitiu `kill(42)` **aos 23,645 s**, antes do primeiro clique manual no inimigo (**29,253 s**).
+- [CI controle 39362157076](https://github.com/Acccelll/Social_wars_test/actions/runs/39362157076): com **zero cliques nas unidades**, o Bushwacker atacou e eliminou automaticamente o Reaper Drone hostil; o `kill(42)` foi persistido e o alvo desapareceu do save original.
+- Capturas de controle mostram disparo, números de dano, efeitos luminosos, desaparecimento da unidade inimiga e recompensas. A identidade exata de cada frame de efeito continua pendente; a requisição de FX, sozinha, não comprova o efeito exibido.
+- **Correção do 5D.8J:** as rodadas anteriores provavam combate e eliminação, não causalidade dos cliques como iniciadores do ataque.
+- Cliente SWF e servidor originais executados em saves isolados, sem comandos sintéticos de combate e sem alterar dados de usuário.
+- [Relatório 5D.8N](LOTE_5D_8N.md) · [metadados](../data/visual/runtime_fx_autocombat_5d8n.json).
+- **Próximo 5D.8O:** determinar o alcance e as condições de aggro automático com distância/posição distintas, sempre com controle sem cliques.
