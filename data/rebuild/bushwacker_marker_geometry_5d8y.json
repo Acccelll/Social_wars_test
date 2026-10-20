@@ -1,0 +1,108 @@
+{
+  "lot": "5D.8Y",
+  "date": "2026-10-20",
+  "originalSource": "assets/sprites/1358_bushwacker.swf",
+  "originalSHA256": "e9db23f98dcaa5cf81cbcdac85154fcb1da92a205b7d9047a5d420fb9d068c5e",
+  "spriteRootId": 1092,
+  "originalSwfModified": false,
+  "pathCategory": "Exactly one direct root 1092 -> direction sprite -> named projectilePoint per attack root frame 11..15",
+  "rootLocalMarkerCoordinates": [
+    {
+      "pose": 1,
+      "rootFrame": 11,
+      "child": 643,
+      "rootScaleX": -1,
+      "rootTxTwips": 173,
+      "rootTyTwips": 469,
+      "markerTxTwips": -2150,
+      "markerTyTwips": -7903,
+      "finalRootXTwips": 2323,
+      "finalRootYTwips": -7434,
+      "finalRootXPx": 116.15,
+      "finalRootYPx": -371.7
+    },
+    {
+      "pose": 2,
+      "rootFrame": 12,
+      "child": 675,
+      "rootScaleX": -1,
+      "rootTxTwips": 1148,
+      "rootTyTwips": 926,
+      "markerTxTwips": -3943,
+      "markerTyTwips": -6910,
+      "finalRootXTwips": 5091,
+      "finalRootYTwips": -5984,
+      "finalRootXPx": 254.55,
+      "finalRootYPx": -299.2
+    },
+    {
+      "pose": 3,
+      "rootFrame": 13,
+      "child": 716,
+      "rootScaleX": -1,
+      "rootTxTwips": 1180,
+      "rootTyTwips": 1008,
+      "markerTxTwips": -2551,
+      "markerTyTwips": -4658,
+      "finalRootXTwips": 3731,
+      "finalRootYTwips": -3650,
+      "finalRootXPx": 186.55,
+      "finalRootYPx": -182.5
+    },
+    {
+      "pose": 4,
+      "rootFrame": 14,
+      "child": 752,
+      "rootScaleX": -1,
+      "rootTxTwips": 1144,
+      "rootTyTwips": 904,
+      "markerTxTwips": -650,
+      "markerTyTwips": -2469,
+      "finalRootXTwips": 1794,
+      "finalRootYTwips": -1565,
+      "finalRootXPx": 89.7,
+      "finalRootYPx": -78.25
+    },
+    {
+      "pose": 5,
+      "rootFrame": 15,
+      "child": 786,
+      "rootScaleX": -1,
+      "rootTxTwips": 319,
+      "rootTyTwips": 416,
+      "markerTxTwips": 2197,
+      "markerTyTwips": -2610,
+      "finalRootXTwips": -1878,
+      "finalRootYTwips": -2194,
+      "finalRootXPx": -93.9,
+      "finalRootYPx": -109.7
+    }
+  ],
+  "sourceEvidenceRun": "https://github.com/Acccelll/Social_wars_test/actions/runs/39471783965",
+  "verifiedBuildRun": "https://github.com/Acccelll/Social_wars_test/actions/runs/39472749217",
+  "verification": {
+    "parserSpriteDefinitions": 258,
+    "parserWarnings": 0,
+    "uniqueDirectPaths": 5,
+    "independentSourceVsTypeScriptComparisons": 5,
+    "deterministicNodeTests": 40,
+    "browserInspector": true,
+    "mirroring": true,
+    "originalArenaStillWorking": true,
+    "chromeErrors": 0
+  },
+  "implementation": [
+    "tools/bushwacker_marker_matrices_5d8y.py",
+    "rebuild/combat/src/bushMuzzle.ts",
+    "rebuild/combat/demo/muzzle.html",
+    "rebuild/combat/demo/muzzle.js"
+  ],
+  "caveats": [
+    "SWF root-local points are not stage-world pixels or final Canvas pixels.",
+    "FFDec alpha-trimmed PNG atlas registration and display zoom/scale are not yet measured.",
+    "Runtime bmd.getChildAt(0) hierarchy and child current frame at shot time were not instrumented in AVM2; source static hierarchy is unique for relevant attack frames.",
+    "Bushwacker live projectile origin deliberately remains previous provisional position to prevent ungrounded shifts.",
+    "Full independent client incomplete; model combat is partial and unit stats source community patch."
+  ],
+  "nextLot": "5D.8Z — reconstruct registration/alpha bounds of root attack sprite frames and align the source-measured muzzle points to actual Canvas displayed bitmaps before applying projectile origins."
+}
