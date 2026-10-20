@@ -1,0 +1,121 @@
+name: Reaper Directional Frames 5D.8W
+on:
+  push:
+    paths:
+      - '.github/workflows/reaper-root-frames-5d8w.yml'
+      - 'tools/reaper_root_frames_5d8w.py'
+      - 'tools/merge_reaper_root_frames_5d8w.py'
+      - 'rebuild/combat/test/reaperRootFrames.browser.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  recover-reaper:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate original frame extractor
+        run: python -m py_compile tools/reaper_root_frames_5d8w.py tools/merge_reaper_root_frames_5d8w.py
+      - name: Download original distribution and FFDec 26.3.0
+        run: |
+          mkdir -p runtime/ffdec
+          curl --fail -L --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = 492630085
+          curl --fail -L --retry 3 \
+            'https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip' -o runtime/ffdec.zip
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+      - name: Export 25 real root sprite frames, not subframes
+        run: |
+          python -m pip install 'Pillow==11.3.0'
+          python tools/reaper_root_frames_5d8w.py \
+            --archive runtime/release.zip --ffdec "$FFDEC_JAR" \
+            --out runtime/reaper-root-5d8w
+      - name: Download previous fully verified 5D.8V original sprite package
+        uses: actions/download-artifact@v4
+        with:
+          name: independent-combat-original-sprites-5d8v
+          run-id: 39442913080
+          github-token: ${{ github.token }}
+          path: runtime/previous
+      - name: Replace only Reaper visual sheets and update provenance
+        run: |
+          test -f runtime/previous/original-visual/manifest.json
+          cp -r runtime/previous/original-visual rebuild/combat/original-visual
+          python tools/merge_reaper_root_frames_5d8w.py \
+            --baseline runtime/previous/original-visual \
+            --root25 runtime/reaper-root-5d8w \
+            --out rebuild/combat/original-visual
+      - name: Validate source classification and 25 root frames
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('rebuild/combat/original-visual/manifest.json')
+          m=json.loads(p.read_text())
+          assert m['lot']=='5D.8W'
+          assert m['rootTimelineAnalysis']['rootFrameCount']==25
+          u=m['units']['reaper_drone']['states']
+          assert set(u)=={'quieto','andar','ataque','muerte','picar'}
+          for name in ('quieto','andar','ataque'):
+              assert u[name]['frames']==5 and u[name]['distinctRenderedFrames']>=2,(name,u[name])
+          for name in ('muerte','picar'):
+              assert u[name]['frames']==5
+          print('REAPER_ROOT_FRAMES_VERIFIED_5D8W')
+          PY
+      - name: Compile original-independent TypeScript and install browser
+        working-directory: rebuild/combat
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install chromium
+          npm test
+      - name: Smoke directional images, combat and vector fallback
+        working-directory: rebuild/combat
+        shell: bash
+        run: |
+          set -euo pipefail
+          node serve.mjs >/tmp/sw5d8w.log 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for i in $(seq 1 35); do
+            if curl -fsS http://127.0.0.1:5179/arena -o /tmp/sw5d8w.html; then break; fi
+            sleep 1
+          done
+          node test/reaperRootFrames.browser.mjs
+      - name: Archive complete runnable visual package and extraction evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialwars-reaper-directional-5d8w
+          path: |
+            rebuild/combat/demo/
+            rebuild/combat/src/
+            rebuild/combat/dist/
+            rebuild/combat/original-visual/
+            rebuild/combat/test/*.test.mjs
+            rebuild/combat/test/*browser.mjs
+            rebuild/combat/test/screenshots/5d8w-*.png
+            rebuild/combat/serve.mjs
+            rebuild/combat/package.json
+            rebuild/combat/tsconfig.json
+            rebuild/combat/README.md
+            runtime/reaper-root-5d8w/reaper_root25_manifest.json
+            runtime/reaper-root-5d8w/ffdec-export.log
+          retention-days: 30
+          if-no-files-found: warn
