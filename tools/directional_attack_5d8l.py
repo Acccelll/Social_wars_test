@@ -30,7 +30,7 @@ DIRECTIONS=[
     ("T",14,752,"_1358_bushwacker_fla.T_attack_153"),
     ("F",15,786,"_1358_bushwacker_fla.F_attack_159"),
 ]
-SAMPLES=[1,10,20,30,40,50,60]
+SAMPLES=[1,6,7,12,13,16,19]
 
 
 def from_original(archive):
@@ -142,7 +142,17 @@ def export(jar,src_swf,dir,entry):
         with Image.open(gif) as image:
             n=getattr(image,"n_frames",1)
             dims=list(image.size)
+            image_hashes=[]
+            for i in range(n):
+                image.seek(i)
+                image_hashes.append(hashlib.sha256(image.convert("RGBA").tobytes()).hexdigest())
+        distinct_count=len(set(image_hashes))
+        # FFDec samples often loop the same shorter visual sequence.
+        repeat=next((period for period in range(1,n//2+1)
+                     if all(image_hashes[i]==image_hashes[i%period] for i in range(n))),None)
         return {"status":"EXPORTED","frames_in_gif":n,"gif_size":dims,
+                "visually_distinct_frame_count":distinct_count,
+                "preview_loop_period_frames":repeat,
                 "gif_path":gif.relative_to(dir).as_posix(),
                 "gif_sha256":hashlib.sha256(gif.read_bytes()).hexdigest(),
                 "bytes":gif.stat().st_size,
