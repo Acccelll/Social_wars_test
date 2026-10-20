@@ -71,3 +71,14 @@ A exportação dirigida da timeline raiz `DefineSprite 1654` recuperou **25 quad
 Na arena `/arena`, o botão **Reaper: direção 1/5** permite alternar manualmente as poses reais, mantendo combate, HP, disparos e fallback vetorial do motor próprio. O mapeamento 1–5 para ângulos de mundo ainda não foi recuperado; por isso a IA **não** força uma direção inventada.
 
 [Relatório técnico 5D.8W](../../docs/LOTE_5D_8W.md) · [workflow original e browser](https://github.com/Acccelll/Social_wars_test/actions/workflows/reaper-root-frames-5d8w.yml). Os PNGs são gerados como artefato opcional, fora do Git; pacote de continuidade já inclui os 25 quadros e arquivos executáveis.
+
+
+## Lote 5D.8X — Orientação automática e posição de tiro
+
+O [lote 5D.8X](../../docs/LOTE_5D_8X.md) recuperou a regra autêntica do ActionScript: **oito direções lógicas**, cinco poses por estado e espelhamento horizontal para as direções 6–8. O Reaper Drone passa a encarar automaticamente o alvo na arena, usando a direção lógica `LEFT=7` e **pose 3 espelhada** quando o Bushwacker está à esquerda. Os botões **Reaper: manual** e **Reaper: direção automática** permitem testar o resultado. A arena mantém seu próprio motor TypeScript sem Flash.
+
+Além disso, o scanner `tools/projectile_markers_5d8x.py` encontrou **26 eventos `projectilePoint*`** no SWF do Bushwacker, inclusive cinco marcadores das poses de ataque, e **nenhum marcador nomeado** no SWF do Reaper Drone. O fallback original é `(x, y-bmd.height*0.6)`. O runtime usa uma **aproximação** desse fallback para o Reaper com a altura gráfica **161 px da demo**, não comprovadamente a altura nativa do Flash. A posição real dos cinco marcadores do Bush depende de matrizes dos sprites pais e ainda não foi resolvida.
+
+A versão 5D.8X foi aprovada no [CI com **35/35 testes**](https://github.com/Acccelll/Social_wars_test/actions/runs/39462605558), dois jobs de verificação e Chromium real com 13 imagens e zero erros.
+
+**Próximo 5D.8Y:** calcular os pivôs/markers do Bushwacker a partir da hierarquia de matrizes dos sprites SWF e validar o alinhamento de FX antes de automatizar caminho isométrico.
