@@ -249,3 +249,8 @@ Para executar o pacote final com Node.js 22+: `cd rebuild/combat && node serve.m
 O [lote 5D.8W](docs/LOTE_5D_8W.md) corrigiu a exportação do Reaper Drone: recuperamos os **25 quadros raiz** do SWF 1376, com cinco imagens distintas para cada faixa `QUIETO/ANDAR/ATAQUE`. As mesmas cinco poses se repetem entre esses estados, indicando variações gráficas/direcionais, **não uma animação temporal de caminhada/disparo** já comprovada. A interface da arena em **/arena** permite escolher a pose pelo botão **Reaper: direção 1/5**. A versão vetorial alternativa permanece disponível, sem alterar a mecânica de dano TypeScript.
 
 [Workflow 5D.8W aprovado](https://github.com/Acccelll/Social_wars_test/actions/runs/39446986958) · arquivos e limitações no relatório. O pacote executável inclui o atlas PNG opcional; os arquivos SWF de origem não são comitados ao Git.
+
+
+## Inspetor de marcadores originais do Bushwacker (5D.8Y)
+
+O [lote 5D.8Y](docs/LOTE_5D_8Y.md) recuperou e compôs as matrizes dos **cinco `projectilePoint`** originais do Bushwacker. O novo **inspetor gráfico em `/muzzle`** permite comparar os offsets medidos para as oito direções, inclusive espelhamento, sem confundi-los com posições absolutas do Canvas. Para executar a partir do pacote: `cd rebuild/combat && node serve.mjs` e abra **http://127.0.0.1:5179/muzzle**. [40 testes aprovados](https://github.com/Acccelll/Social_wars_test/actions/runs/39472749217). Os disparos na arena principal permanecem provisórios enquanto o registro gráfico não for calibrado.
