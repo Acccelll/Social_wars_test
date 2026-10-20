@@ -455,3 +455,15 @@ foi reconstruída por este procedimento.
 - **Limites:** os GIFs FFDec representam amostras de timelines aninhadas; controle de direções, animações completas do Reaper, temporização original de projéteis, pathfinding e combate geral ainda não foram reproduzidos.
 - [Relatório](LOTE_5D_8V.md) · [evidência estruturada](../data/rebuild/original_visual_integration_5d8v.json) · [código de integração](../rebuild/combat/demo/originalVisuals.js).
 - **Próximo 5D.8W:** decompilar timelines internas do Reaper e mapear pontos de ancoragem/direções para substituir amostras estáticas por animações nativas reproduzíveis.
+
+
+## Lote 5D.8W — Cinco poses reais por direção do Reaper Drone
+
+- SWF original **1376_reaperDrone.swf** (SHA256 `c26e398f5f2209eb9ba8fc3ef84ed243b1032240c3e2f543a879330e77b64b83`), lido e exportado sem modificações. FFDec `-selectid 1654 -select 1654:1-25 -sublength 1` recupera **25 quadros da timeline raiz**, corrigindo a exportação 5D.8V que repetia subframes de uma única pose.
+- `QUIETO` 1–5, `ANDAR` 6–10, `ATAQUE` 11–15 possuem **cinco poses visualmente distintas** por estado. Os cinco quadros de `QUIETO`, `ANDAR` e `ATAQUE` são **idênticos índice a índice**: isso representa variações gráficas/possíveis direções, **não** 15 instantes de animação de movimento/tiro.
+- `MUERTE` 16–20 possui uma pose distinta repetida; `PICAR` 21–25 remove os objetos visíveis e fica transparente. As 5.090 operações de display list na timeline foram analisadas (2.576 places/2.514 removes).
+- Arena independente: **Reaper: direção 1/5** permite trocar poses reais; os demais sprites e FX do 5D.8V continuam funcionando, assim como fallback vetorial e combate TypeScript.
+- [CI 5D.8W aprovado](https://github.com/Acccelll/Social_wars_test/actions/runs/39446472152): **25/25** testes, **13 recursos gráficos** no Chromium, orientação altera pixels, dano/HP, alternância vetorial e vitória confirmados, sem erros JS.
+- **Ainda não estabelecido:** correspondência direcional 1–5 com ângulos, pivôs dos pés/armas, ciclo temporal de ataque, som e disparo. O transform raiz (1393,3502) twips é registro Flash, não necessariamente a âncora de chão.
+- [Relatório](LOTE_5D_8W.md) · [evidência estruturada](../data/rebuild/reaper_root_frames_5d8w.json).
+- **Próximo lote 5D.8X:** identificar no ActionScript original o mapeamento de orientação e `projectilePoint`; ligar direções de forma comprovada ao Canvas e aos efeitos antes de aplicar caminho/IA.
