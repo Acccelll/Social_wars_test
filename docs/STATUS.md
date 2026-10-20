@@ -467,3 +467,15 @@ foi reconstruída por este procedimento.
 - **Ainda não estabelecido:** correspondência direcional 1–5 com ângulos, pivôs dos pés/armas, ciclo temporal de ataque, som e disparo. O transform raiz (1393,3502) twips é registro Flash, não necessariamente a âncora de chão.
 - [Relatório](LOTE_5D_8W.md) · [evidência estruturada](../data/rebuild/reaper_root_frames_5d8w.json).
 - **Próximo lote 5D.8X:** identificar no ActionScript original o mapeamento de orientação e `projectilePoint`; ligar direções de forma comprovada ao Canvas e aos efeitos antes de aplicar caminho/IA.
+
+
+## Lote 5D.8X — Orientação 8 direções e marcadores de projétil originais
+
+- `core.Constants` define 8 orientações (cima 1, cima-direita 2, direita 3, baixo-direita 4, baixo 5, cima-esquerda 6, esquerda 7, baixo-esquerda 8). `IsoUnit.updateAnimation` dobra direções 6–8 para poses 2–4 e aplica **`scaleX=-1`**: cinco sprites representam oito direções lógicas.
+- `IsoUnit.updateUnitDirectionTilePixel` decide por sinal de `dx/dy` em coordenadas de **pixels de tela** e preserva direção em dead-zone de 1/3 da largura/altura do tile. `iAnimation*5 + frameDirection` determina o frame raiz.
+- **Scanner direto do SWF original:** Bushwacker 1358 contém **26 PlaceObject events nomeados `projectilePoint*`**, incluindo cinco marcadores direcionais nos sprites 643, 675, 716, 752, 786; Reaper Drone 1376 contém **zero instâncias nomeadas**. As matrizes dos marcadores Bush são **coordenadas locais**, não a posição mundial do muzzle.
+- `IsoFightingElement.getProjectilePoint` procura um child-marker; se ausente usa **`(x,y-bmd.height*0.6)`**, ou `(x,y)` sem bitmap. A arena aplica esse fallback **somente como aproximação do Reaper com altura gráfica própria de 161px**. A origem final do Bush segue provisória até compor transformações dos pais.
+- `rebuild/combat/src/originalDirection.ts` adicionou funções tipadas `originalFacingFrame/originalSpriteFrame/originalDirectionToward/originalProjectileStart/originalProjectileHitPoint`. A cena atualiza `facing` ao atacar, o sprite do Reaper seleciona pose original/espelho automaticamente e preserva override manual.
+- [CI 39462605558](https://github.com/Acccelll/Social_wars_test/actions/runs/39462605558) **2 jobs aprovados**: **35/35 testes**, 13 atlas no Chromium, orientação Reaper 7/esquerda (pose 3 espelhada), Bushwacker 3/direita, alternância manual/automática, dano/HP, vitória e zero erros JavaScript.
+- [Relatório do lote](LOTE_5D_8X.md) · [dados originais + cautelas](../data/rebuild/original_facing_projectile_5d8x.json) · [scanner de PlaceObject](../tools/projectile_markers_5d8x.py).
+- **Próximo lote 5D.8Y:** calcular a cadeia completa de matrizes dos `projectilePoint` do Bushwacker até o espaço do mapa e validar pivôs visuais/temporização em relação ao cliente Flash.
