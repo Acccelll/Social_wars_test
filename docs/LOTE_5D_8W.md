@@ -18,6 +18,8 @@ A timeline raiz `DefineSprite 1654` contém realmente **25 frames**, divididos a
 
 A classificação das cinco poses como **possíveis orientações** é consistente com a estrutura e com outras animações direcionais, mas ainda **não há correspondência confirmada** entre índice 1–5, ângulo exato e lógica AVM2 de direção. **Não** tratá-las como cinco instantes de tempo.
 
+**Resultado adicional confirmado por comparação de pixels:** para cada índice de 1 a 5, a imagem exportada em `QUIETO` é idêntica à imagem correspondente em `ANDAR` e `ATAQUE`. Logo, esses três conjuntos são as **mesmas cinco poses estáticas**, não uma animação de caminhar/disparar distinta recuperada. A mudança temporal do ataque precisa ser investigada na lógica original de efeitos e no controlador, em vez de ser inventada a partir dos rótulos.
+
 O parser do SWF encontrou **5.090 eventos de mudança de display list** na timeline raiz: 2.576 `place` e 2.514 `remove`, sem erros de interpretação. A distribuição por estado reflete trocas gráficas expressivas em `QUIETO`, `ANDAR` e `ATAQUE`, enquanto os quadros posteriores em `MUERTE` e `PICAR` não contêm novas mudanças visuais.
 
 ### Pivô e pontos de disparo: ainda não resolvidos
