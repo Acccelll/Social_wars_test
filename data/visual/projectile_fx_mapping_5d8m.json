@@ -1,0 +1,111 @@
+{
+  "lot": "5D.8M",
+  "status": "original_source_projectile_impact_mapping_and_fx_assets_verified",
+  "source": "Original Social Wars 0.02a main SWF and assets/fx, FFDec 26.3.0",
+  "original_main_sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+  "original_swf_modified": false,
+  "as3_workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39360234686",
+  "fx_workflow": "https://github.com/Acccelll/Social_wars_test/actions/runs/39360481633",
+  "fx_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39360481633/artifacts/12236729193",
+  "source_classes_decompiled": 23,
+  "source_method_candidates": 77,
+  "original_fx_naming_rule": "ProjectileManager.loadAsset uses Base.Main.apfx + 'fx/' + effect_name + '.swf'",
+  "normal_attacks": [
+    {
+      "unit": "Bushwacker",
+      "unit_id": 1358,
+      "owner_constant": "ID_UNIT_BUSHWACKER",
+      "owner_constant_numeric": 1358,
+      "unit_delegate": "core.isoengine.delegates.units.BushwackerDelegate",
+      "normal_attack": "ProjectileManager.api.addMachinegun",
+      "projectile": "p.bulletAirBig",
+      "impact": "b.bazookaSmall",
+      "projectile_config": "MACHINEGUN_BIG.clone(projectileID=P_BULLET_AIR_BIG, speed=120, projectileScale=4).blast(BLAST_BAZOOKA_SMALL)",
+      "source": "DelegatesManager.registerDelegate(BushwackerDelegate ... Constants.ID_UNIT_BUSHWACKER)",
+      "mapping_confidence": "exact static AVM2 source"
+    },
+    {
+      "unit": "Reaper Drone",
+      "unit_id": 1376,
+      "owner_constant": "ID_UNIT_REAPER_DRONE",
+      "owner_constant_numeric": 1376,
+      "unit_delegate": "core.isoengine.delegates.units.ProjectileDelegate",
+      "normal_attack": "ProjectileDelegate.onDelayedAttack -> IsoFightingElement.shootProjectile",
+      "projectile": "p.laserMassiveDrone",
+      "impact": "b.laserBlue",
+      "projectile_config": "BeamDefinition(P_LASER_MASSIVE_DRONE,7,0,20,0.5,false,Beam).blast(BLAST_LASER_BLUE)",
+      "source": "DelegatesManager.registerDelegate(ProjectileDelegate ... Constants.ID_UNIT_REAPER_DRONE)",
+      "mapping_confidence": "exact static AVM2 source",
+      "correction": "ReaperDelegate maps to ID_UNIT_REAPER=1375, NOT Reaper Drone=1376"
+    }
+  ],
+  "fx_assets": [
+    {
+      "filename": "p.bulletAirBig.swf",
+      "file_local_symbol_class": "p.bulletAirBig",
+      "file_local_character_id": 4,
+      "fx_type": "projectile",
+      "bytes": 1860,
+      "sha256": "18392bfadf17f4497331b577070edad2a3a68f42893141f6942526338ba8d7c9",
+      "fps": 24,
+      "define_sprites": 2,
+      "graphic_files_exported": 4,
+      "render_status": "EXPORTED"
+    },
+    {
+      "filename": "b.bazookaSmall.swf",
+      "file_local_symbol_class": "b.bazookaSmall",
+      "file_local_character_id": 16,
+      "fx_type": "impact",
+      "bytes": 12931,
+      "sha256": "2da792e48d8f524a569e79b291efc14cb61690ebcc73ddcd9c36bedbe977c14a",
+      "fps": 24,
+      "define_sprites": 2,
+      "graphic_files_exported": 16,
+      "render_status": "EXPORTED"
+    },
+    {
+      "filename": "p.laserMassiveDrone.swf",
+      "file_local_symbol_class": "p.laserMassiveDrone",
+      "file_local_character_id": 5,
+      "fx_type": "projectile",
+      "bytes": 1121,
+      "sha256": "4f55bfa4037a28fe2e6191f25e494ea303039bfd3ffa8bc41e0dcf7c118c2955",
+      "fps": 24,
+      "define_sprites": 3,
+      "graphic_files_exported": 5,
+      "render_status": "EXPORTED",
+      "render_limitation": "FFDec public sprite 5 preview appears empty; internal DefineSprite 3 previews the visible beam"
+    },
+    {
+      "filename": "b.laserBlue.swf",
+      "file_local_symbol_class": "b.laserBlue",
+      "file_local_character_id": 7,
+      "fx_type": "impact",
+      "bytes": 1590,
+      "sha256": "5dc76ccf652c031b533de57c66d64c40d72f74a0b5da90c972a183175af35649",
+      "fps": 24,
+      "define_sprites": 2,
+      "graphic_files_exported": 7,
+      "render_status": "EXPORTED"
+    }
+  ],
+  "static_call_sequence": [
+    "DelegatesManager registers unit-specific ProjectileDefinition",
+    "ProjectileDelegate.onDelayedAttack or BushwackerDelegate.onAttack",
+    "ProjectileManager.addProjectile (and addMachinegun for Bushwacker)",
+    "ProjectileManager.loadAsset('fx/'+id+'.swf')",
+    "ProjectileManager.addBlast on landing",
+    "IsoFightingElement.doProjectileDamage may call recibirAtaque"
+  ],
+  "external_fx_filename_candidates_from_earlier_pass": 120,
+  "distinct_from_previous": "Bushwacker and Reaper Drone body SWFs are 30 FPS, while these four standalone effect SWFs are 24 FPS",
+  "native_combat_baseline": "https://github.com/Acccelll/Social_wars_test/actions/runs/39353491847",
+  "not_verified": [
+    "Network observation of exact effect FX loading during the 5D.8J run",
+    "Per-projectile runtime frame timing",
+    "Impact visible on specific Ruffle frame mapped to a SWF DefineSprite frame",
+    "A fully independently recompiled browser client"
+  ],
+  "next_lot": "5D.8N: runtime audit of dynamic FX GETs and synchronization of projectile/impact screenshots with the original client's combat; distinguish preloads from actual hits"
+}
