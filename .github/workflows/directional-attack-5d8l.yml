@@ -1,0 +1,92 @@
+name: Original Directional Attack 5D.8L
+
+on:
+  push:
+    paths:
+      - ".github/workflows/directional-attack-5d8l.yml"
+      - "tools/directional_attack_5d8l.py"
+      - "tools/directional_attack_5d8l_test.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: directional-attack-5d8l
+  cancel-in-progress: false
+
+jobs:
+  export-directions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Validate source parsing and unit tests
+        run: |
+          python -m pip install Pillow
+          python -m py_compile tools/directional_attack_5d8l.py tools/directional_attack_5d8l_test.py
+          python tools/directional_attack_5d8l_test.py
+          python tools/visual_timelines_test.py
+      - name: Download untouched official 0.02a release
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = 492630085
+      - name: Download FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+      - name: Export 5 fully bounded 60-frame attack directions
+        run: |
+          python tools/directional_attack_5d8l.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/directional-attack-5d8l
+          python - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          p=Path("dist/directional-attack-5d8l")
+          d=json.loads((p/"report.json").read_text())
+          assert d["swf_unchanged"] and len(d["directions"])==5
+          assert d["sha256"]=="e9db23f98dcaa5cf81cbcdac85154fcb1da92a205b7d9047a5d420fb9d068c5e"
+          expected=[("E",643),("TE",675),("P",716),("T",752),("F",786)]
+          for (label,sid),r in zip(expected,d["directions"]):
+            assert r["direction_tag"]==label and r["attack_sprite_id"]==sid
+            assert r["render"]["status"]=="EXPORTED",r
+            assert r["render"]["frames_in_gif"]>=12,r
+            assert (p/r["render"]["gif_path"]).stat().st_size>5000
+            assert r["projectile_id_confirmed"] is None
+            print("DIRECTIONAL_ATTACK_5D8L",label,sid,r["render"]["frames_in_gif"],r["render"]["bytes"])
+          assert d["all_five_gifs_exported"]
+          assert (p/d["preview"]).stat().st_size>10000
+          with gzip.open(p/"attack_timelines.json.gz","rt") as f:
+            t=json.load(f)
+          assert t["analysis"]["root_attack_state_label_frame"]==11
+          print("DIRECTIONAL_5D8L_VERIFIED",json.dumps({
+            "directions":len(d["directions"]),"atlas":d["preview"],
+            "projectile_identity":d["projectile_define_sprite_confirmed"]
+          }))
+          PY
+      - name: Upload only rendered candidate animations and structural metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-directional-attack-5d8l
+          path: dist/directional-attack-5d8l/
+          retention-days: 14
+          if-no-files-found: warn
