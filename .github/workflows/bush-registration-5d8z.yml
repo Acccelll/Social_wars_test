@@ -1,0 +1,121 @@
+name: Bushwacker Original Root Registration 5D.8Z
+on:
+  push:
+    paths:
+      - '.github/workflows/bush-registration-5d8z.yml'
+      - 'tools/bush_attack_registration_5d8z.py'
+      - 'rebuild/combat/src/sourceRegistration.ts'
+      - 'rebuild/combat/src/index.ts'
+      - 'rebuild/combat/test/sourceRegistration.*'
+      - 'rebuild/combat/demo/calibration.*'
+      - 'rebuild/combat/serve.mjs'
+      - 'rebuild/combat/demo/arena.html'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  bush-root:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 26
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile exporter metadata parser
+        run: python3 -m py_compile tools/bush_attack_registration_5d8z.py
+      - name: Obtain unchanged source SWF archive and FFDec
+        run: |
+          mkdir -p runtime/ffdec
+          curl -fL --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = 492630085
+          curl -fL --retry 3 \
+            'https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip' \
+            -o runtime/ffdec.zip
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          echo "FFDEC_JAR=$(find runtime/ffdec -name ffdec.jar -print -quit)" >> "$GITHUB_ENV"
+      - name: Export and measure original root attack frames 11..15
+        run: |
+          python3 -m pip install 'Pillow==11.3.0'
+          python3 tools/bush_attack_registration_5d8z.py \
+            --archive runtime/original.zip --ffdec "$FFDEC_JAR" \
+            --out runtime/source-registration
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('runtime/source-registration/registration_5d8z.json').read_text())
+          assert d['registration']['known'] is False
+          assert d['distinctImages']==5
+          assert [f['rootFrame'] for f in d['frames']]==[11,12,13,14,15]
+          assert all(f['visibleWidth']>0 and f['visibleHeight']>0 for f in d['frames'])
+          print('BUSH_SOURCE_PNG_ALPHA_BOUNDS_VERIFIED_5D8Z', [f['alphaBounds'] for f in d['frames']])
+          PY
+      - name: Restore known-good Flash-free arena with 13 original visual images
+        uses: actions/download-artifact@v4
+        with:
+          name: socialwars-bush-muzzle-inspector-5d8y
+          run-id: 39472749217
+          github-token: ${{ github.token }}
+          path: runtime/previous
+      - name: Arrange source provenance beside optional 5D.8Y atlas images
+        run: |
+          mkdir -p rebuild/combat/original-visual/registration
+          cp -a runtime/previous/rebuild/combat/original-visual/. rebuild/combat/original-visual/
+          cp runtime/source-registration/registration_5d8z.json \
+             rebuild/combat/original-visual/registration/
+          cp runtime/source-registration/bush_attack_root_11_15.png \
+             rebuild/combat/original-visual/registration/
+          test "$(find rebuild/combat/original-visual/units rebuild/combat/original-visual/fx -name '*.png' | wc -l)" -eq 13
+      - name: Install TypeScript, compile source and run all 45 tests
+        working-directory: rebuild/combat
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install chromium
+          npm test
+          node --check demo/calibration.js
+          node --check serve.mjs
+      - name: Browser validate original attack frames, manual calibration and arena regression
+        working-directory: rebuild/combat
+        shell: bash
+        run: |
+          set -euo pipefail
+          node serve.mjs > /tmp/sw5d8z.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:5179/calibration -o /tmp/sw5d8z.html; then break; fi
+            sleep 1
+          done
+          node test/sourceRegistration.browser.mjs
+          node test/bushMuzzle.browser.mjs
+      - name: Publish complete Flash-free root-registration package
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialwars-bush-root-calibration-5d8z
+          path: |
+            rebuild/combat/demo/
+            rebuild/combat/src/
+            rebuild/combat/dist/
+            rebuild/combat/original-visual/
+            rebuild/combat/test/*.test.mjs
+            rebuild/combat/test/*browser.mjs
+            rebuild/combat/test/screenshots/5d8z-*.png
+            rebuild/combat/serve.mjs
+            rebuild/combat/package.json
+            rebuild/combat/tsconfig.json
+            rebuild/combat/README.md
+            runtime/source-registration/ffdec-export.log
+          retention-days: 30
+          if-no-files-found: warn
