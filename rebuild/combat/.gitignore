@@ -1,0 +1,4 @@
+# Independent rebuild generated outputs
+node_modules/
+dist/
+*.tsbuildinfo
