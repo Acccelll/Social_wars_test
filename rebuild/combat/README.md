@@ -87,3 +87,10 @@ A versão 5D.8X foi aprovada no [CI com **35/35 testes**](https://github.com/Acc
 ## Lote 5D.8Y — Inspetor original dos cinco pontos de disparo do Bushwacker
 
 Extraímos os **cinco caminhos de matriz únicos** `DefineSprite1092 → (643/675/716/752/786) → projectilePoint`. `src/bushMuzzle.ts` fornece offsets **locais da timeline original**, sem assumir posição de mundo ou zoom. O novo **http://127.0.0.1:5179/muzzle** mostra os cinco pontos, os oito sentidos e o espelhamento; a arena `/arena` contém um link para ele. As coordenadas só podem ser aplicadas a um tiro com a origem e escala do root sprite medidas; essa calibração é a próxima etapa. [Relatório 5D.8Y](../../docs/LOTE_5D_8Y.md) · [CI 40/40 testes](https://github.com/Acccelll/Social_wars_test/actions/runs/39472749217).
+
+
+## Lote 5D.8Z — Quadros raiz do Bushwacker e calibração visual
+
+O [relatório 5D.8Z](../../docs/LOTE_5D_8Z.md) documenta cinco quadros de ataque originais FFDec (11–15) preservados em canvas de **1255 × 1140 px** sem crop por pose, com limites de alfa reais no manifesto `original-visual/registration/registration_5d8z.json`. A nova tela **http://127.0.0.1:5179/calibration** exibe os quadros e oferece ajuste explícito do registro e escala para avaliar o ponto `projectilePoint` calculado.
+
+O núcleo `src/sourceRegistration.ts` realiza a projeção local→PNG→Canvas apenas com origem/escala fornecidas. O ponto de registro do sprite não está comprovado; nenhum resultado experimental é aplicado automaticamente à arena. [CI 5D.8Z](https://github.com/Acccelll/Social_wars_test/actions/runs/39475880764) passou **45/45 testes**, Chromium sem erros e regressão do combate preservada.
