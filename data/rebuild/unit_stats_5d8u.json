@@ -1,0 +1,79 @@
+{
+  "lot": "5D.8U",
+  "source_project": "AcidCaos/socialwarriors",
+  "source_type": "active community server config patch",
+  "historical_status": "not verified as 2012 Social Point production backend",
+  "base_config_original_ids": [],
+  "patch_active": true,
+  "source_priority": "config/patch/unit_patch.json appended via active config/patch/patches.txt",
+  "units": {
+    "1358": {
+      "id": 1358,
+      "name": "Bushwacker",
+      "image": "1358_bushwacker",
+      "group_type": "ROBOT",
+      "life": 6500,
+      "attack": 138,
+      "defense": 1,
+      "attack_range": 10,
+      "attack_interval": 35,
+      "velocity": 7,
+      "best_against": "ft_ground",
+      "best_against_mult": 1,
+      "properties": {
+        "ft_armored": "1",
+        "bulldozable": "1",
+        "mechanic": "1",
+        "seeStealthUnits": "1",
+        "resurrectable": "1"
+      }
+    },
+    "1376": {
+      "id": 1376,
+      "name": "Reaper Drone",
+      "image": "1376_reaperDrone",
+      "group_type": "AIR_VEHICLE",
+      "life": 700,
+      "attack": 36,
+      "defense": 1,
+      "attack_range": 11,
+      "attack_interval": 30,
+      "velocity": 8,
+      "best_against": "ft_ground",
+      "best_against_mult": 1,
+      "properties": {
+        "ft_flying": "1",
+        "bulldozable": "1",
+        "mechanic": "1",
+        "seeStealthUnits": "1",
+        "resurrectable": "1"
+      }
+    }
+  },
+  "source_sha256": {
+    "config/main.json": "e6dc61619e81c52404cafb5b1db6fa9616cd55440721e77d73c57e5319196245",
+    "config/patch/unit_patch.json": "229fc18d2dcd67aba95fd24aa7eaf1180704e5bf02718b252317972843940230",
+    "config/patch/patches.txt": "a168193672d8e599dc7bd1f66b78baf9454a1f610b65e6a13890bc7f536bb720",
+    "tools/sw_unit_patch.csv": "4603e67e6ce5ecc440c8e5eb602d247fa60b86c47e7e66efe39abea3edd55e7a"
+  },
+  "runtime": {
+    "implementation": "rebuild/combat/src/{unitCatalog,scene,model,healthBar}.ts",
+    "demo_route": "http://127.0.0.1:5179/arena",
+    "original_swf_required": false,
+    "units_rendered_as": "original-style-inspired independent Canvas vector placeholders",
+    "projectile_fx": "independent Canvas approximation not original SWF sprite FX",
+    "distance_start_tiles": 9,
+    "attack_interval_interpretation": "demo-only number of frames, not confirmed original timer units",
+    "simulation_step_rate_fps": 30,
+    "original_stats_used": true,
+    "own_rng": "xorshift32 (not the original Flash random)",
+    "combat_2d_ai": "short-range illustrative automatic fire, not original acquisition/pathfinder",
+    "test_result": "25 tests passed, 0 failed; browser smoke manual shot to hit and automatic victory, 0 JS errors"
+  },
+  "ci_runs": {
+    "reference": "https://github.com/Acccelll/Social_wars_test/actions/runs/39428441819",
+    "source_extract_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39428441819/artifacts/12267150974",
+    "scene_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39428441819/artifacts/12265914736"
+  },
+  "next_lot": "5D.8V: replace independent vector placeholders with vetted original animation/FX sprite frame integrations and directional attack state; use source-derived delegate timings, controls, and collision only with explicit evidence."
+}
