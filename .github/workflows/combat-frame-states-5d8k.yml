@@ -1,0 +1,84 @@
+name: Original Combat Frame States 5D.8K
+
+on:
+  push:
+    paths:
+      - ".github/workflows/combat-frame-states-5d8k.yml"
+      - "tools/combat_frame_states_5d8k.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: combat-frame-states-5d8k
+  cancel-in-progress: false
+
+jobs:
+  export-labeled-states:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Validate read-only SWF parser
+        run: |
+          python3 -m py_compile tools/combat_frame_states_5d8k.py
+          python3 tools/visual_timelines_test.py
+      - name: Download pinned original 0.02a archive
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = '492630085'
+      - name: Install FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            'https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip' \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+      - name: Export frames from named animation states
+        run: |
+          python3 tools/combat_frame_states_5d8k.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/combat-frame-states-5d8k
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('dist/combat-frame-states-5d8k/states_summary.json').read_text())
+          assert d['original_swf_modified'] is False
+          assert set(d['states'])=={'bushwacker','reaper_drone'}
+          expected={'QUIETO':1,'ANDAR':6,'ATAQUE':11,'MUERTE':16}
+          for name,x in d['states'].items():
+             assert x['fps']==30.0
+             assert x['root_sprite_character_id']==(1092 if name=='bushwacker' else 1654)
+             labels={e['state']:e for e in x['frame_labels']}
+             for k,frame in expected.items():
+                 e=labels[k]
+                 assert e['start_frame']==frame
+                 assert e['render_status']=='EXPORTED', (name,k,e)
+                 assert e['output_gifs'], (name,k)
+             print('ORIGINAL_STATES_5D8K',json.dumps({
+                 'unit':name,'sprite':x['root_sprite_character_id'],
+                 'states':[(k,labels[k]['start_frame'],labels[k]['end_frame'])
+                           for k in expected],
+                 'animated_gifs':sum(len(e.get('output_gifs',[])) for e in x['frame_labels'])
+             }))
+          PY
+      - name: Upload original labels and isolated rendered states
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-combat-states-5d8k
+          path: dist/combat-frame-states-5d8k/
+          retention-days: 14
+          if-no-files-found: warn
