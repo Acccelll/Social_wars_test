@@ -1,0 +1,76 @@
+{
+  "lot": "5D.8J",
+  "status": "verified_native_client_combat_and_persisted_kill",
+  "date": "2026-10-19",
+  "original_swf": "assets/flash/Basesec_1.5.4.swf",
+  "swf_sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+  "original_swf_modified": false,
+  "original_constants": {
+    "PLAYER_SELF": 1,
+    "PLAYER_ENEMY": 2,
+    "PLAYER_NEUTRAL": 3
+  },
+  "earlier_issue": "5D.8I fixture assigned target PlayerID=3 (neutral), therefore no hostile attack trigger",
+  "client": "Chromium + Ruffle original SWF",
+  "server": "AcidCaos original Flask 127.0.0.1:5055",
+  "fixture": {
+    "source": "pristine original 40 item village",
+    "player_unit": {
+      "name": "Bushwacker",
+      "item_id": 1358,
+      "map_index": 41,
+      "player_id": 1,
+      "tile": [
+        55,
+        45
+      ]
+    },
+    "hostile_unit": {
+      "name": "Reaper Drone",
+      "item_id": 1376,
+      "map_index": 42,
+      "player_id": 2,
+      "tile": [
+        55,
+        40
+      ]
+    }
+  },
+  "workflow_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39353157986",
+  "artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39353157986/artifacts/12233034780",
+  "as3_workflow_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39352875836",
+  "as3_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39352875836/artifacts/12234560766",
+  "native_client_click_pairs": 2,
+  "observed_command_php_requests": 5,
+  "native_command": {
+    "action": "kill",
+    "object_reference": 42,
+    "reason": "u",
+    "origin": "original_browser_client"
+  },
+  "xp_commands_seen": true,
+  "target_removed_from_original_server_save": true,
+  "visual_review": {
+    "bushwacker_selected": true,
+    "projectile_or_impact_visible": true,
+    "enemy_disappeared": true,
+    "experience_effect_visible": true,
+    "animation_define_sprite_id": null
+  },
+  "runtime_browser_errors": 0,
+  "synthetic_combat_posts": false,
+  "static_call_path": [
+    "IsoInteractiveElement.clickItem",
+    "Base.startMovements",
+    "IsoUnit.setMove",
+    "IsoUnit.updateAttack",
+    "IsoUnit.attackNormal",
+    "IsoFightingElement.recibirAtaque"
+  ],
+  "unknown": [
+    "DefineSprite IDs for exact battle frames",
+    "Full recoded AS3 client execution",
+    "Per-hit HP synchronization"
+  ],
+  "next_lot": "5D.8K correlate original animation/source SWFs and attack frames"
+}
