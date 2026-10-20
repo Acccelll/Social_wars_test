@@ -1,0 +1,104 @@
+{
+  "lot": "5D.8V",
+  "date": "2026-10-20",
+  "client_runtime": "independent TypeScript Canvas, without Flash/Ruffle",
+  "images_source": "Original 0.02a SWF, FFDec 26.3.0 read-only exports from lot 5D.8K & 5D.8M",
+  "source_state_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39355945927/artifacts/12235636024",
+  "source_fx_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39360481633/artifacts/12236729193",
+  "first_verified_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39442496371",
+  "generated_visuals_not_versioned": true,
+  "original_swf_not_modified": true,
+  "sprite_manifest_in_pack": "rebuild/combat/original-visual/manifest.json",
+  "states": {
+    "bushwacker": {
+      "id": 1358,
+      "rootSpriteId": 1092,
+      "sourceSha256": "e9db23f98dcaa5cf81cbcdac85154fcb1da92a205b7d9047a5d420fb9d068c5e",
+      "rootLabels": {
+        "quieto": 1,
+        "andar": 6,
+        "ataque": 11,
+        "muerte": 16
+      },
+      "framesPerExport": 15,
+      "distinctRenderedFrames": {
+        "quieto": 12,
+        "andar": 15,
+        "ataque": 15,
+        "muerte": 14
+      }
+    },
+    "reaper_drone": {
+      "id": 1376,
+      "rootSpriteId": 1654,
+      "sourceSha256": "c26e398f5f2209eb9ba8fc3ef84ed243b1032240c3e2f543a879330e77b64b83",
+      "rootLabels": {
+        "quieto": 1,
+        "andar": 6,
+        "ataque": 11,
+        "muerte": 16
+      },
+      "framesPerExport": 15,
+      "distinctRenderedFrames": {
+        "quieto": 1,
+        "andar": 1,
+        "ataque": 1,
+        "muerte": 1
+      },
+      "warning": "The exported GIFs show only one rendered pose per root label; full nested timeline behavior is not reproduced."
+    }
+  },
+  "effects": [
+    {
+      "unit": 1358,
+      "originalProjectile": "p.bulletAirBig",
+      "originalImpact": "b.bazookaSmall",
+      "atlasKeys": [
+        "bullet",
+        "bazooka"
+      ],
+      "framesWithDistinctPixels": {
+        "bullet": 1,
+        "bazooka": 13
+      }
+    },
+    {
+      "unit": 1376,
+      "originalProjectile": "p.laserMassiveDrone",
+      "originalImpact": "b.laserBlue",
+      "atlasKeys": [
+        "laser",
+        "laserBlue"
+      ],
+      "framesWithDistinctPixels": {
+        "laser": 1,
+        "laserBlue": 6
+      },
+      "note": "Visible internal DefineSprite_3 for laser, public wrapper FFDec export transparent"
+    }
+  ],
+  "browser_features": [
+    "Mode toggle original sprites vs independent vectors",
+    "Original unit sprite state selected from QUIETO, ATAQUE, MUERTE",
+    "Both original normal-attack FX sets mapped to projectile and hit visuals",
+    "Health bars, damage, kill and win remain independent TypeScript model events",
+    "Fallback works if optional PNG pack is missing"
+  ],
+  "tests": {
+    "node": 25,
+    "pass": 25,
+    "fail": 0,
+    "browserImageAtlasCount": 12,
+    "manualImpact": true,
+    "vectorFallback": true,
+    "autoWin": true,
+    "pageErrors": 0
+  },
+  "caveats": [
+    "FFDec output nested-frame samples are not the complete runtime character animation state machine",
+    "Attack projectile path and timing are demo approximations",
+    "No original SWFs or frame atlases are committed; optional derived atlas only in packaged build",
+    "Server unit stats remain from community active patch, not proven historical live-server stats"
+  ],
+  "next_lot": "5D.8W: replace Reaper static export with child-timeline animation samples, identify directional poses/anchor/pivot, synchronize native attack/sound timing and assess original sprite hitboxes."
+}
