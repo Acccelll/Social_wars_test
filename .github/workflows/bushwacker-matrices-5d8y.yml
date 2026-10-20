@@ -1,0 +1,47 @@
+name: Bushwacker Projectile Marker Matrices 5D.8Y
+on:
+  push:
+    paths:
+      - '.github/workflows/bushwacker-matrices-5d8y.yml'
+      - 'tools/bushwacker_marker_matrices_5d8y.py'
+      - 'tools/visual_timelines.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-marker-frames:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate matrix composition source
+        run: python3 -m py_compile tools/bushwacker_marker_matrices_5d8y.py
+      - name: Download release 0.02a in isolated runner
+        run: |
+          mkdir -p runtime
+          curl --fail -L --retry 3 --connect-timeout 20             'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip'             -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = 492630085
+      - name: Compose nested parent matrices for all five Bushwacker attack sprites
+        run: |
+          python3 tools/bushwacker_marker_matrices_5d8y.py             --archive runtime/original.zip             --out dist/bushwacker-markers-matrices-5d8y.json
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('dist/bushwacker-markers-matrices-5d8y.json')
+          d=json.loads(p.read_text())
+          assert d['sourceSwfUnmodified']
+          assert len(d['attackStates'])==5
+          assert [c['parentId'] for c in d['markerParents']]==[643,675,716,752,786]
+          assert all(c['markers'] for c in d['markerParents'])
+          print('ROOT_MARKER_MATRIX_PROVENANCE_CHECK_5D8Y',json.dumps(d['timelineDiagnostics']))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-bushwacker-muzzle-matrix-chain-5d8y
+          path: dist/bushwacker-markers-matrices-5d8y.json
+          retention-days: 30
+          if-no-files-found: warn
