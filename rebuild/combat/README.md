@@ -62,3 +62,12 @@ O pacote completo entregue no [lote 5D.8V](../../docs/LOTE_5D_8V.md) já vem com
 **Limite:** os quadros FFDec são amostras de sub-timelines, não a execução AVM2 da animação completa. O Bushwacker apresenta variação de quadros de ataque, mas as quatro amostras do Reaper Drone contêm somente uma pose renderizada por estado; a velocidade de ataque da demo, offsets de projeção, movimento de projéteis e sincronização ainda não foram validados como originais. O sprite interno visível do `p.laserMassiveDrone` é selecionado em vez do wrapper público transparente.
 
 Validação: [workflow 5D.8V](https://github.com/Acccelll/Social_wars_test/actions/workflows/original-sprite-arena-5d8v.yml) executa o jogo próprio com 12 atlas, verifica dano, alternância de visual, efeitos, eliminação, 25 testes e screenshots de Chromium. Os artefatos expiram; após isso, os GIFs devem ser reexportados dos SWFs com os utilitários FFDec versionados em `tools/`.
+
+
+## Lote 5D.8W — Cinco poses reais do Reaper Drone
+
+A exportação dirigida da timeline raiz `DefineSprite 1654` recuperou **25 quadros raiz** do SWF original 1376, sem modificar os assets: 5 variações em cada estado `QUIETO`, `ANDAR` e `ATAQUE`, e apenas 1 visual diferente em `MUERTE` e `PICAR`. Os cinco quadros correspondentes de `QUIETO`, `ANDAR` e `ATAQUE` são **idênticos entre si** — são poses estáticas/direcionais, não três animações temporais distintas.
+
+Na arena `/arena`, o botão **Reaper: direção 1/5** permite alternar manualmente as poses reais, mantendo combate, HP, disparos e fallback vetorial do motor próprio. O mapeamento 1–5 para ângulos de mundo ainda não foi recuperado; por isso a IA **não** força uma direção inventada.
+
+[Relatório técnico 5D.8W](../../docs/LOTE_5D_8W.md) · [workflow original e browser](https://github.com/Acccelll/Social_wars_test/actions/workflows/reaper-root-frames-5d8w.yml). Os PNGs são gerados como artefato opcional, fora do Git; pacote de continuidade já inclui os 25 quadros e arquivos executáveis.
