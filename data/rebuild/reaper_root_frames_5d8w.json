@@ -1,0 +1,92 @@
+{
+  "lot": "5D.8W",
+  "date": "2026-10-20",
+  "status": "complete_green_CI",
+  "verified_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39446472152",
+  "source_asset": "assets/sprites/1376_reaperDrone.swf",
+  "sha256": "c26e398f5f2209eb9ba8fc3ef84ed243b1032240c3e2f543a879330e77b64b83",
+  "rootSpriteId": 1654,
+  "rootFrames": 25,
+  "fps": 30,
+  "rootTransformTwips": {
+    "tx_twips": 1393,
+    "ty_twips": 3502
+  },
+  "originalSWFModified": false,
+  "source_selection": "FFDec -selectid 1654 -select 1654:1-25 -sublength 1 -format sprite:png",
+  "state_ranges": {
+    "quieto": [
+      1,
+      5
+    ],
+    "andar": [
+      6,
+      10
+    ],
+    "ataque": [
+      11,
+      15
+    ],
+    "muerte": [
+      16,
+      20
+    ],
+    "picar": [
+      21,
+      25
+    ]
+  },
+  "state_distinct_visual_frames": {
+    "quieto": 5,
+    "andar": 5,
+    "ataque": 5,
+    "muerte": 1,
+    "picar": 1
+  },
+  "source_equivalence": {
+    "verified_visually": "QUIETO, ANDAR and ATAQUE have five directional-looking poses each, matching by index across the three states",
+    "runtime_direction_mapping_proved": false,
+    "actual_temporal_animation_proved": false,
+    "muzzle_pivot_proved": false,
+    "muerte_looping_frames_proved": false,
+    "picar_image": "transparent/empty after root placements removed"
+  },
+  "timeline_events": {
+    "place": 2576,
+    "remove": 2514,
+    "total": 5090
+  },
+  "independent_integration": {
+    "assets_loaded": 13,
+    "root_reaper_atlases": 5,
+    "ui_control": "Reaper: direção 1/5",
+    "selectable_poses": 5,
+    "vector_fallback": true,
+    "manual_hit": true,
+    "automatic_victory": true,
+    "node_tests": {
+      "passed": 25,
+      "failed": 0
+    },
+    "chromium_errors": 0,
+    "model_untouched": true
+  },
+  "source_code": [
+    "tools/reaper_root_frames_5d8w.py",
+    "tools/merge_reaper_root_frames_5d8w.py",
+    ".github/workflows/reaper-root-frames-5d8w.yml",
+    "rebuild/combat/demo/originalVisuals.js",
+    "rebuild/combat/demo/arena.js",
+    "rebuild/combat/demo/arena.html",
+    "rebuild/combat/test/reaperRootFrames.browser.mjs"
+  ],
+  "limitations": [
+    "Directional pose index is explicit and manual because AVM2 facing-direction controller has not been correlated.",
+    "Five root frames of QUIETO/ANDAR/ATAQUE are alternate facing poses, not five time-ordered walk/shot keyframes proven.",
+    "MUERTE only one distinct rendered frame, PICAR root shows one blank frame.",
+    "The root transform in twips is not confirmed foot registration/muzzle position in-game.",
+    "Projectile impact flight duration and animation synchronization remain approximations.",
+    "This is a TypeScript Canvas prototype, not a complete independent Social Wars client."
+  ],
+  "next_lot": "5D.8X — correlate actual original AS3 direction selection and projectilePoint with root frames and integrate grounded orientation behavior; do not simulate motion without evidence."
+}
