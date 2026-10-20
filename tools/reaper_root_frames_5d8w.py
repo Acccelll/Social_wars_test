@@ -27,7 +27,7 @@ def run(cmd,timeout=130):
 def transparent_crop(img):
  img=img.convert("RGBA")
  bounds=img.getbbox()
- if bounds is None:raise ValueError("all-transparent selected root frame")
+ if bounds is None:return (0,0,0,0)
  return bounds
 
 def atlas(states,out,root_metadata):
@@ -58,7 +58,7 @@ def atlas(states,out,root_metadata):
   canvas.save(file,optimize=True)
   descriptors[state]={"url":"/original-visual/units/reaper_drone/"+state+".png",
     "frames":len(images),"columns":5,"frameWidth":cellw,"frameHeight":cellh,
-    "distinctRenderedFrames":len(set(hashes)),"fps":30,
+    "distinctRenderedFrames":len(set(hashes)),"transparentRootFrames":sum(b==(0,0,0,0) for b in boxes),"fps":30,
     "sourceRootFrames":list(STATES[state]),"alphaBounds":[list(b) for b in boxes],
     "sourceSha256":SHA,"atlasSha256":hashlib.sha256(file.read_bytes()).hexdigest()}
  return descriptors
@@ -132,7 +132,7 @@ def main():
        } for state,seq in STATES.items()
      },
      "registrationCaveat":"FFDec output canvas bounds may differ across frames; atlas padding anchors top-left, not a proven gameplay pivot. Do not infer muzzle coordinate from bitmap bounds.",
-     "animationCaveat":"These are 25 actual root keyframes, but dynamic transforms/blend/AVM2 callbacks may still differ from full Flash runtime."}
+     "animationCaveat":"Root QUIETO/ANDAR/ATAQUE frames may be directional poses (not a temporal sequence). MUERTE/PICAR have unchanged frames; do not manufacture time motion. AVM2/controller still not recovered."}
   (out/"reaper_root25_manifest.json").write_text(json.dumps(analysis,indent=2,ensure_ascii=False)+"\n")
   print("REAPER_ROOT25_5D8W",json.dumps({"frames":25,"states":{k:v["distinctRenderedFrames"] for k,v in entries.items()},
      "rootTransformTwips":analysis["rootTransformTwips"]}),flush=True)
