@@ -1,0 +1,79 @@
+name: Original Battle State AS3 Inspection 5D.8J
+
+on:
+  push:
+    paths:
+      - ".github/workflows/battle-state-5d8j.yml"
+      - "tools/battle_state_as3_5d8j.py"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: battle-state-5d8j
+  cancel-in-progress: false
+
+jobs:
+  decompile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 23
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Validate Python battle inspector
+        run: python3 -m py_compile tools/battle_state_as3_5d8j.py
+
+      - name: Download unchanged original distribution
+        run: |
+          mkdir -p runtime
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            "https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip" \
+            -o runtime/original.zip
+          test "$(stat -c %s runtime/original.zip)" = "492630085"
+
+      - name: Download FFDec 26.3.0
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version26.3.0/ffdec_26.3.0.zip" \
+            -o runtime/ffdec.zip
+          mkdir -p runtime/ffdec
+          unzip -q runtime/ffdec.zip -d runtime/ffdec
+          jar="$(find runtime/ffdec -name ffdec.jar -type f -print -quit)"
+          test -n "$jar"
+          echo "FFDEC_JAR=$jar" >> "$GITHUB_ENV"
+
+      - name: Extract original battle state and click handlers
+        run: |
+          python3 tools/battle_state_as3_5d8j.py \
+            --archive runtime/original.zip \
+            --ffdec "$FFDEC_JAR" \
+            --out dist/battle-state-5d8j
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('dist/battle-state-5d8j/battle_state_index.json').read_text())
+          assert d['sha256']=='e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77'
+          assert d['combat_runtime_verified'] is False
+          assert len(d['verified_present_classes'])>=3
+          assert sum(x['format']=='as' for x in d['exported_files'])>=2
+          print('BATTLE_STATE_INDEX_5D8J',json.dumps({
+            'present':d['verified_present_classes'],
+            'files':len(d['exported_files']),
+            'matches':sum(len(x['evidence']) for x in d['exported_files'])
+          }))
+          PY
+
+      - name: Archive read-only decompiled battle evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-battle-state-as3-5d8j
+          path: dist/battle-state-5d8j/
+          retention-days: 14
+          if-no-files-found: warn
