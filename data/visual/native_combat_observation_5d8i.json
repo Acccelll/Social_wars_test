@@ -1,0 +1,87 @@
+{
+  "lot": "5D.8I",
+  "conclusion": "diagnostic_complete_attack_not_confirmed",
+  "original_swf_modified": false,
+  "attack_posts_injected": false,
+  "source": "Original Social Wars 0.02a SWF in Chromium/Ruffle + AcidCaos Flask on loopback, independent disposable initial villages",
+  "seeded": {
+    "player": {
+      "index": 41,
+      "item_id": 1358,
+      "name": "Bushwacker",
+      "owner": 1,
+      "tile": [
+        55,
+        45
+      ]
+    },
+    "opponent": {
+      "index": 42,
+      "item_id": 1376,
+      "name": "Reaper Drone",
+      "owner": 3
+    }
+  },
+  "tests": [
+    {
+      "run_id": 39349462830,
+      "scenario": "near_east",
+      "opponent_tile": [
+        59,
+        44
+      ],
+      "probe_count": 14,
+      "original_client_moves": 1,
+      "native_kill_sell_end_attack": false,
+      "target_persistent_change": false,
+      "visual_observation": "Enemy largely obscured by HUD"
+    },
+    {
+      "run_id": 39349850417,
+      "scenario": "near_north",
+      "opponent_tile": [
+        55,
+        40
+      ],
+      "probe_count": 14,
+      "original_client_moves": 0,
+      "native_kill_sell_end_attack": false,
+      "target_persistent_change": false,
+      "visual_observation": "Enemy visible but selection probes not reliable"
+    },
+    {
+      "run_id": 39349850417,
+      "scenario": "near_west",
+      "opponent_tile": [
+        51,
+        43
+      ],
+      "probe_count": 14,
+      "original_client_moves": 0,
+      "native_kill_sell_end_attack": false,
+      "target_persistent_change": false,
+      "visual_observation": "No native combat command or HP loss"
+    },
+    {
+      "run_id": 39350441517,
+      "scenario": "near_north_targeted",
+      "opponent_tile": [
+        55,
+        40
+      ],
+      "probe_count": 10,
+      "original_client_moves": 0,
+      "native_kill_sell_end_attack": false,
+      "target_persistent_change": false,
+      "visual_observation": "Bushwacker 6500/6500 selected; clicking Reaper Drone selects enemy panel with 700/700 HP, not attack"
+    }
+  ],
+  "verified": "Selection and inspection of friendly and opposing unit in original Flash client",
+  "not_verified": [
+    "Attack order",
+    "HP reduction",
+    "Enemy elimination",
+    "Combat animation DefineSprite ID"
+  ],
+  "next": "5D.8J identify battle-state/attack mode in Flash AVM2 and UI before further targeted original client tests"
+}
