@@ -1,5 +1,7 @@
 # Social Wars — Lote 5D.8O: alcance e perseguição no combate automático
 
+> **Correção interpretativa posterior (5D.8R):** a ausência de comando persistido `kill` ou `move` **não comprova ausência de disparos, aquisição de alvo ou dano não letal**. O cenário `east_midshift` do [lote 5D.8R](LOTE_5D_8R.md) mostrou visualmente os dois mechas trocando tiros e exibindo números de dano, mesmo sem `kill` no período de observação. As observações de ausência de eliminação e movimentação persistida registradas neste relatório continuam válidas, mas não devem ser interpretadas como ausência geral de combate.
+
 **Conclusão:** execução concluída, **quatro cenários de distância** aprovados no cliente original. Com o Bushwacker sempre no tile (55,45) e um Reaper Drone hostil deslocado apenas no eixo norte, o jogo eliminou automaticamente os adversários a 5, 10 e 15 tiles. Aos 20 tiles, **nenhuma eliminação ou movimentação persistida foi observada durante 25,339 segundos de amostragem de controle**.
 
 ## Fonte e segurança do experimento
