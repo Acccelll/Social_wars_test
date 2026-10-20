@@ -298,3 +298,14 @@ foi reconstruída por este procedimento.
 - Correspondência entre ação do cliente original, índice, item e save confirmada nos três casos. **DefineSprite SWF e frames de animação ainda não identificados**.
 - [Relatório](LOTE_5D_8H.md) · [Dados](../data/visual/isolated_original_units_5d8h.json) · [Evidências/vídeos](https://github.com/Acccelll/Social_wars_test/actions/runs/39347814190/artifacts/12232061894).
 - **Próximo lote 5D.8I:** começar a investigar ataques e dano por eventos emitidos pelo próprio cliente.
+
+
+## Lote 5D.8I — Seleção original confirmada; combate ainda pendente
+
+- Cenário original Bushwacker **1358** (jogador, índice 41) × Reaper Drone **1376** (oponente, índice 42).
+- Três rodadas de testes no Chromium/Ruffle com saves separados: [leste](https://github.com/Acccelll/Social_wars_test/actions/runs/39349462830), [norte/oeste](https://github.com/Acccelll/Social_wars_test/actions/runs/39349850417) e [cliques calibrados](https://github.com/Acccelll/Social_wars_test/actions/runs/39350441517).
+- O clique na unidade aliada abre painel **BUSHWACKER 6500/6500**; o clique seguinte no oponente abre **REAPER DRONE 700/700** — **seleção/inspeção, não dano**.
+- **Não foram observados** `kill`, `sell`, `end_attack`, redução de HP persistida ou remoção do alvo. `batch_remove` da inicialização não é evidência de combate.
+- Testes CI verdes demonstram execução do experimento, **não** sucesso de ataque.
+- [Relatório 5D.8I](LOTE_5D_8I.md) · [dados de evidência](../data/visual/native_combat_observation_5d8i.json).
+- **Próximo: 5D.8J:** estudar UI/estado de batalha e ativação de ataque a partir de ActionScript e cenas, antes de novos testes de clique.
