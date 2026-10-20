@@ -1,0 +1,52 @@
+name: Independent Combat TypeScript 5D.8T
+on:
+  push:
+    paths:
+      - '.github/workflows/independent-combat-5d8t.yml'
+      - 'rebuild/combat/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-combat:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: rebuild/combat
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned TypeScript dependency
+        run: npm install --no-audit --no-fund
+      - name: Compile and verify independent original-rule combat
+        run: npm test
+      - name: Verify local-only demo HTTP serving
+        shell: bash
+        run: |
+          set -euo pipefail
+          node serve.mjs > /tmp/sw5d8t-demo.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:5179/ -o /tmp/sw5d8t-demo.html; then ready=1; break; fi
+            sleep 1
+          done
+          test "$ready" -eq 1
+          grep -q 'Sistema de combate' /tmp/sw5d8t-demo.html
+          curl -fsS http://127.0.0.1:5179/demo/main.js | grep -q receiveAttack
+          curl -fsS http://127.0.0.1:5179/dist/model.js | grep -q calculateDamage
+          printf 'INDEPENDENT_COMBAT_DEMO_5D8T http=200 original_swf_needed=false\n'
+      - name: Record module artifact (compiled JavaScript and types)
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-combat-5d8t-build
+          path: |
+            rebuild/combat/dist/
+            rebuild/combat/demo/
+            rebuild/combat/serve.mjs
+          retention-days: 14
+          if-no-files-found: error
