@@ -40,7 +40,7 @@ Essa restrição é deliberada: o bitmap usado na arena é um atlas gerado pelo 
 ## 3. Inspetor visual funcional, sem confundir eixos
 
 - `rebuild/combat/demo/muzzle.html` e `muzzle.js`: gráfico SVG independente com os cinco pontos locais medidos e seleção das **oito direções**.
-- O inspetor mostra ID de sprite, frame de ataque, twips e pixels, além de destacar o marcador selecionado e exibir a imagem espelhada no eixo do gráfico para as direções 6–8.
+- O inspetor mostra ID de sprite, frame de ataque, twips e pixels, além de destacar o marcador selecionado e destacar o ponto correspondente espelhado no eixo horizontal para as direções 6–8.
 - Acesse **http://127.0.0.1:5179/muzzle** com o pacote compilado.
 - A arena `/arena` ganhou um link de acesso ao inspetor; mantém a origem visual provisória de bala já existente, evitando uma regressão provocada por offsets não calibrados.
 
