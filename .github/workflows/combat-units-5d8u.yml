@@ -50,6 +50,7 @@ jobs:
           if-no-files-found: error
 
   independent-scene:
+    needs: verify-source
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     defaults:
@@ -67,6 +68,29 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Compile and run model and scene deterministic tests
         run: npm test
+      - uses: actions/download-artifact@v4
+        with:
+          name: socialwars-unit-stats-5d8u
+          path: rebuild/combat/test/source-verification
+      - name: Compare compiled TypeScript unit entries against extracted active patch
+        run: |
+          node --input-type=module - <<'JS'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          import {UNIT_CATALOG} from './dist/unitCatalog.js';
+          const canonical=JSON.parse(readFileSync('./test/source-verification/unit-stats-5d8u.json','utf8'));
+          for(const [key,id] of [['bushwacker',1358],['reaperDrone',1376]]){
+            const expected=canonical.units[String(id)];
+            const actual=UNIT_CATALOG[key];
+            for(const [field,rawField] of [
+              ['id','id'],['maxLife','life'],['attack','attack'],
+              ['defense','defense'],['attackRange','attack_range'],
+              ['attackInterval','attack_interval'],['velocity','velocity']]){
+              assert.equal(actual[field],expected[rawField],key+'.'+field);
+            }
+          }
+          console.log('TYPESCRIPT_STATS_MATCH_ACTIVE_SERVER_PATCH_5D8U');
+          JS
       - name: Run self-contained local demo browser smoke
         shell: bash
         run: |
@@ -84,9 +108,16 @@ jobs:
         with:
           name: socialwars-independent-scene-5d8u
           path: |
+            rebuild/combat/src/
+            rebuild/combat/test/*.test.mjs
+            rebuild/combat/test/scene.browser.mjs
+            rebuild/combat/test/screenshots/
             rebuild/combat/dist/
             rebuild/combat/demo/
             rebuild/combat/serve.mjs
-            rebuild/combat/test/screenshots/
+            rebuild/combat/package.json
+            rebuild/combat/tsconfig.json
+            rebuild/combat/README.md
+            rebuild/combat/.gitignore
           retention-days: 30
           if-no-files-found: warn
