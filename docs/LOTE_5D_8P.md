@@ -1,5 +1,7 @@
 # Social Wars — 5D.8P: limite observado de auto-aggro e `Config.AGGRO_RANGE`
 
+> **Correção interpretativa posterior (5D.8R):** a ausência de comando persistido `kill` ou `move` **não comprova ausência de disparos, aquisição de alvo ou dano não letal**. O cenário `east_midshift` do [lote 5D.8R](LOTE_5D_8R.md) mostrou visualmente os dois mechas trocando tiros e exibindo números de dano, mesmo sem `kill` no período de observação. As observações de ausência de eliminação e movimentação persistida registradas neste relatório continuam válidas, mas não devem ser interpretadas como ausência geral de combate.
+
 **Resultado:** concluído. **11 cenários originais** executados sem selecionar nem comandar as unidades; recuperado o valor de configuração **`Config.AGGRO_RANGE:uint = 10`** diretamente do ActionScript 0.02a.
 
 Os resultados **não** estabelecem um raio de agressividade universal de 10 ou 17 tiles: há diferenças entre posições no mapa e caminhos de decisão que não se resumem à constante.
