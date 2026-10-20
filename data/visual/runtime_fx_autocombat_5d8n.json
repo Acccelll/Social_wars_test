@@ -1,0 +1,106 @@
+{
+  "lot": "5D.8N",
+  "result": "CONFIRMED_FX_PRELOADING_AND_AUTOMATIC_COMBAT_WITH_ZERO_UNIT_CLICKS",
+  "source": "Original Social Wars 0.02a SWF in Chromium/Ruffle with original Flask server on loopback",
+  "untouched_original_swf": true,
+  "no_synthetic_game_commands": true,
+  "fixture": {
+    "friendly": {
+      "item_id": 1358,
+      "map_object_index": 41,
+      "player_id": 1,
+      "tile": [
+        55,
+        45
+      ]
+    },
+    "enemy": {
+      "item_id": 1376,
+      "map_object_index": 42,
+      "player_id": 2,
+      "tile": [
+        55,
+        40
+      ]
+    },
+    "save": "disposable and isolated"
+  },
+  "observed_fx_requests": {
+    "count": 14,
+    "all_http_method": "GET",
+    "all_http_status": 200,
+    "stage": "original_swf_boot",
+    "fx_base_path": "/static/socialwars/fx/",
+    "requested_assets": [
+      "p.bullet.swf",
+      "b.bullet2.swf",
+      "p.laserMassiveDrone.swf",
+      "b.laserBlue.swf",
+      "p.bulletAirBig.swf",
+      "b.bazookaSmall.swf",
+      "p.laserBeamBlueFat.swf",
+      "b.earth.swf",
+      "p.missileM.swf",
+      "b.bazooka2.swf",
+      "b.smokeSmall.swf",
+      "p.bulletBig.swf",
+      "p.rocketM.swf",
+      "b.missile.swf"
+    ],
+    "normal_attack_resources_from_lot_5d8m": [
+      "p.bulletAirBig.swf",
+      "b.bazookaSmall.swf",
+      "p.laserMassiveDrone.swf",
+      "b.laserBlue.swf"
+    ],
+    "conclusion": "Every FX SWF was requested during client boot, before any manual unit selection; a later attack did not need another network request. Loading is not proof that each loaded asset rendered in the specific fight."
+  },
+  "first_recording": {
+    "run_id": 39361613405,
+    "run_url": "https://github.com/Acccelll/Social_wars_test/actions/runs/39361613405",
+    "artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39361613405/artifacts/12237283795",
+    "fx_requests_at_ms_range": [
+      3943,
+      3944
+    ],
+    "native_kill_at_ms": 23645,
+    "first_manual_enemy_click_at_ms": 29253,
+    "kill_before_manual_enemy_click": true,
+    "relative_kill_before_manual_click_ms": 5608,
+    "target_removed_from_persisted_save": true,
+    "page_errors": 0
+  },
+  "no_unit_input_control": {
+    "run_id": 39362157076,
+    "run_url": "https://github.com/Acccelll/Social_wars_test/actions/runs/39362157076",
+    "artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39362157076/artifacts/12237713271",
+    "fx_requests_at_ms_range": [
+      6529,
+      6531
+    ],
+    "fx_requests_count": 14,
+    "all_fx_http_status": 200,
+    "manual_unit_clicks": 0,
+    "required_modal_ok_clicks": 2,
+    "native_kill_at_ms": 40765,
+    "kill_command": {
+      "action": "kill",
+      "target_object_index": 42,
+      "reason": "u"
+    },
+    "enemy_removed_from_save": true,
+    "browser_page_errors": 0,
+    "screenshots": 16,
+    "visual_observation": "Original SWF shows Bushwacker firing; red damage numbers and bright impact on Reaper Drone before disappearance; XP and gold rewards visible after death.",
+    "interpretation": "The hostile Reaper Drone was killed by the original running client without any clicks on units. This is positive evidence of autonomous engagement for the seeded near_north scenario."
+  },
+  "specific_correction_to_5d8j": "Previous test verified kill and attack on the original client but did not isolate manual click causation; the 5D8N no-click control demonstrates manual unit clicks are unnecessary at this proximity.",
+  "limits": [
+    "Individual FX loads happened before combat, not specifically at the attack event.",
+    "Static mappings from delegate classes identify available FX, but do not map an exact downloaded asset to visible shot/impact pixels.",
+    "No unique subframe synchronization from Ruffle to SWF DefineSprite IDs.",
+    "Automatic aggression at other distances, teams or terrain configurations remains untested.",
+    "The independently rebuilt/recompiled client is not shown to execute this battle."
+  ],
+  "next_lot": "5D.8O: isolate auto-aggro distance/target selection with controlled enemy placement and screen snapshots; test if attack starts without manual input as distance changes."
+}
