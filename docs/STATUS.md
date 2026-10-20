@@ -398,3 +398,14 @@ foi reconstruída por este procedimento.
 - **Conclusão limitada:** mover a câmera horizontalmente não bastou para iniciar combate persistido nesse cenário; não considerar isso prova de independência universal entre IA e câmera.
 - [Relatório 5D.8Q](LOTE_5D_8Q.md) · [dados](../data/visual/camera_aggro_5d8q.json).
 - **Próximo 5D.8R:** centralizar visualmente o inimigo, testar pan bidimensional e deslocar o par atacante/alvo mantendo distância de 15 tiles para isolar câmera, região ativa e terreno.
+
+
+## Lote 5D.8R — Combate não letal visualmente comprovado; câmera e região
+
+- [CI 39413489925](https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925) **2 jobs aprovados**: cinco translações do par Bushwacker 1358/Reaper Drone 1376 a **15 tiles** e um tratamento com 13 comandos de câmera (8 vezes direita, 5 baixo), sem cliques nas unidades e sem comandos artificiais.
+- **Norte original:** `move(41)` e `kill(42)`, inimigo removido do save. **Quatro orientações leste/translações:** sem `kill` e sem movimento persistido por cerca de 23 s.
+- **Descoberta crítica:** no cenário `east_midshift` (Bushwacker em **45,43**, inimigo em **60,43**), ambos aparecem no screenshot, Bushwacker **dispara repetidamente**, e são visíveis números de dano **32/28 no inimigo e 36 no Bushwacker**. Ambos permanecem vivos; não há `kill`. Assim, **sem kill não significa sem combate**, corrigindo interpretações de 5D.8O–5D.8Q.
+- Movimento bidimensional de câmera alcançou região de lago/floresta, mas **não mostrou o inimigo com segurança**; a hipótese de ativação por viewport permanece aberta.
+- `IsoEngine.addElement/getNearestTarget` registram elementos em arrays por time e selecionam por distância/score/validade, sem verificação de viewport nesses helpers. Isso não descarta culling em outros pontos do motor.
+- [Relatório](LOTE_5D_8R.md) · [dados](../data/visual/translated_pairs_combat_5d8r.json) · [evidências de translação](https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925/artifacts/12261080426) · [evidências de câmera](https://github.com/Acccelll/Social_wars_test/actions/runs/39413489925/artifacts/12260198346).
+- **Próximo 5D.8S:** medir ataque, dano visual, HP e eliminação **como eventos distintos** em cenários onde ambos os mechas estejam visíveis, inclusive quando não há comando `kill`.
