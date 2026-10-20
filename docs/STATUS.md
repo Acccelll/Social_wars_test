@@ -443,3 +443,15 @@ foi reconstruída por este procedimento.
 - `tools/extract_unit_stats_5d8u.py` verifica o patch ativo, o CSV e SHA256. A workflow posterior [`combat-units-5d8u.yml`](../.github/workflows/combat-units-5d8u.yml) também compara os valores do catálogo compilado com o JSON de extração e disponibiliza um pacote de fontes + compilado.
 - [Relatório](LOTE_5D_8U.md) · [dados auditáveis](../data/rebuild/unit_stats_5d8u.json) · [código da arena](../rebuild/combat/README.md).
 - **Próximo lote 5D.8V:** substituir placeholders vetoriais por recursos visuais originais recuperados, validar offsets das timelines QUIETO/ATAQUE/MUERTE e incorporar FX do cliente Flash no runtime independente.
+
+
+## Lote 5D.8V — Sprites e FX originais na arena 2D independente
+
+- **Integrado e verificado:** sprites exportados do Social Wars 0.02a para **Bushwacker 1358** e **Reaper Drone 1376**, e FX originais `p.bulletAirBig/b.bazookaSmall` e `p.laserMassiveDrone/b.laserBlue`. O motor permanece TypeScript próprio, sem execução Flash. Recursos PNG gerados ficam no pacote executável, não no Git.
+- **Cobertura:** 12 atlas PNG no total (4 estados por unidade + 4 FX). Bushwacker mostra quadros distintos; a exportação do Reaper Drone disponibiliza **uma imagem renderizada por estado**, não a animação de runtime completa. Laser do Drone usa o subsprite original visível, pois wrapper público FFDec foi renderizado transparente.
+- **Interface:** `/arena` com estado de ataque, morte e fallback automático para personagens vetoriais, além de controle **Estilo: original/vetorial**. HP, danos e vitória continuam calculados pelo núcleo anterior.
+- [CI original-sprite-arena 5D.8V](https://github.com/Acccelll/Social_wars_test/actions/runs/39442496371) passou: **25/25 testes**, 12 imagens carregadas no Chromium, dano manual, modo vetorial e vitória automática, sem erros de página. Repetido com [título corrigido](https://github.com/Acccelll/Social_wars_test/actions/runs/39442913080), aprovado.
+- `tools/prepare_original_visuals_5d8v.py` converte artefatos read-only de 5D.8K/5D.8M em atlas PNG e manifesto; a workflow mantém materialização visual opcional. **O SWF original não foi modificado.**
+- **Limites:** os GIFs FFDec representam amostras de timelines aninhadas; controle de direções, animações completas do Reaper, temporização original de projéteis, pathfinding e combate geral ainda não foram reproduzidos.
+- [Relatório](LOTE_5D_8V.md) · [evidência estruturada](../data/rebuild/original_visual_integration_5d8v.json) · [código de integração](../rebuild/combat/demo/originalVisuals.js).
+- **Próximo 5D.8W:** decompilar timelines internas do Reaper e mapear pontos de ancoragem/direções para substituir amostras estáticas por animações nativas reproduzíveis.
