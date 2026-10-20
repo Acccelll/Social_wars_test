@@ -117,10 +117,17 @@ def main():
   for state,seq in STATES.items():
    frames[state]=[Image.open(numbered[n]).convert("RGBA") for n in seq]
   entries=atlas(frames,out,root)
+  # Some frame-label ranges are identical static orientation sets in FFDec.
+  # Inspect pixel equality; never invent walking or firing animation frames.
+  statesEqualByIndex={
+    str(i+1):all(frames["quieto"][i].tobytes()==frames[st][i].tobytes()
+                 for st in ("andar","ataque")) for i in range(5)
+  }
   analysis={"lot":"5D.8W","sourceSWF":FILENAME,"sourceSha256":SHA,
      "originalSWFModified":False,
      "rootSpriteId":ID,"rootFrameCount":root["declared_frames"],
      "stateLabels":labels,
+     "idleWalkAttackMatchingPoseAtEachIndex":statesEqualByIndex,
      "renderSource":"Individual root frames 1..25; FFDec sprite:png; sublength 1",
      "rootTransformTwips":timeline["root"]["frame_events"][0]["matrix"],
      "states":entries,
@@ -135,5 +142,6 @@ def main():
      "animationCaveat":"Root QUIETO/ANDAR/ATAQUE frames may be directional poses (not a temporal sequence). MUERTE/PICAR have unchanged frames; do not manufacture time motion. AVM2/controller still not recovered."}
   (out/"reaper_root25_manifest.json").write_text(json.dumps(analysis,indent=2,ensure_ascii=False)+"\n")
   print("REAPER_ROOT25_5D8W",json.dumps({"frames":25,"states":{k:v["distinctRenderedFrames"] for k,v in entries.items()},
-     "rootTransformTwips":analysis["rootTransformTwips"]}),flush=True)
+     "rootTransformTwips":analysis["rootTransformTwips"],
+     "poseMatchesAcrossIdleWalkAttack":all(statesEqualByIndex.values())}),flush=True)
 if __name__=="__main__":main()
