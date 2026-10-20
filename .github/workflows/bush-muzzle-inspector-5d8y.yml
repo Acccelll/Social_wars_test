@@ -1,0 +1,108 @@
+name: Source-Measured Bushwacker Muzzle Inspector 5D.8Y
+on:
+  push:
+    paths:
+      - '.github/workflows/bush-muzzle-inspector-5d8y.yml'
+      - 'rebuild/combat/src/bushMuzzle.ts'
+      - 'rebuild/combat/src/index.ts'
+      - 'rebuild/combat/serve.mjs'
+      - 'rebuild/combat/demo/muzzle.*'
+      - 'rebuild/combat/demo/arena.html'
+      - 'rebuild/combat/test/bushMuzzle.*'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  muzzle-inspector:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore 5D.8X original visual sheets in their supported path
+        uses: actions/download-artifact@v4
+        with:
+          name: independent-auto-facing-5d8x
+          run-id: 39462605558
+          github-token: ${{ github.token }}
+          path: runtime/visual
+      - name: Restore 5D.8Y actual Bushwacker binary marker report
+        uses: actions/download-artifact@v4
+        with:
+          name: original-bushwacker-muzzle-matrix-chain-5d8y
+          run-id: 39471783965
+          github-token: TOKEN_PLACEHOLDER
+          path: runtime/markers
+      - name: Arrange source-provenance visual data without SWFs
+        run: |
+          mkdir -p rebuild/combat/original-visual
+          cp -a runtime/visual/original-visual/. rebuild/combat/original-visual/
+          test "$(find rebuild/combat/original-visual -name '*.png' | wc -l)" -eq 13
+          test -s runtime/markers/bushwacker-markers-matrices-5d8y.json
+      - name: Install TypeScript and Playwright in independent runtime
+        working-directory: rebuild/combat
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install chromium
+      - name: Compile module and run 40 deterministic tests
+        working-directory: rebuild/combat
+        run: npm test
+      - name: Compare all five TypeScript marker points against original SWF PlaceObject export
+        working-directory: rebuild/combat
+        run: |
+          node --input-type=module - <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          import {bushMuzzleLocal,BUSH_ATTACK_MARKERS} from './dist/index.js';
+          const source=JSON.parse(fs.readFileSync('../../runtime/markers/bushwacker-markers-matrices-5d8y.json','utf8'));
+          for (const rec of source.markerParents) {
+            assert.equal(rec.chains.length,1,'Unique root-to-muzzle path required');
+            const chain=rec.chains[0];
+            const pose=BUSH_ATTACK_MARKERS.find(r=>r.childSpriteId===rec.parentId).pose;
+            const actual=bushMuzzleLocal(pose);
+            assert.equal(actual.rootFrame,10+pose);
+            const [x,y]=chain.markerInRootSprite.pixels;
+            assert.ok(Math.abs(actual.xPx-x)<1e-9,rec.parentId+'.x');
+            assert.ok(Math.abs(actual.yPx-y)<1e-9,rec.parentId+'.y');
+          }
+          console.log('SOURCE_BINARY_MATRICES_MATCH_TYPESCRIPT_5D8Y',BUSH_ATTACK_MARKERS.length);
+          JS
+      - name: Serve and test actual browser inspector and arena
+        working-directory: rebuild/combat
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check demo/muzzle.js
+          node serve.mjs > /tmp/sw5d8y.log 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:5179/muzzle -o /tmp/sw5d8y.html; then break; fi
+            sleep 1
+          done
+          node test/bushMuzzle.browser.mjs
+          node test/originalDirection.browser.mjs
+      - name: Publish complete source, inspector, matrices and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialwars-bush-muzzle-inspector-5d8y
+          path: |
+            rebuild/combat/demo/
+            rebuild/combat/src/
+            rebuild/combat/dist/
+            rebuild/combat/original-visual/
+            rebuild/combat/test/*.test.mjs
+            rebuild/combat/test/*browser.mjs
+            rebuild/combat/test/screenshots/5d8y-*.png
+            rebuild/combat/serve.mjs
+            rebuild/combat/package.json
+            rebuild/combat/tsconfig.json
+            rebuild/combat/README.md
+            runtime/markers/bushwacker-markers-matrices-5d8y.json
+          retention-days: 30
+          if-no-files-found: warn
