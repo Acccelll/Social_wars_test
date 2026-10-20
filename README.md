@@ -242,3 +242,10 @@ O [lote 5D.8V](docs/LOTE_5D_8V.md) habilitou Bushwacker, Reaper Drone e seus FX 
 Para executar o pacote final com Node.js 22+: `cd rebuild/combat && node serve.mjs`, então **http://127.0.0.1:5179/arena**. Os atlas são mantidos fora do Git; a receita reprodutível e hashes/limites estão em [`tools/prepare_original_visuals_5d8v.py`](tools/prepare_original_visuals_5d8v.py) e no [workflow de integração](.github/workflows/original-sprite-arena-5d8v.yml).
 
 **Limite atual:** o Reaper Drone ainda usa amostras estáticas por estado; os GIFs não equivalem às timelines animadas completas do SWF. O próximo passo é recuperar os quadros e pivôs do Reaper no 5D.8W.
+
+
+## Reaper Drone: cinco poses originais recuperadas (5D.8W)
+
+O [lote 5D.8W](docs/LOTE_5D_8W.md) corrigiu a exportação do Reaper Drone: recuperamos os **25 quadros raiz** do SWF 1376, com cinco imagens distintas para cada faixa `QUIETO/ANDAR/ATAQUE`. As mesmas cinco poses se repetem entre esses estados, indicando variações gráficas/direcionais, **não uma animação temporal de caminhada/disparo** já comprovada. A interface da arena em **/arena** permite escolher a pose pelo botão **Reaper: direção 1/5**. A versão vetorial alternativa permanece disponível, sem alterar a mecânica de dano TypeScript.
+
+[Workflow 5D.8W aprovado](https://github.com/Acccelll/Social_wars_test/actions/runs/39446986958) · arquivos e limitações no relatório. O pacote executável inclui o atlas PNG opcional; os arquivos SWF de origem não são comitados ao Git.
