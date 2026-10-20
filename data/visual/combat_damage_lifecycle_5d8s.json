@@ -1,0 +1,192 @@
+{
+  "lot": "5D.8S",
+  "date": "2026-10-20",
+  "status": "native_health_damage_pipeline_and_visual_timeline_verified",
+  "run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39416511124",
+  "original_swf": {
+    "file": "assets/flash/Basesec_1.5.4.swf",
+    "sha256": "e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77",
+    "modified": false
+  },
+  "source_classes": [
+    "battle.HealthBar",
+    "core.isoengine.IsoFightingElement",
+    "core.isoengine.IsoUnit",
+    "battle.projectiles.AbstractProjectile",
+    "core.Particle",
+    "core.Config",
+    "core.isoengine.delegates.units.ProjectileDelegate"
+  ],
+  "pipeline": [
+    {
+      "method": "IsoFightingElement.calculateDamage",
+      "fact": "10% critical attempt, 1.5x critical modifier, random variance ±4 around base (VARIANCE_DAMAGE=8), subtract defense, minimum 1; modifiers can also apply in recibirAtaque"
+    },
+    {
+      "method": "IsoFightingElement.shootProjectile",
+      "fact": "creates projectile using ProjectileManager and subscribes to landed for doProjectileDamage"
+    },
+    {
+      "method": "IsoFightingElement.doProjectileDamage",
+      "fact": "checks projectile target, whether target is alive and impact displacement is within blast radius, then calls target.recibirAtaque"
+    },
+    {
+      "method": "IsoFightingElement.recibirAtaque",
+      "fact": "apply damage to internal iHealth, optionally accumulate displayed number, nearDeath signal crossing below 10%, updateVida, die if <=0; damageDone signal dispatched"
+    },
+    {
+      "method": "IsoFightingElement.updateVida",
+      "fact": "HealthBar.set(iHealth); display if iHealth<maxLife and >0 and not dead when displayBarraVida is enabled"
+    },
+    {
+      "method": "battle.HealthBar.refresh",
+      "fact": "draws grey background and colored rectangle proportional to currentValue/maxValue, black borders and 4-pixel divisions"
+    },
+    {
+      "method": "IsoFightingElement.die",
+      "fact": "sets bDead and handles unit kill/salvage/rewards through game-specific branches"
+    }
+  ],
+  "original_health_bar": {
+    "class": "battle.HealthBar",
+    "colors_rgb_ascending_hp": [
+      [
+        128,
+        0,
+        0
+      ],
+      [
+        255,
+        0,
+        0
+      ],
+      [
+        255,
+        255,
+        0
+      ],
+      [
+        0,
+        255,
+        0
+      ],
+      [
+        0,
+        128,
+        0
+      ]
+    ],
+    "value_clamp": [
+      0,
+      "maxValue"
+    ],
+    "segmented_width_pixels": 4,
+    "height_pixels": 4,
+    "division_rules": [
+      {
+        "max_hp": "<=200",
+        "divisions": 4
+      },
+      {
+        "max_hp": "201..400",
+        "divisions": 8
+      },
+      {
+        "max_hp": "401..600",
+        "divisions": 12
+      },
+      {
+        "max_hp": "601..800",
+        "divisions": 16
+      },
+      {
+        "max_hp": ">800",
+        "divisions": 20
+      }
+    ],
+    "display_when_damaged_and_alive": true
+  },
+  "original_damage_display": {
+    "property": "_damageToDisplay",
+    "draw_method": "_showDamageParticle",
+    "gating": "frameParticleAttack and _canDisplayDamageParticle; pending damage is combined before next particle display",
+    "source_warning": "One displayed number can be an accumulation, so screenshot numbers are not necessarily individual-hit amounts."
+  },
+  "scenarios": [
+    {
+      "scenario": "east_midshift",
+      "initial_attacker": [
+        45,
+        43
+      ],
+      "initial_enemy": [
+        60,
+        43
+      ],
+      "distance": 15,
+      "manual_unit_clicks": 0,
+      "outcome": "native_kill_persisted",
+      "kill_at_ms_since_browser_launch": 48983,
+      "target_first_missing_in_polled_save_at_ms": 50476,
+      "attacker_persisted_move": false,
+      "screenshots": 21,
+      "damage_snapshots_n": 9,
+      "control_samples": 9,
+      "observations": [
+        "Bushwacker fires continuously",
+        "visible damage numbers on both units",
+        "enemy health bar changes from yellow to red",
+        "enemy disappears after kill, no enemy remains in server save"
+      ],
+      "caveats": [
+        "Selected images prove nonzero displayed damage but not exact HP per hit",
+        "The kill time includes game boot and UI modal handling"
+      ]
+    },
+    {
+      "scenario": "north_original",
+      "initial_attacker": [
+        55,
+        45
+      ],
+      "initial_enemy": [
+        55,
+        30
+      ],
+      "distance": 15,
+      "manual_unit_clicks": 0,
+      "outcome": "native_move_and_kill_persisted",
+      "kill_at_ms_since_browser_launch": 42174,
+      "attacker_persisted_move_to": [
+        55,
+        40
+      ],
+      "target_first_missing_in_polled_save_at_ms": 52678,
+      "screenshots": 18,
+      "damage_snapshots_n": 6,
+      "control_samples": 6,
+      "observations": [
+        "native command move for map index 41",
+        "native command kill for index 42",
+        "target removed from server save"
+      ],
+      "caveats": [
+        "Most dense post-modal snapshots occurred after kill, so this run is a kill/move reference, not frame-accurate incoming HP sample"
+      ]
+    }
+  ],
+  "evidence": {
+    "as3": "https://github.com/Acccelll/Social_wars_test/actions/runs/39416511124/artifacts/12261472743",
+    "east": "https://github.com/Acccelll/Social_wars_test/actions/runs/39416511124/artifacts/12260849039",
+    "north": "https://github.com/Acccelll/Social_wars_test/actions/runs/39416511124/artifacts/12261318278"
+  },
+  "corrected_interpretation": "east_midshift survived previous 5D.8R observation without a kill, but was eliminated in the 5D.8S repeat. Kill and elapsed sample window are not deterministic proof of aggro boundaries.",
+  "limits": [
+    "No direct runtime memory access to client iHealth or exact maxLife per unit",
+    "Interpolated bar colors/pixel counts are not exact hitpoint telemetry",
+    "Browser screenshots are temporally spaced and can miss individual projectile flights",
+    "Damage number particles may be aggregated/throttled",
+    "Recorded client is original Flash SWF in Ruffle, not standalone recompiled game"
+  ],
+  "next_lot": "5D.8T: port source-derived health/damage/bar rules into independent TypeScript combat-model module with deterministic seeded random tests; compare expected semantics against original visual traces without changing original SWF."
+}
