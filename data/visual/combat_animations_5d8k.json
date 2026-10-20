@@ -1,0 +1,161 @@
+{
+  "lot": "5D.8K",
+  "status": "original_animation_assets_and_frame_labels_confirmed",
+  "original_source": "Social Wars 0.02a - AcidCaos preservation release",
+  "code_research_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39355691232",
+  "state_render_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39355945927",
+  "state_render_artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39355945927/artifacts/12235636024",
+  "previous_native_combat_run": "https://github.com/Acccelll/Social_wars_test/actions/runs/39353491847",
+  "ffdec": "26.3.0",
+  "original_swf_modified": false,
+  "characters": [
+    {
+      "name": "Bushwacker",
+      "gameplay_item_id": 1358,
+      "source": "assets/sprites/1358_bushwacker.swf",
+      "bytes": 1158582,
+      "sha256": "e9db23f98dcaa5cf81cbcdac85154fcb1da92a205b7d9047a5d420fb9d068c5e",
+      "fps": 30,
+      "internal_sprite_count": 258,
+      "declared_sprite_frames_total": 2125,
+      "root_sprite_character_id": 1092,
+      "frames_total_root": 50,
+      "labeled_states": [
+        [
+          "QUIETO",
+          1,
+          5
+        ],
+        [
+          "ANDAR",
+          6,
+          10
+        ],
+        [
+          "ATAQUE",
+          11,
+          15
+        ],
+        [
+          "MUERTE",
+          16,
+          30
+        ],
+        [
+          "01",
+          31,
+          35
+        ],
+        [
+          "02",
+          36,
+          40
+        ],
+        [
+          "03",
+          41,
+          50
+        ]
+      ],
+      "attack_direction_children": [
+        {
+          "frame": 11,
+          "sprite_character_id": 643,
+          "symbol": "_1358_bushwacker_fla.E_attack_133"
+        },
+        {
+          "frame": 12,
+          "sprite_character_id": 675,
+          "symbol": "_1358_bushwacker_fla.TE_attack_141"
+        },
+        {
+          "frame": 13,
+          "sprite_character_id": 716,
+          "symbol": "_1358_bushwacker_fla.P_attack_145"
+        },
+        {
+          "frame": 14,
+          "sprite_character_id": 752,
+          "symbol": "_1358_bushwacker_fla.T_attack_153"
+        },
+        {
+          "frame": 15,
+          "sprite_character_id": 786,
+          "symbol": "_1358_bushwacker_fla.F_attack_159"
+        }
+      ],
+      "rendered_gif_states": [
+        "QUIETO",
+        "ANDAR",
+        "ATAQUE",
+        "MUERTE"
+      ],
+      "optional_labeled_states_not_rendered": [
+        "01",
+        "02",
+        "03"
+      ]
+    },
+    {
+      "name": "Reaper Drone",
+      "gameplay_item_id": 1376,
+      "source": "assets/sprites/1376_reaperDrone.swf",
+      "bytes": 201043,
+      "sha256": "c26e398f5f2209eb9ba8fc3ef84ed243b1032240c3e2f543a879330e77b64b83",
+      "fps": 30,
+      "internal_sprite_count": 554,
+      "declared_sprite_frames_total": 578,
+      "root_sprite_character_id": 1654,
+      "frames_total_root": 25,
+      "labeled_states": [
+        [
+          "QUIETO",
+          1,
+          5
+        ],
+        [
+          "ANDAR",
+          6,
+          10
+        ],
+        [
+          "ATAQUE",
+          11,
+          15
+        ],
+        [
+          "MUERTE",
+          16,
+          20
+        ],
+        [
+          "PICAR",
+          21,
+          25
+        ]
+      ],
+      "rendered_gif_states": [
+        "QUIETO",
+        "ANDAR",
+        "ATAQUE",
+        "MUERTE",
+        "PICAR"
+      ],
+      "rendering_caveat": "FFDec GIFs for QUIETO, ANDAR, ATAQUE were byte-identical in this bounded subframe sample. The state labels are confirmed in original SWF; visual distinctions for these states were not reproduced from the sample."
+    }
+  ],
+  "scope_proven": [
+    "Two original SWF assets uniquely resolved and SHA-256 checked",
+    "FrameLabel position & root DefineSprite IDs recovered",
+    "5 Bushwacker directional attack sub-SWFs referenced at frames 11-15",
+    "Nine FFDec 15-subframe GIF previews exported",
+    "Native battle run exists separately"
+  ],
+  "scope_not_proven": [
+    "Exact dynamic timeline frame at runtime",
+    "Projectile/muzzle/impact character ID",
+    "Reaper Drone ATTACK-specific visual movement using this FFDec export",
+    "Ported or recompiled game client working"
+  ],
+  "next_lot": "5D.8L - targeted directional Bushwacker attack preview/frame extraction and live Ruffle frame-to-SWF comparison"
+}
