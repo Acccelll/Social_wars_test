@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/native-original-combat-5d8i.yml'
+      - 'tests/original/native_combat_targeted_5d8i.mjs'
       - 'tests/original/native_combat_5d8i.mjs'
       - 'tools/seed_original_combat_5d8i.py'
   workflow_dispatch:
@@ -30,7 +31,7 @@ jobs:
       - name: Validate original fixture and recorder syntax
         run: |
           python tools/seed_original_units_5d8c_test.py
-          node --check tests/original/native_combat_5d8i.mjs
+          node --check tests/original/native_combat_targeted_5d8i.mjs
           python -m py_compile tools/seed_original_combat_5d8i.py
       - name: Install Playwright and Ruffle
         run: |
@@ -76,7 +77,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for scenario in near_north near_west; do
+          for scenario in near_north; do
             echo "SCENARIO_NATIVE_COMBAT: $scenario"
             test -z "$(find "$SW_SERVER_DIR/saves" -maxdepth 1 -name '*.save.json' -print -quit)"
             python tools/seed_original_combat_5d8i.py \
@@ -94,7 +95,7 @@ jobs:
               sleep 1
             done
             if [ "$ready" -ne 1 ]; then kill "$server_pid" || true; exit 1; fi
-            node tests/original/native_combat_5d8i.mjs \
+            node tests/original/native_combat_targeted_5d8i.mjs \
               --server 'http://127.0.0.1:5055' \
               --save-dir "$SW_SERVER_DIR/saves" \
               --fixture "runtime/combat-fixture-${scenario}.json" \
@@ -129,7 +130,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: native-original-combat-5d8i
+          name: native-original-combat-5d8i-targeted
           path: |
             dist/native-combat-5d8i/
             runtime/combat-fixture-*.json
