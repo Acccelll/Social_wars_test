@@ -1,0 +1,144 @@
+name: Original Auto Aggro Distances 5D.8O
+
+on:
+  push:
+    paths:
+      - '.github/workflows/auto-aggro-distances-5d8o.yml'
+      - 'tests/original/client_aggro_distances_5d8o.mjs'
+      - 'tools/seed_auto_aggro_5d8o.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: isolated-original-aggro-5d8o
+  cancel-in-progress: false
+
+jobs:
+  original-distance-sweep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check recorder, original fixture, and replay toolkit
+        run: |
+          python -m py_compile tools/seed_auto_aggro_5d8o.py
+          node --check tests/original/client_aggro_distances_5d8o.mjs
+          python tools/seed_original_units_5d8c_test.py
+      - name: Install Ruffle and Chromium
+        run: |
+          npm install --prefix tests/ruffle --no-audit --no-fund
+          npx --prefix tests/ruffle playwright install chromium
+          node tests/original/test.mjs
+      - name: Obtain unmodified 0.02a distribution and Flask server
+        run: |
+          mkdir -p runtime/release
+          curl --fail --location --retry 3 --connect-timeout 20 \
+            'https://github.com/AcidCaos/socialwarriors/releases/download/0.02a/social-warriors_0.02a.zip' \
+            -o runtime/release.zip
+          test "$(stat -c %s runtime/release.zip)" = '492630085'
+          unzip -q runtime/release.zip -d runtime/release
+          asset_file="$(find runtime/release -path '*/assets/flash/Basesec_1.5.4.swf' -type f -print -quit)"
+          test -n "$asset_file"
+          asset_dir="$(realpath "$(dirname "$(dirname "$asset_file")")")"
+          echo 'e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77' \
+            | awk -v file="$asset_file" '{print $1 "  " file}' | sha256sum --check
+          git clone --depth 1 --filter=blob:none --sparse \
+            'https://github.com/AcidCaos/socialwarriors.git' runtime/source
+          git -C runtime/source sparse-checkout set config villages templates stub mods
+          ln -s "$asset_dir" runtime/source/assets
+          test -f runtime/source/server.py
+          mkdir -p runtime/source/saves
+          test -z "$(find runtime/source/saves -name '*.save.json' -print -quit)"
+          cp runtime/source/villages/initial.json runtime/initial-pristine.json
+          echo "SW_SERVER_DIR=$(realpath runtime/source)" >> "$GITHUB_ENV"
+      - name: Original Flask dependencies
+        run: python -m pip install 'flask==2.2.5' 'werkzeug==2.3.8' requests jsonpatch
+      - name: Observe auto-aggro at four distances, no unit clicks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/aggro-distance-5d8o
+          for scenario in north_05 north_10 north_15 north_20; do
+            echo "DISTANCE_5D8O_START $scenario"
+            test -z "$(find "$SW_SERVER_DIR/saves" -maxdepth 1 -name '*.save.json' -print -quit)"
+            python tools/seed_auto_aggro_5d8o.py \
+              --pristine runtime/initial-pristine.json \
+              --out "$SW_SERVER_DIR/villages/initial.json" \
+              --scenario "$scenario" \
+              --manifest "runtime/aggro-fixture-$scenario.json"
+            pushd "$SW_SERVER_DIR" >/dev/null
+            python -u server.py --host 127.0.0.1 --port 5055 > "$GITHUB_WORKSPACE/runtime/server-$scenario-private.log" 2>&1 &
+            server_pid=$!
+            popd >/dev/null
+            ready=0
+            for i in $(seq 1 60); do
+              if curl --fail --silent 'http://127.0.0.1:5055/health' >/dev/null; then ready=1; break; fi
+              sleep 1
+            done
+            if [ "$ready" -ne 1 ]; then kill "$server_pid" || true; exit 1; fi
+            node tests/original/client_aggro_distances_5d8o.mjs \
+              --server 'http://127.0.0.1:5055' \
+              --save-dir "$SW_SERVER_DIR/saves" \
+              --fixture "runtime/aggro-fixture-$scenario.json" \
+              --out "dist/aggro-distance-5d8o/$scenario"
+            kill "$server_pid" || true
+            wait "$server_pid" || true
+            find "$SW_SERVER_DIR/saves" -maxdepth 1 -type f -name '*.save.json' -delete
+          done
+      - name: Validate observations without interpreting nonkills as no aggro
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('dist/aggro-distance-5d8o')
+          results=[]
+          for dist in (5,10,15,20):
+            scenario=f'north_{dist:02d}'
+            d=base/scenario
+            r=json.loads((d/'report.json').read_text())
+            assert r['lot']=='5D.8O-auto-aggro-distance'
+            assert r['scenario']==scenario
+            assert r['manhattan_distance_tiles']==dist
+            assert r['manual_unit_click_count']==0
+            assert r['control_no_unit_clicks'] and r['no_synthetic_combat_posts'] and r['original_swf_untouched']
+            assert r['errors']==[]
+            assert len(r['state_samples'])>=2
+            assert (d/'session.webm').stat().st_size>1000
+            has_kill=any(c['action']=='kill' and c.get('object_reference')==42 for c in r['combat_actions'])
+            if has_kill: assert r['target_removed_from_save']
+            result={'scenario':scenario,'distance_tiles':dist,
+                'kill_command':has_kill,'target_removed':r['target_removed_from_save'],
+                'kill_at_ms':[entry['at_ms'] for entry in r['requests']
+                    if any(c['action']=='kill' and c.get('object_reference')==42 for c in entry['commands'])],
+                'attacker_tile_samples':[x['attacker_tile'] for x in r['state_samples']],
+                'target_tile_samples':[x['target_tile'] for x in r['state_samples']],
+                'observation_window_ms':r['state_samples'][-1]['at_ms']-r['state_samples'][0]['at_ms'],
+                'request_count':r['request_count'],'screen_count':len(r['shot_timestamps'])}
+            results.append(result)
+            print('AUTO_AGGRO_DISTANCE_RESULT_5D8O',json.dumps(result))
+          assert results[0]['kill_command'], 'Near-5 control must verify autonomous combat'
+          (base/'summary.json').write_text(json.dumps({
+            'lot':'5D.8O','native_swf_untouched':True,
+            'no_manual_unit_clicks':True,'distances':results,
+            'warning':'No kill within the observed window is not proof that no aggro occurred.',
+            'interpretation':'Attack radius and target acquisition radius may differ.'
+          },indent=2)+'\n')
+          PY
+      - name: Preserve sanitized distance observations and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-aggro-distances-5d8o
+          path: |
+            dist/aggro-distance-5d8o/
+            runtime/aggro-fixture-*.json
+          retention-days: 14
+          if-no-files-found: warn
