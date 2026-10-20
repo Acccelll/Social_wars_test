@@ -13,7 +13,7 @@ from pathlib import Path,PurePosixPath
 SWF_NAME="Basesec_1.5.4.swf"
 SWF_SHA="e4ce0218920a30fceee85ba750df3eedffa3f90e977bd117655704e297e0dc77"
 CLASSES=["core.Config","core.isoengine.IsoFightingElement","core.isoengine.IsoUnit","core.isoengine.IsoEngine","core.isoengine.isoUtils.CheckFunctions"]
-KEYWORDS=re.compile(r"AGGRO_RANGE|getNearestTarget|fCheckNearestTarget|acquireNewTarget|IA_Attack|iAttackRange|distance\\(",re.I)
+KEYWORDS=re.compile(r"AGGRO_RANGE|getNearestTarget|fCheckNearestTarget|acquireNewTarget|IA_Attack|iAttackRange|distance\(",re.I)
 DECLARATION=re.compile(r"\b(?:public|private|protected|internal)\s+(?:static\s+)?(?:const|var)\s+AGGRO_RANGE\s*:\s*\w+\s*=\s*([^;]+);")
 METHOD=re.compile(r"\b(?:public|private|protected|internal)\s+(?:override\s+)?function\s+([A-Za-z_]\w*)\s*\(",re.I)
 
