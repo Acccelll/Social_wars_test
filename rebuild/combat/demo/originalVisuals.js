@@ -4,6 +4,7 @@
 const UNIT_KEYS={bushwacker:'bushwacker',reaperDrone:'reaper_drone'};
 const imageCache=new Map();
 let manifest=null,mode='original',status='loading',error=null,tick=0;
+let reaperFacingIndex=0; // Root frames are directional poses, not elapsed-time animation.
 const deadAt=new Map();
 function paintFrame(ctx,rec,x,y,w,h,frame,angle=0){
  const img=imageCache.get(rec?.url);
@@ -14,7 +15,8 @@ function paintFrame(ctx,rec,x,y,w,h,frame,angle=0){
    rec.frameWidth,rec.frameHeight,-w/2,-h/2,w,h);
  ctx.restore();return true;
 }
-export function visualInfo(){return {mode,status,error,loaded:imageCache.size,ready:status==='ready'};}
+export function visualInfo(){return {mode,status,error,loaded:imageCache.size,ready:status==='ready',reaperFacingIndex};}
+export function nextReaperFacing(){reaperFacingIndex=(reaperFacingIndex+1)%5;return reaperFacingIndex;}
 export function setVisualMode(next){
  if(!['original','vector'].includes(next))throw Error('Invalid visual mode');
  mode=next;
@@ -51,8 +53,12 @@ export function drawOriginalUnit(ctx,key,u,p){
  const rec=recs[state];if(!rec)return false;
  if(!u.hp.dead)deadAt.delete(key);
  else if(!deadAt.has(key))deadAt.set(key,tick);
- const frame=u.hp.dead?Math.min(rec.frames-1,Math.floor((tick-deadAt.get(key))/3))
-   :u.poseFrames>0?(8-u.poseFrames)*2:Math.floor(tick/2);
+ // The 25 Reaper root frames include 5 different orientation poses in
+ // QUIETO/ANDAR/ATAQUE; they must not be cycled as a temporal animation.
+ const frame=key==='reaperDrone'
+   ? (u.hp.dead?0:Math.min(rec.frames-1,reaperFacingIndex))
+   : (u.hp.dead?Math.min(rec.frames-1,Math.floor((tick-deadAt.get(key))/3))
+     :u.poseFrames>0?(8-u.poseFrames)*2:Math.floor(tick/2));
  const height=key==='bushwacker'?238:161;
  return paintFrame(ctx,rec,p.x,p.y-(key==='bushwacker'?92:64),
    height*rec.frameWidth/rec.frameHeight,height,frame);
