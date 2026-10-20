@@ -1,0 +1,108 @@
+name: Native Sprite Atlases in Independent Arena 5D.8V
+on:
+  push:
+    paths:
+      - '.github/workflows/original-sprite-arena-5d8v.yml'
+      - 'tools/prepare_original_visuals_5d8v.py'
+      - 'rebuild/combat/demo/arena.*'
+      - 'rebuild/combat/demo/originalVisuals.js'
+      - 'rebuild/combat/serve.mjs'
+      - 'rebuild/combat/test/originalVisuals.browser.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-sprite-arena:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check sprite converter and Canvas entry syntax
+        run: |
+          python -m py_compile tools/prepare_original_visuals_5d8v.py
+          node --check rebuild/combat/demo/arena.js
+          node --check rebuild/combat/demo/originalVisuals.js
+          node --check rebuild/combat/serve.mjs
+      - name: Retrieve verified historical read-only GIF exports from 5D.8K
+        uses: actions/download-artifact@v4
+        with:
+          name: original-combat-states-5d8k
+          run-id: 39355945927
+          github-token: ${{ github.token }}
+          path: runtime/states
+      - name: Retrieve verified original normal projectile and impact GIFs from 5D.8M
+        uses: actions/download-artifact@v4
+        with:
+          name: original-projectiles-and-impacts-5d8m
+          run-id: 39360481633
+          github-token: ${{ github.token }}
+          path: runtime/fx
+      - name: Convert nested FFDec samples to PNG atlases (no SWF changes)
+        run: |
+          python -m pip install 'Pillow==11.3.0'
+          (cd runtime/states && zip -qr ../states.zip .)
+          (cd runtime/fx && zip -qr ../fx.zip .)
+          python tools/prepare_original_visuals_5d8v.py \
+            --states runtime/states.zip --fx runtime/fx.zip \
+            --out rebuild/combat/original-visual
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('rebuild/combat/original-visual/manifest.json').read_text())
+          assert m['lot']=='5D.8V' and m['originalSWFModified']==False
+          assert len(m['units'])==2 and len(m['effects'])==4
+          assert all(len(v['states'])==4 for v in m['units'].values())
+          assert m['units']['bushwacker']['states']['ataque']['distinctRenderedFrames']>1
+          assert m['units']['reaper_drone']['states']['ataque']['distinctRenderedFrames']==1
+          for unit in m['units'].values():
+            for st in unit['states'].values():
+              assert st['frameWidth']>0 and st['frames']==15
+          print('PNG_ATLAS_SOURCES_VERIFIED_5D8V')
+          PY
+      - name: Build independent TypeScript combat and install browser runner
+        working-directory: rebuild/combat
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install chromium
+          npm test
+      - name: Smoke original atlas display, vector fallback, damage and victory
+        working-directory: rebuild/combat
+        shell: bash
+        run: |
+          set -euo pipefail
+          node serve.mjs >/tmp/5d8v.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:5179/arena -o /tmp/5d8v.html; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:5179/original-visual/manifest.json | grep -q '5D.8V'
+          node test/originalVisuals.browser.mjs
+      - name: Publish no-Flash executable and original assets in one artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-combat-original-sprites-5d8v
+          path: |
+            rebuild/combat/demo/
+            rebuild/combat/dist/
+            rebuild/combat/src/
+            rebuild/combat/test/*.test.mjs
+            rebuild/combat/test/originalVisuals.browser.mjs
+            rebuild/combat/test/screenshots/5d8v-*.png
+            rebuild/combat/original-visual/
+            rebuild/combat/serve.mjs
+            rebuild/combat/package.json
+            rebuild/combat/tsconfig.json
+            rebuild/combat/README.md
+          retention-days: 14
+          if-no-files-found: warn
