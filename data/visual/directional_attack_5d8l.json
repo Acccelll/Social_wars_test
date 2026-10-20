@@ -1,0 +1,98 @@
+{
+  "lot": "5D.8L",
+  "date": "2026-10-19",
+  "status": "five_original_directional_clips_exported",
+  "original_item_id": 1358,
+  "source_swf": "assets/sprites/1358_bushwacker.swf",
+  "sha256": "e9db23f98dcaa5cf81cbcdac85154fcb1da92a205b7d9047a5d420fb9d068c5e",
+  "original_swf_modified": false,
+  "fps": 30,
+  "main_sprite_id": 1092,
+  "attack_root_frames": [
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "verified_ci": "https://github.com/Acccelll/Social_wars_test/actions/runs/39357276115",
+  "artifact": "https://github.com/Acccelll/Social_wars_test/actions/runs/39357276115/artifacts/12235179182",
+  "previous_native_combat": "https://github.com/Acccelll/Social_wars_test/actions/runs/39353491847",
+  "static_child_union_count": 123,
+  "static_children_shared_across_all": [
+    3,
+    611,
+    621,
+    642
+  ],
+  "rendered_gifs_are_offline_previews": true,
+  "directions": [
+    {
+      "label": "E",
+      "root_frame": 11,
+      "define_sprite_id": 643,
+      "name": "_1358_bushwacker_fla.E_attack_133",
+      "source_declared_frames": 60,
+      "exported_gif_frames": 60,
+      "visually_distinct_export_frames": 3,
+      "preview_loop_period_frames": 18,
+      "static_direct_child_count": 27
+    },
+    {
+      "label": "TE",
+      "root_frame": 12,
+      "define_sprite_id": 675,
+      "name": "_1358_bushwacker_fla.TE_attack_141",
+      "source_declared_frames": 60,
+      "exported_gif_frames": 60,
+      "visually_distinct_export_frames": 5,
+      "preview_loop_period_frames": null,
+      "static_direct_child_count": 29
+    },
+    {
+      "label": "P",
+      "root_frame": 13,
+      "define_sprite_id": 716,
+      "name": "_1358_bushwacker_fla.P_attack_145",
+      "source_declared_frames": 60,
+      "exported_gif_frames": 60,
+      "visually_distinct_export_frames": 3,
+      "preview_loop_period_frames": 18,
+      "static_direct_child_count": 31
+    },
+    {
+      "label": "T",
+      "root_frame": 14,
+      "define_sprite_id": 752,
+      "name": "_1358_bushwacker_fla.T_attack_153",
+      "source_declared_frames": 60,
+      "exported_gif_frames": 60,
+      "visually_distinct_export_frames": 3,
+      "preview_loop_period_frames": 18,
+      "static_direct_child_count": 27
+    },
+    {
+      "label": "F",
+      "root_frame": 15,
+      "define_sprite_id": 786,
+      "name": "_1358_bushwacker_fla.F_attack_159",
+      "source_declared_frames": 60,
+      "exported_gif_frames": 60,
+      "visually_distinct_export_frames": 10,
+      "preview_loop_period_frames": 18,
+      "static_direct_child_count": 25
+    }
+  ],
+  "projected_symbols_name_evidence": "All five variant names recovered from original SymbolClass tags, original root placements verified; 60 frames declared each.",
+  "visual_runtime_comparison": "Original 5D.8J Ruffle screenshot/video clearly shows Bushwacker shooting and Reaper Drone receiving impact before kill; per-direction frame ID and projectile/impact identity NOT yet established.",
+  "original_runtime_kill_confirmed": true,
+  "verified_projectile_define_sprite_id": null,
+  "verified_impact_define_sprite_id": null,
+  "verified_direction_used_at_runtime": null,
+  "warnings": [
+    "A 60-frame GIF output does not mean 60 visually unique drawings; offline FFDec previews repeat shorter sequences.",
+    "Preview loop periods from rendered GIF do not establish original runtime action timing.",
+    "Shared or direction-specific child IDs are structural, not automatic projectile identifications."
+  ],
+  "next_lot": "5D.8M — Identify projectile and impact animation assets through AVM2 ProjectileDefinition / effect lookup and test against Ruffle runtime"
+}
