@@ -113,6 +113,23 @@ jobs:
           assert r['scenario']==scenario and len(r['fixture_seeded_units'])==2
           assert r['attempts']>0 and len(r['unit_summaries'])==2
           assert (d/'session.webm').stat().st_size>1000
+          # Lote 5D.8J has a positive, not merely observational, acceptance contract:
+          # browser-origin native kill for the actual enemy map object (index 42).
+          assert r['original_enemy_player_id']==2
+          assert r['target_removed_from_save'] is True
+          assert r['target_object_changed'] is True
+          assert r['native_combat_command_seen'] is True
+          assert any(c['action']=='kill' and c.get('object_reference')==42
+                     for c in r['combat_actions']), 'Missing native kill of actual enemy'
+          assert r['errors']==[], f"Unexpected browser errors: {r['errors']}"
+          print('VERIFIED_NATIVE_COMBAT_5D8J',json.dumps({
+            'browser_origin':r['source'],
+            'enemy_player_id':r['original_enemy_player_id'],
+            'target_index':42,
+            'native_kill':True,
+            'target_removed_from_save':True,
+            'original_swf_untouched':r['original_swf_untouched']
+          }))
           print('OBSERVED_NATIVE_COMBAT_5D8I',json.dumps({
             'scenario':scenario,'attempts':r['attempts'],
             'combat_actions':r['combat_actions'],
